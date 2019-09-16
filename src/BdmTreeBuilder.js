@@ -19,8 +19,8 @@ class BdmTreeBuilder {
         let bdm = JSON.parse(this.bdmJson);
 
         let bdmTree = {};
-        bdmTree.productVersion = bdm.businessObjectModel.productVersion;
-        bdmTree.modelVersion = bdm.businessObjectModel.modelVersion;
+        bdmTree.productVersion = bdm.businessObjectModel._attributes.productVersion;
+        bdmTree.modelVersion = bdm.businessObjectModel._attributes.modelVersion;
         bdmTree.children = [];
 
         let bdmBusObjects = BdmTreeBuilder._asArray(bdm.businessObjectModel.businessObjects.businessObject);
@@ -51,7 +51,7 @@ class BdmTreeBuilder {
         // console.log("business object: " + bdmBusObject.qualifiedName);
         // console.log(bdmBusObject);
         let treeNode = {};
-        let qn = bdmBusObject.qualifiedName;
+        let qn = bdmBusObject._attributes.qualifiedName;
         treeNode.name = BdmTreeBuilder._getLastItem(qn);
         treeNode.qualifiedName = qn;
         // treeNode.relationType =
@@ -63,11 +63,11 @@ class BdmTreeBuilder {
             let bdmAttsArray = BdmTreeBuilder._asArray(bdmAtts);
             bdmAttsArray.forEach((bdmAtt) => {
                 let nodeAtt = {};
-                nodeAtt.name = bdmAtt.name;
-                nodeAtt.type = bdmAtt.type;
-                nodeAtt.length = bdmAtt.length;
-                nodeAtt.mandatory = !BdmTreeBuilder._asBoolean(bdmAtt.nullable);
-                nodeAtt.multiple = BdmTreeBuilder._asBoolean(bdmAtt.collection);
+                nodeAtt.name = bdmAtt._attributes.name;
+                nodeAtt.type = bdmAtt._attributes.type;
+                nodeAtt.length = bdmAtt._attributes.length;
+                nodeAtt.mandatory = !BdmTreeBuilder._asBoolean(bdmAtt._attributes.nullable);
+                nodeAtt.multiple = BdmTreeBuilder._asBoolean(bdmAtt._attributes.collection);
                 treeNode.children.push(nodeAtt);
             });
         }
@@ -78,12 +78,12 @@ class BdmTreeBuilder {
             let bdmAttRelsArray = BdmTreeBuilder._asArray(bdmAttRels);
             bdmAttRelsArray.forEach((bdmAttRel) => {
                 let nodeAttRel = {};
-                nodeAttRel.reference = bdmAttRel.reference;
-                nodeAttRel.relationType = bdmAttRel.type;
-                nodeAttRel.fetchType = bdmAttRel.fetchType;
-                nodeAttRel.mandatory = !BdmTreeBuilder._asBoolean(bdmAttRel.nullable);
-                nodeAttRel.multiple = BdmTreeBuilder._asBoolean(bdmAttRel.collection);
-                nodeAttRel.name = bdmAttRel.name;
+                nodeAttRel.reference = bdmAttRel._attributes.reference;
+                nodeAttRel.relationType = bdmAttRel._attributes.type;
+                nodeAttRel.fetchType = bdmAttRel._attributes.fetchType;
+                nodeAttRel.mandatory = !BdmTreeBuilder._asBoolean(bdmAttRel._attributes.nullable);
+                nodeAttRel.multiple = BdmTreeBuilder._asBoolean(bdmAttRel._attributes.collection);
+                nodeAttRel.name = bdmAttRel._attributes.name ;
                 treeNode.children.push(nodeAttRel);
             });
         }

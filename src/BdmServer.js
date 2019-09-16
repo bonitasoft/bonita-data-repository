@@ -1,6 +1,6 @@
 const fs = require('fs');
 let BdmTreeBuilder = require('./BdmTreeBuilder');
-let xmlParser = require('../node_modules/xml2json');
+let xmlParser = require('xml-js');
 
 class BdmServer {
 
@@ -51,7 +51,7 @@ class BdmServer {
                 bdm: () => bdm,
                 bdmTree: (parent, args) => {
                     if (bdm.content) {
-                        let jsonContent = xmlParser.toJson(bdm.content);
+                        let jsonContent = xmlParser.xml2json(bdm.content, {compact: true, spaces: 4});
                         let jsonTree = new BdmTreeBuilder(jsonContent, args.filter).build();
                         return {
                             name: bdm.description,
@@ -65,7 +65,7 @@ class BdmServer {
                 },
                 bdmTreeAsString: (parent, args) => {
                     if (bdm.content) {
-                        let jsonContent = xmlParser.toJson(bdm.content);
+                        let jsonContent = xmlParser.xml2json(bdm.content, {compact: true, spaces: 4});
                         let jsonTree = new BdmTreeBuilder(jsonContent, args.filter).build();
                         return {
                             name: bdm.description,
