@@ -1,0 +1,83 @@
+# this is needed for upload to work
+scalar Upload
+
+type Query {
+    info: String!
+    bdm: Bdm!
+    bdmTree(filter: String): BdmTree
+    bdmTreeAsString(filter: String): BdmTreeAsString
+    # bdmTreeItem(qualifiedName: String!): BdmTreeItem
+}
+
+type Mutation {
+    # Add a bdm from file
+    postFile(description: String, file: Upload!): Boolean
+
+    # Add a bdm
+    post(description: String, content: String!): Boolean
+}
+
+type Bdm {
+    description: String
+    content: String!
+}
+
+type BdmTree {
+    name: String!
+    productVersion: String!
+    modelVersion: String!
+    nodes: [BdmObject!]!
+}
+
+type BdmTreeAsString {
+    name: String!
+    content: String!
+}
+
+type BdmObject {
+    qualifiedName: String!
+    name: String!
+    attributes: [BdmAttribute!]
+    relations: [BdmRelationAttribute!]
+}
+
+type BdmAttribute {
+    name: String!
+    type: AttributeType!
+    length: Int!
+    mandatory: Boolean!
+    multiple: Boolean!
+}
+
+type BdmRelationAttribute {
+    name: String!
+    reference: String!
+    relationType: RelationType!
+    fetchType: RelationFetchType!
+    mandatory: Boolean!
+    multiple: Boolean!
+}
+
+enum RelationType {
+    AGGREGATION
+    COMPOSITION
+}
+
+enum RelationFetchType {
+    LAZY
+    EAGER
+}
+
+enum AttributeType {
+    BOOLEAN
+    LOCALDATE
+    LOCALDATETIME
+    OFFSETDATETIME
+    DOUBLE
+    FLOAT
+    INTEGER
+    LONG
+    STRING
+    TEXT
+    DATE
+}
