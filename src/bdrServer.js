@@ -41,19 +41,6 @@ let bdm = {
     content: bdmContentXml
 };
 
-// const processUpload = async upload => {
-//     const {createReadStream, filename, mimetype, encoding} = await upload;
-//     const stream = createReadStream();
-//     const chunks = [];
-//     stream.on("data", function (chunk) {
-//         chunks.push(chunk);
-//     });
-//     stream.on("end", function () {
-//         bdm.content = Buffer.concat(chunks).toString();
-//         bdm.description = filename;
-//     });
-// };
-
 let bdmContentJson = xmlParser.xml2json(bdm.content, {compact: true, spaces: 4});
 
 let schemaGenerator = new GraphqlSchemaGenerator(bdmContentJson);
@@ -62,7 +49,6 @@ let schema = schemaGenerator.getSchema();
 
 const resolvers = {
     Query: {
-        // info: () => `Hello`,
     }
 };
 

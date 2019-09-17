@@ -79,8 +79,6 @@ class GraphqlSchemaGenerator {
 
         // Generate enums (?)
         // Add documentation for graphQL (?)
-
-        console.debug('schema=\n' + this.schema.join(''));
     }
 
     getResolvers() {
