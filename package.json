@@ -2,8 +2,8 @@
   "name": "data-repository",
   "version": "1.0.0",
   "description": "",
-  "main": "src/testServer.js",
-  "bin": "src/testServer.js",
+  "main": "src/bdrServer.js",
+  "bin": "src/bdrServer.js",
   "scripts": {
     "start": "node .",
     "package": "pkg --out-path ./target/binaries -t node12-linux,node12-macos,node12-win .",
