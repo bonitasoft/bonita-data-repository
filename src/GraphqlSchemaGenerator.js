@@ -11,6 +11,9 @@ class GraphqlSchemaGenerator {
 
         // Generate types
         let attributesTypeMap = new Map();
+        if (!bdm.businessObjectModel.businessObjects.businessObject) {
+            return;
+        }
         let bdmBusObjects = this._asArray(bdm.businessObjectModel.businessObjects.businessObject);
         let myself = this;
         bdmBusObjects.forEach(function (bdmBusObject) {
