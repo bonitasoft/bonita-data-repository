@@ -24,7 +24,7 @@ function getParameter(param) {
     return param.substr(param.indexOf("=") + 1)
 }
 
-let bdmFile
+let bdmFile;
 let port = 4000;
 
 // Handle server parameters
@@ -33,7 +33,13 @@ process.argv.forEach(function (val, index, array) {
         bdmFile = getParameter(val);
     }
     if (val.startsWith("port")) {
-        port = getParameter(val);
+        let param = getParameter(val);
+        if (!isNaN(param)) {
+            port = param;
+        } else {
+            console.log("Invalid port: " + param);
+            process.exit(1);
+        }
     }
 });
 
@@ -43,7 +49,6 @@ if (bdmFile) {
     console.log("BDM added: " + bdmFile);
 }
 
-// Only one BDM handled for now
 let bdm = {
     description: 'Bonitasoft BDM',
     content: bdmContentXml
