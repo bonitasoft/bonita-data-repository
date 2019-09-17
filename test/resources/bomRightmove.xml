@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<businessObjectModel modelVersion="1.0" productVersion="7.2.3">
+    <businessObjects>
+        <businessObject qualifiedName="com.rightmove.model.MailTemplate">
+            <description>Contains mailing template for customer comunication</description>
+            <fields>
+                <field type="STRING" length="10" name="code" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="templategroup" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="description" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="subject" nullable="true" collection="false"/>
+                <field type="TEXT" length="4096" name="content" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="UNIQUE_CONSTRAINT_1">
+                    <fieldNames>
+                        <fieldName>code</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.CeiEnquirerType">
+            <description>Enquirer Type</description>
+            <fields>
+                <field type="STRING" length="255" name="Name" nullable="false" collection="false"/>
+                <field type="STRING" length="1000" name="Description" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="ArchiveFlag" nullable="false" collection="false"/>
+                <field type="DATE" length="255" name="ArchiveDate" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="UNIQUE_CONSTRAINT_1">
+                    <fieldNames>
+                        <fieldName>Name</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.CeiEnquiryType">
+            <description>Enquiry Type</description>
+            <fields>
+                <field type="STRING" length="255" name="Name" nullable="false" collection="false"/>
+                <field type="STRING" length="1000" name="Description" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="ArchiveFlag" nullable="false" collection="false"/>
+                <field type="DATE" length="255" name="ArchiveDate" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="UNIQUE_CONSTRAINT_1">
+                    <fieldNames>
+                        <fieldName>Name</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries>
+                <query name="findByNames" content="SELECT c &#xA;FROM CeiEnquiryType c &#xA;WHERE c.Name IN :Name&#xA;AND c.ArchiveFlag = false&#xA;ORDER BY c.Description ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="Name" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.CeiEnquiryStatus">
+            <description>Enquiry Status</description>
+            <fields>
+                <field type="STRING" length="255" name="Name" nullable="false" collection="false"/>
+                <field type="STRING" length="1000" name="Description" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="ArchiveFlag" nullable="false" collection="false"/>
+                <field type="DATE" length="255" name="ArchiveDate" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="UNIQUE_CONSTRAINT_1">
+                    <fieldNames>
+                        <fieldName>Name</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.CeiEnquirer">
+            <description>Enquirer</description>
+            <fields>
+                <relationField type="AGGREGATION" reference="com.rightmove.model.CeiEnquirerType" fetchType="EAGER" name="EnquirerType" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="Name" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="Email" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="Telephone" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="DecisionMaker" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="PositionInCompany" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="CreateDate" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="CreateUser" nullable="false" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries>
+                <query name="findByPersistenceId" content="SELECT c &#xA;FROM CeiEnquirer c join fetch c.EnquirerType &#xA;WHERE c.persistenceId = :PersistenceId" returnType="com.rightmove.model.CeiEnquirer">
+                    <queryParameters>
+                        <queryParameter name="PersistenceId" className="java.lang.Long"/>
+                    </queryParameters>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.CeiEnquiry">
+            <description>Enquiry</description>
+            <fields>
+                <field type="LONG" length="255" name="BonitaCaseID" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="EnquirerId" nullable="true" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.rightmove.model.CeiEnquiryType" fetchType="EAGER" name="EnquiryType" nullable="false" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.rightmove.model.CeiEnquirySubtype" fetchType="EAGER" name="EnquirySubtype" nullable="true" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.rightmove.model.CeiEnquiryStatus" fetchType="EAGER" name="Status" nullable="false" collection="false"/>
+                <field type="TEXT" length="16000" name="Content" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="DetailsCompleteDate" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="CompanyBranchName" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="BranchId" nullable="true" collection="false"/>
+                <field type="STRING" length="20" name="BranchPostcode" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="CreateDate" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="CreateUser" nullable="false" collection="false"/>
+                <field type="DATE" length="255" name="UpdateDate" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="UpdateUser" nullable="false" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.rightmove.model.CeiEnquiryActivity" fetchType="EAGER" name="Activities" nullable="true" collection="true"/>
+                <field type="BOOLEAN" length="255" name="Internal" nullable="false" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.rightmove.model.CeiEnquiryADFDetails" fetchType="EAGER" name="AdfDetails" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.rightmove.model.CeiEnquiryDataQualityDetails" fetchType="EAGER" name="DataQualityDetails" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.rightmove.model.CeiEnquiryLocnHandlingDetails" fetchType="EAGER" name="LocationHandlingDetails" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="ServiceDeskId" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.rightmove.model.CeiEnquiryDesignDetails" fetchType="EAGER" name="DesignDetails" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.rightmove.model.CeiEnquirySoldPricesDetails" fetchType="EAGER" name="SoldPricesDetails" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.rightmove.model.CeiEnquiryFraudDetails" fetchType="EAGER" name="FraudDetails" nullable="true" collection="false"/>
+                <field type="STRING" length="64" name="Source" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="Closed" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="ClosureDate" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.CeiMailTemplate">
+            <description>Mail Templates</description>
+            <fields>
+                <field type="STRING" length="255" name="code" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="templategroup" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="description" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="subject" nullable="false" collection="false"/>
+                <field type="TEXT" length="255" name="content" nullable="false" collection="false"/>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="UNIQUE_CONSTRAINT_1">
+                    <fieldNames>
+                        <fieldName>code</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.CeiEnquiryActivity">
+            <description>Enquiry Activity</description>
+            <fields>
+                <relationField type="AGGREGATION" reference="com.rightmove.model.CeiEnquiryActivityType" fetchType="EAGER" name="Type" nullable="false" collection="false"/>
+                <field type="TEXT" length="255" name="Content" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="CreateUser" nullable="false" collection="false"/>
+                <field type="DATE" length="255" name="CreateDate" nullable="false" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.CeiEnquiryActivityType">
+            <description>Enquiry Activity Type</description>
+            <fields>
+                <field type="STRING" length="255" name="Name" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="Description" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="ArchiveFlag" nullable="false" collection="false"/>
+                <field type="DATE" length="255" name="ArchiveDate" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="DisplayOrder" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="UNIQUE_CONSTRAINT_1">
+                    <fieldNames>
+                        <fieldName>Name</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries>
+                <query name="findbyNameStartsWith" content="SELECT c &#xA;FROM CeiEnquiryActivityType c &#xA;WHERE c.Name like :Name&#xA;ORDER BY c.persistenceId ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="Name" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+                <query name="findOrderedByNameStartsWithUnarchived" content="SELECT c &#xD;&#xA;FROM CeiEnquiryActivityType c &#xD;&#xA;WHERE c.Name like :Name&#xD;&#xA;AND c.ArchiveFlag = 0&#xD;&#xA;ORDER BY c.DisplayOrder ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="Name" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.CeiEnquirerEnquiryTypeMapping">
+            <description></description>
+            <fields>
+                <relationField type="AGGREGATION" reference="com.rightmove.model.CeiEnquirerType" fetchType="EAGER" name="EnquirerType" nullable="false" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.rightmove.model.CeiEnquiryType" fetchType="EAGER" name="EnquiryType" nullable="false" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.rightmove.model.CeiEnquirySubtype" fetchType="EAGER" name="EnquirySubtype" nullable="true" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.rightmove.model.CeiFormTemplate" fetchType="EAGER" name="FormTemplate" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries>
+                <query name="getEnquiryTypesForEnquirerType" content="SELECT c&#xA;FROM CeiEnquirerEnquiryTypeMapping c &#xD;&#xA;join fetch c.EnquirerType join fetch c.EnquiryType&#xD;&#xA;WHERE c.EnquirerType.Name = :enquirerTypeName&#xA;ORDER BY c.EnquiryType.Description ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="enquirerTypeName" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+                <query name="getForEnquirerEnquirySubtype" content="SELECT c &#xA;FROM CeiEnquirerEnquiryTypeMapping c&#xD;&#xA;join fetch c.EnquirerType&#xD;&#xA;join fetch c.EnquiryType&#xD;&#xA;join fetch c.EnquirySubtype&#xD;&#xA;join fetch c.FormTemplate &#xA;WHERE c.EnquirerType.Name = :enquirerTypeName&#xD;&#xA;AND c.EnquiryType.Name = :enquiryTypeName&#xD;&#xA;AND c.EnquirySubtype.Name = :enquirySubtypeName&#xA;ORDER BY c.persistenceId ASC&#xD;&#xA;" returnType="com.rightmove.model.CeiEnquirerEnquiryTypeMapping">
+                    <queryParameters>
+                        <queryParameter name="enquirerTypeName" className="java.lang.String"/>
+                        <queryParameter name="enquiryTypeName" className="java.lang.String"/>
+                        <queryParameter name="enquirySubtypeName" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.CeiEnquiryADFDetails">
+            <fields>
+                <field type="STRING" length="255" name="DatafeedProviderName" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="PropertyReference" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="PropertyAddress" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="ExampleProperty" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="LinkToAgentWebsite" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="NewFeedProvider" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.CeiEnquiryLocnHandlingDetails">
+            <fields>
+                <field type="STRING" length="255" name="Postcodes" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="DeliveryPoints" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="RegionName" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="LocationIdentifier" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.CeiEnquiryDataQualityDetails">
+            <fields>
+                <field type="STRING" length="255" name="OffendingBranchName" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="OffendingBranchAddress" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="OffendingBranchID" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="LinkToProperty" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="LinkToEvidence" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.CeiEnquirySubtype">
+            <fields>
+                <field type="STRING" length="255" name="Name" nullable="false" collection="false"/>
+                <field type="STRING" length="1000" name="Description" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="ArchiveFlag" nullable="false" collection="false"/>
+                <field type="DATE" length="255" name="ArchiveDate" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="UNIQUE_CONSTRAINT_1">
+                    <fieldNames>
+                        <fieldName>Name</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.CeiFormTemplate">
+            <fields>
+                <field type="STRING" length="255" name="Name" nullable="false" collection="false"/>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="UNIQUE_CONSTRAINT_1">
+                    <fieldNames>
+                        <fieldName>Name</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.CeiFormField">
+            <fields>
+                <field type="STRING" length="255" name="Name" nullable="false" collection="false"/>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="UNIQUE_CONSTRAINT_1">
+                    <fieldNames>
+                        <fieldName>Name</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.CeiFormTemplateFieldMapping">
+            <fields>
+                <relationField type="AGGREGATION" reference="com.rightmove.model.CeiFormTemplate" fetchType="EAGER" name="FormTemplate" nullable="false" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.rightmove.model.CeiFormField" fetchType="EAGER" name="FormField" nullable="false" collection="false"/>
+                <field type="BOOLEAN" length="255" name="Mandatory" nullable="false" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries>
+                <query name="findByTemplateNameFieldName" content="SELECT c &#xA;FROM CeiFormTemplateFieldMapping c&#xD;&#xA;join fetch c.FormTemplate&#xD;&#xA;join fetch c.FormField &#xA;WHERE c.FormTemplate.Name = :formTemplateName&#xD;&#xA;AND c.FormField.Name = :formFieldName&#xA;ORDER BY c.persistenceId ASC" returnType="com.rightmove.model.CeiFormTemplateFieldMapping">
+                    <queryParameters>
+                        <queryParameter name="formTemplateName" className="java.lang.String"/>
+                        <queryParameter name="formFieldName" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+                <query name="findMandatoryByTemplateName" content="SELECT c &#xA;FROM CeiFormTemplateFieldMapping c join fetch c.FormTemplate join fetch c.FormField &#xA;WHERE c.Mandatory = true&#xD;&#xA;AND&#xD;&#xA;c.FormTemplate.Name = :FormTemplateName&#xA;ORDER BY c.persistenceId ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="FormTemplateName" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.CeiEnquiryDesignDetails">
+            <fields>
+                <field type="STRING" length="255" name="LhpReference" nullable="true" collection="false"/>
+                <field type="STRING" length="512" name="LinkAdvertTo" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="Text" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="Branding" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="Font" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="Colours" nullable="true" collection="false"/>
+                <field type="STRING" length="512" name="TermsAndConditionsLink" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.CeiEnquirySoldPricesDetails">
+            <fields>
+                <field type="STRING" length="255" name="PropertyAddress" nullable="true" collection="false"/>
+                <field type="STRING" length="512" name="LinkToExample" nullable="true" collection="false"/>
+                <field type="STRING" length="512" name="LinkToEvidence" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.CeiEnquiryFraudDetails">
+            <fields>
+                <field type="STRING" length="4000" name="WhatHasBeenTaken" nullable="true" collection="false"/>
+                <field type="STRING" length="4000" name="ReasonForKnowing" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="UsedNameOfScammer" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="HasMoneyBeenPaid" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="AmountPaid" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="NameOfAgency" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="BranchIdOfConcern" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.BonitaProduct">
+            <fields>
+                <field type="STRING" length="255" name="name" nullable="true" collection="false"/>
+                <field type="DOUBLE" length="255" name="price" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.BonitaCustomer">
+            <fields>
+                <field type="STRING" length="255" name="name" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="customerId" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.BonitaInvoice">
+            <fields>
+                <relationField type="AGGREGATION" reference="com.rightmove.model.BonitaCustomer" fetchType="LAZY" name="customer" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.rightmove.model.BonitaInvoiceLine" fetchType="LAZY" name="lines" nullable="true" collection="true"/>
+                <field type="DATE" length="255" name="invoiceDate" nullable="true" collection="false"/>
+                <field type="DOUBLE" length="255" name="total" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.rightmove.model.BonitaInvoiceLine">
+            <fields>
+                <relationField type="AGGREGATION" reference="com.rightmove.model.BonitaProduct" fetchType="LAZY" name="product" nullable="true" collection="false"/>
+                <field type="INTEGER" length="255" name="quantity" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+    </businessObjects>
+</businessObjectModel>

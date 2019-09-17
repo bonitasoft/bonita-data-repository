@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<businessObjectModel modelVersion="1.0" productVersion="7.2.3">
+    <businessObjects>
+        <businessObject qualifiedName="com.bbva.model.CpnCasoCliente">
+            <fields>
+                <field type="STRING" length="255" name="cedula_cliente" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="id_caso_negocio" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="id_caso_bonita" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.bbva.model.PNDataProceso">
+            <fields>
+                <field type="STRING" length="512" name="nombre_Proceso" nullable="true" collection="false"/>
+                <field type="INTEGER" length="255" name="idProducto" nullable="true" collection="false"/>
+                <field type="INTEGER" length="255" name="noCasoNegocio" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="consecutivoBonita" nullable="true" collection="false"/>
+                <field type="STRING" length="64" name="codigoRadicador" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="fechaInicioProceso" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="idActividad" nullable="true" collection="false"/>
+                <field type="STRING" length="64" name="nombreActividad" nullable="true" collection="false"/>
+                <field type="STRING" length="64" name="usuarioResponsable" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="fechaCreacionActividad" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="fechaInicioActividad" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="fechaFinalizacionActividad" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="fechaSuspensionActividad" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="fechaReinicioActividad" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="fechaAsignacionUsuario" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="tiempoEjecucion" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="tiempoEspera" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="duracionTotal" nullable="true" collection="false"/>
+                <field type="STRING" length="64" name="estadoActividad" nullable="true" collection="false"/>
+                <field type="STRING" length="512" name="observaciones" nullable="true" collection="false"/>
+                <field type="STRING" length="64" name="proximoPaso" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="id" nullable="true" collection="false"/>
+                <field type="TEXT" length="255" name="dataNegocio" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="empresa" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="fechaVencimientoActividad" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="noCaso" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nombreProceso" nullable="true" collection="false"/>
+                <field type="INTEGER" length="255" name="migrated" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.bbva.model.CnmcProcessData">
+            <fields>
+                <field type="INTEGER" length="255" name="idProducto" nullable="true" collection="false"/>
+				<field type="INTEGER" length="255" name="noCasoNegocio" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="consecutivoBonita" nullable="true" collection="false"/>
+                <field type="STRING" length="64" name="codigoRadicador" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="fechaInicioProceso" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="idActividad" nullable="true" collection="false"/>
+                <field type="STRING" length="64" name="nombreActividad" nullable="true" collection="false"/>
+                <field type="STRING" length="64" name="usuarioResponsable" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="fechaCreacionActividad" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="fechaInicioActividad" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="fechaFinalizacionActividad" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="fechaSuspensionActividad" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="fechaReinicioActividad" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="fechaAsignacionUsuario" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="tiempoEjecucion" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="tiempoEspera" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="duracionTotal" nullable="true" collection="false"/>
+                <field type="STRING" length="64" name="estadoActividad" nullable="true" collection="false"/>
+                <field type="STRING" length="512" name="observaciones" nullable="true" collection="false"/>
+                <field type="STRING" length="64" name="proximoPaso" nullable="true" collection="false"/>
+                <field type="TEXT" length="255" name="dataNegocio" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="empresa" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="fechaVencimientoActividad" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="noCaso" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nombreProceso" nullable="true" collection="false"/>
+                <field type="INTEGER" length="255" name="migrated" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.bbva.model.PNNoCaso">
+            <fields>
+                <field type="INTEGER" length="255" name="noCasoNegocio" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries>
+                <query name="maxNoCaso" content="SELECT MAX (p.noCasoNegocio)&#xA;FROM PNNoCaso p&#xA;" returnType="java.lang.Integer">
+                    <queryParameters/>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+		<businessObject qualifiedName="com.bbva.model.ProcessSearchIndexes">
+            <fields>
+                <field type="LONG" length="255" name="id_caso" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="clave" nullable="true" collection="false"/>
+                <field type="TEXT" length="255" name="valor" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="entidad" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="id_proceso" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="cat_proceso" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+		<businessObject qualifiedName="com.bbva.model.AuditoriaPriorizacion">
+            <fields>
+                <field type="LONG" length="255" name="idCaso" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="idUsuario" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nombreUsuario" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="fecha" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="comentario" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+    </businessObjects>
+</businessObjectModel>

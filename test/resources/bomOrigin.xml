@@ -1,0 +1,931 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<businessObjectModel modelVersion="1.0" productVersion="7.2.2">
+    <businessObjects>
+        <businessObject qualifiedName="com.origin.model.PersPersonne">
+            <fields>
+                <field type="STRING" length="255" name="idOrigin" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="idVinciPersonne" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="persCiviliteFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="persTypePersonneFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="prenomNaissance" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="prenom" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nomNaissance" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nom" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateNaissance" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nationalite" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="lettreInitial" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="photoPersonne" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateEntreeGroupe" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="persStatutPersonneFk" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateModification" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateDebutValidite" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateFinValidte" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codeDiv" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.origin.model.CtxContexte" fetchType="LAZY" name="ctxContexte" nullable="true" collection="true"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.CtxContexte">
+            <fields>
+                <field type="STRING" length="255" name="idContexte" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="ctxTypeFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="ctxStatutFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="ctxEntiteOsmoseFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="service" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="osmoseEntiteExterneLibelle" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="ctxOrganisationFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="fonction" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateFin" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateDebut" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="ctxTypeContratFk" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateMutation" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="identifiantOrganisation" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="centrePayeur" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleCentrePayeur" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="statutPaieFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="matriculePaie" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="ctxPersonneManagerFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="ctxResponsableCollaborateurFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="filiere" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="metier" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="pagesBlanches" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="fullName" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateModification" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.origin.model.CtxLocalisation" fetchType="LAZY" name="ctxLocalisationFk" nullable="true" collection="true"/>
+                <relationField type="COMPOSITION" reference="com.origin.model.CtxTelephone" fetchType="LAZY" name="ctxTelephoneFk" nullable="true" collection="true"/>
+                <relationField type="COMPOSITION" reference="com.origin.model.CtxMail" fetchType="LAZY" name="ctxMailFk" nullable="true" collection="true"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.CtxMail">
+            <fields>
+                <field type="INTEGER" length="255" name="idCtxMail" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="contexte" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="mailStatutFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="mailNatureFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="upn" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="sam" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.CtxTelephone">
+            <fields>
+                <field type="STRING" length="255" name="idCtxTelephone" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="numeroTelephone" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="telephoneStatutFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="telephoneNatureFk" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.CtxLocalisation">
+            <fields>
+                <field type="INTEGER" length="255" name="idCtxLocalisation" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="localisationStatutFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="localisationNatureFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="adresseContexte" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="complementAdresse1" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="latitude" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="longitude" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="ville" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="localisationPaysFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codePostal" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="numeroBureau" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.CtxContratType">
+            <fields>
+                <field type="STRING" length="255" name="idCtxContratType" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.CtxLocalisationEtat">
+            <fields>
+                <field type="STRING" length="255" name="idCtxLocalisationEtat" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.CtxLocalisationNature">
+            <fields>
+                <field type="STRING" length="255" name="idCtxLocalisationNature" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.CtxLocalisationStatut">
+            <fields>
+                <field type="STRING" length="255" name="idCtxLocalisationStatut" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.CtxMailNature">
+            <fields>
+                <field type="STRING" length="255" name="idCtxMailNature" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.CtxMailStatut">
+            <fields>
+                <field type="STRING" length="255" name="idCtxMailStatut" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.CtxStatut">
+            <fields>
+                <field type="STRING" length="255" name="idCtxStatut" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.CtxTelephoneNature">
+            <fields>
+                <field type="STRING" length="255" name="idCtxTelephoneNature" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.CtxTelephoneStatut">
+            <fields>
+                <field type="STRING" length="255" name="idCtxTelephoneStatut" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.PersTitrePersonne">
+            <fields>
+                <field type="STRING" length="255" name="idPersTitrePersonne" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.CtxType">
+            <fields>
+                <field type="STRING" length="255" name="idCtxType" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.PersCivilite">
+            <fields>
+                <field type="STRING" length="255" name="idPersCivilite" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="genreFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.PersTypePersonne">
+            <fields>
+                <field type="STRING" length="255" name="idPersTypePersonne" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.PersStatutPersonne">
+            <fields>
+                <field type="STRING" length="255" name="idPersStatutPersonne" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.CtxStatutPaie">
+            <fields>
+                <field type="STRING" length="255" name="idCtxStatutPaie" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.CtxFiliere">
+            <fields>
+                <field type="STRING" length="255" name="idCtxFiliere" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.CtxMetier">
+            <fields>
+                <field type="STRING" length="255" name="idCtxMetier" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.OrgOrganisation">
+            <fields>
+                <field type="INTEGER" length="255" name="idUo" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codeDiv" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="orgLibelleCourt" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="orgLibelleLong" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="orgTypeFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="orgCodeOsmoseVinciFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="orgUoMereFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="orgResponsableFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="orgResponsableSecuriteFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="orgResponsableComptableFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="orgEmplacement" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.origin.model.OrgAdresse" fetchType="LAZY" name="lesAdresses" nullable="true" collection="true"/>
+                <field type="INTEGER" length="255" name="orgNiveau" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="orgTypeNiveauFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="orgCurrencyFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="orgActivityFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="orgGeographyFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="orgInterventionFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="orgSkillFk" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateDebut" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateModification" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateFin" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="dernierNiveau" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="refus" nullable="true" collection="false"/>
+                <field type="TEXT" length="255" name="commentaire" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="modif" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="idTypeNiveau" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="idCodeOsmos" nullable="true" collection="false"/>
+                <field type="INTEGER" length="255" name="idUoMere" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="idRepOrga" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="idRepSecu" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="idRepCpt" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries>
+                <query name="getMaxPersisId" content="SELECT MAX(o.idUo)&#xD;&#xA;FROM OrgOrganisation o" returnType="java.lang.Integer">
+                    <queryParameters/>
+                </query>
+                <query name="getLastIduoValid" content="SELECT  MAX(o.persistenceId)&#xA;FROM OrgOrganisation o &#xA;WHERE o.idUo = :idUo&#xA;AND o.refus = false" returnType="java.lang.Long">
+                    <queryParameters>
+                        <queryParameter name="idUo" className="java.lang.Integer"/>
+                    </queryParameters>
+                </query>
+                <query name="getUo" content="SELECT o&#xD;&#xA;FROM OrgOrganisation o&#xD;&#xA;WHERE  o.refus = false&#xD;&#xA;AND o.modif = false&#xD;&#xA;ORDER BY o.persistenceId ASC" returnType="java.util.List">
+                    <queryParameters/>
+                </query>
+                <query name="getListeOrga" content="SELECT o&#xD;&#xA;FROM OrgOrganisation o&#xD;&#xA;WHERE o.codeDiv= :codeDiv&#xD;&#xA;AND o.refus = false&#xD;&#xA;AND o.modif = false&#xD;&#xA;ORDER BY o.persistenceId ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="codeDiv" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.EnLRegimeImposition">
+            <fields>
+                <field type="STRING" length="255" name="idEnLRegimeImposition" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.EnLRole">
+            <fields>
+                <field type="STRING" length="255" name="idEnLRole" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.EnLStatut">
+            <fields>
+                <field type="STRING" length="255" name="idEnLStatut" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.EnLType">
+            <fields>
+                <field type="STRING" length="255" name="idEnLType" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries>
+                <query name="getTypeEntite" content="SELECT e &#xA;FROM EnLType e &#xA;WHERE e.libelleFR LIKE 'Etablis%'&#xD;&#xA;ORDER BY e.persistenceId ASC&#xD;&#xA;&#xA;" returnType="java.util.List">
+                    <queryParameters/>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.OrgActivity">
+            <fields>
+                <field type="STRING" length="255" name="idOrgActivity" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.OrgAdresseStatut">
+            <fields>
+                <field type="STRING" length="255" name="idOrgAdresseStatut" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.OrgAdresseType">
+            <fields>
+                <field type="STRING" length="255" name="idOrgAdresseType" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.OrgDevisePrincipale">
+            <fields>
+                <field type="STRING" length="255" name="idOrgDevisePrincipale" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.OrgGeography">
+            <fields>
+                <field type="STRING" length="255" name="idOrgGeography" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.OrgIntervention">
+            <fields>
+                <field type="STRING" length="255" name="idOrgIntervention" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.OrgTypeNiveau">
+            <fields>
+                <field type="STRING" length="255" name="idOrgTypeNiveau" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.OrgSkill">
+            <fields>
+                <field type="STRING" length="255" name="idOrgSkill" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.OrgType">
+            <fields>
+                <field type="STRING" length="255" name="idOrgType" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.RefPays">
+            <fields>
+                <field type="STRING" length="255" name="idRefPays" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codeISO2" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codeISO3" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleEN" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleES" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.EnLAdressEtab">
+            <fields>
+                <field type="STRING" length="255" name="typeAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="statutAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="adresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="complementAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codePostal" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="ville" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="isoPays" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="pays" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="latitude" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="longitude" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.EnLEtablissement">
+            <fields>
+                <field type="INTEGER" length="255" name="idEnLEtablissement" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleLong" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleCourt" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="raisonSociale" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLTypeFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLStatutFk" nullable="true" collection="false"/>
+                <field type="INTEGER" length="255" name="siren" nullable="true" collection="false"/>
+                <field type="INTEGER" length="255" name="siret" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="lieuImmat" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codeAPE" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="numTVA" nullable="true" collection="false"/>
+                <field type="INTEGER" length="255" name="effectif" nullable="true" collection="false"/>
+                <field type="INTEGER" length="255" name="chiffreAffaire" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateImmat" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateCessationActivite" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.origin.model.EnLAdressEtab" fetchType="LAZY" name="enLAdresseFk" nullable="true" collection="true"/>
+                <field type="STRING" length="255" name="enLResponsableComptableFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLReferentRH" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="entiteMereAOC" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="entiteMereDFI" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="modeIntegration" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="tauxIntegration" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="tauxDetention" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="estConsolide" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="dematFiscale" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="operateurDemat" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="regimeImpot" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLRegimeDeclarationFk" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="Succursale" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateDebut" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateModification" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateFin" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codeDiv" nullable="true" collection="false"/>
+                <field type="INTEGER" length="255" name="idUo" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="idRepOrga" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="idRepRH" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries>
+                <query name="getMaxPersisIdSoc" content="SELECT MAX(e.idEnLEtablissement)&#xD;&#xA;FROM EnLEtablissement e" returnType="java.lang.Integer">
+                    <queryParameters/>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.RefDates">
+            <fields>
+                <field type="DATE" length="255" name="dateDebut" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateModification" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateFin" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.EnLSociete">
+            <fields>
+                <field type="INTEGER" length="255" name="idEnLSociete" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleLong" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleCourt" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="raisonSociale" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLTypeFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLStatutFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="siren" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="siret" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLFormeJuridiqueFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="capitalSocial" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="lieuImmat" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codeAPE" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="numTVA" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="effectif" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="chiffreAffaire" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dateImmat" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateCessationActivite" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateEntreeGroupe" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateSortieGroupe" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="appartientGroupe" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLAdresseFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="facturation" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLResponsableComptableFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLReferentRH" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="entiteMereAOC" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="entiteMereDFI" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="modeIntegration" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="tauxIntegration" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="tauxDetention" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="estConsolide" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dematFiscale" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="operateurDemat" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="perimetreDGE" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="groupeFiscal" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateDebIntegFiscale" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateFinIntegFiscale" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="integFiscale" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="regimeImpot" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLRegimeDeclarationFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nbreTotalTitre" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nbreTotalDroitVote" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLEntiteDetentriceFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nbreTitre" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nbreDroitVote" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nbreTitrePourcentage" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nbreDroitVotePourcentage" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateDebut" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateModification" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateFin" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.OrgAdresse">
+            <fields>
+                <field type="STRING" length="255" name="uoStatutAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="uoTypeAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="uoAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="uoComplementAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="uoCodePostal" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="uoVille" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="uoPays" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="uoIsoPays" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="uoLatitude" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="uoLongitude" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.OrgUoMere">
+            <fields>
+                <field type="INTEGER" length="255" name="idUo" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelle" nullable="true" collection="false"/>
+                <field type="INTEGER" length="255" name="niveau" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codeDiv" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.EnLRegimeDeclaration">
+            <fields>
+                <field type="STRING" length="255" name="idEnLRegimeDeclaration" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.EnLAdresseStatut">
+            <fields>
+                <field type="STRING" length="255" name="idStatutAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.EnLAdresseType">
+            <fields>
+                <field type="STRING" length="255" name="idTypeAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.EnLModeIntegration">
+            <fields>
+                <field type="STRING" length="255" name="idModeIntegration" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.EnLOperateurDematerialisation">
+            <fields>
+                <field type="STRING" length="255" name="idOperateurDematerialisation" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.EnLEntiteJuridique">
+            <fields>
+                <field type="STRING" length="255" name="idEnLEntiteJuridique" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codeOsmose" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleLong" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleCourt" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="raisonSociale" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="statutEntJ" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="siren" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="siret" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="formeJuridique" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="capitalSocial" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="lieuImmat" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codeApe" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="numTva" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="effectif" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="chiffreAffaire" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dateImmat" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dateCessationActivie" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dateEntreeGroupe" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dateSortieGroupe" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="appartientGroupe" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="responsableComptable" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="entiteMereAoc" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="entiteMereDfi" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="modeIntegration" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="tauxIntegration" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="tauxDetention" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="estConsolide" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dematFiscale" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="operateurDemat" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="perimetreDge" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="groupeFiscal" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dateDebIntegFiscale" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dateFinIntegFiscale" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="integFiscale" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="regimeImpot" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="regimeDeclaration" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nbreTotalTitre" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nbreTotalDroitVote" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="entiteDetentrice" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nbreTitre" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nbreDroitVote" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nbreTitrePourcentage" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nbreDroitVotePourcentage" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateDebut" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateModification" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateFin" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codeDiv" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLReferentRHFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dateCreation" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="factStatutAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="factAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="factComplementAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="factCodePostal" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="factIsoPays" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="factPays" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="factLatitude" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="factLongitude" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="siegeStatutAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="siegeAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="siegeComplementAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="siegeCodePostal" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="siegeVille" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="siegeIsoPays" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="factVille" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="siegePays" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="siegeLatitude" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="siegeLongitude" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries>
+                <query name="getListeSociet" content="SELECT e &#xA;FROM EnLEntiteJuridique e &#xA;WHERE e.codeDiv = :codeDiv&#xA;AND ( e.dateFin &gt; CURRENT_TIMESTAMP&#xA;OR  e.dateFin is null )&#xA;ORDER BY e.persistenceId ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="codeDiv" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.PersRole">
+            <fields>
+                <field type="STRING" length="255" name="idOrigin" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="idVinciPersonne" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="persCiviliteFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="persTypePersonneFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="prenomNaissance" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="prenom" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nomNaissance" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nom" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateNaissance" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="lettreInitial" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="persTitrePersonneFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="persStatutPersonneFk" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateEntreeGroupe" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateDebut" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateModification" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateFin" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateCreation" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codeDiv" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="persNationaliteFk" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries>
+                <query name="getListePers" content="SELECT p &#xA;FROM PersRole p &#xA;WHERE p.codeDiv = :codeDiv&#xD;&#xA;AND  p.dateFin &gt; CURRENT_DATE&#xD;&#xA;OR  p.dateFin = null&#xA;ORDER BY p.persistenceId ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="codeDiv" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.EnLAdresseSocieteJ">
+            <fields>
+                <field type="STRING" length="255" name="typeAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="statutAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="adresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="complementAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codePostal" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="ville" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="isoPays" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="pays" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="latitude" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="longitude" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.EnLDirectrice">
+            <fields>
+                <field type="STRING" length="255" name="idEnLEntiteDirectrice" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.EnLFormeJuridique">
+            <fields>
+                <field type="STRING" length="255" name="idEnLFormeJuridique" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleFR" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.EnLGroupement">
+            <fields>
+                <field type="INTEGER" length="255" name="idEnLSociete" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleLong" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleCourt" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLTypeFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLStatutFk" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateImmat" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateCessationActivite" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLRespCmptFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLEntiteDetentriceFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLRoleFk" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateDebut" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateModification" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateFin" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codeDiv" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nomPrenomResponsable" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries>
+                <query name="getMaxPersisId" content="SELECT MAX(o.idEnLSociete)&#xD;&#xA;FROM EnLGroupement o" returnType="java.lang.Integer">
+                    <queryParameters/>
+                </query>
+                <query name="findLibelleById" content="SELECT e &#xA;FROM EnLGroupement e &#xA;WHERE e.idEnLSociete = :idEnLSociete&#xA;ORDER BY e.persistenceId ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="idEnLSociete" className="java.lang.Integer"/>
+                    </queryParameters>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.EnLSEP">
+            <fields>
+                <field type="INTEGER" length="255" name="idEnLSEP" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleLong" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="libelleCourt" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="raisonSociale" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLTypeFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLStatutFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="siren" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="siret" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLFormeJuridiqueFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="capitalSocial" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="lieuImmat" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codeAPE" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="numTVA" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.origin.model.EnLAdressSEP" fetchType="LAZY" name="enLAdresseFk" nullable="true" collection="true"/>
+                <field type="STRING" length="255" name="enLResponsableComptableFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="entiteMereAOC" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="entiteMereDFI" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="modeIntegration" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="tauxIntegration" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="tauxDetention" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="estConsolide" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dematFiscale" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="operateurDemat" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="perimetreDGE" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="regimeImpot" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLRegimeDeclarationFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLEntiteDetentriceFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enLRoleFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="chiffDaffaire" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateDimmat" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateCessatActiv" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateEntreGroup" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateSortieGroup" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="appartienGroup" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nbrDroitVotePourcent" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateDebut" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateModification" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateFin" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codeDiv" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="idUo" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="idPersRole" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries>
+                <query name="getMaxPersisId" content="SELECT MAX(o.idEnLSEP)&#xD;&#xA;FROM EnLSEP o" returnType="java.lang.Integer">
+                    <queryParameters/>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.EnLAdressSEP">
+            <fields>
+                <field type="STRING" length="255" name="enlStatutAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enlTypeAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enlAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enlComplementAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enlCodePostal" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enlVille" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enlPays" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enlIsoPays" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enlLatitude" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enlLongitude" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.EnLAdressGroup">
+            <fields>
+                <field type="STRING" length="255" name="numVoie" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nomVoie" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codePostal" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="ville" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="adressePaysFk" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="typeAdresse" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.origin.model.EnLAdressSociete">
+            <fields>
+                <field type="STRING" length="255" name="enlStatutAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enlTypeAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enlAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enlComplementAdresse" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enlCodePostal" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enlVille" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enlPays" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enlIsoPays" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enlLatitude" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enlLongitude" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+    </businessObjects>
+</businessObjectModel>
