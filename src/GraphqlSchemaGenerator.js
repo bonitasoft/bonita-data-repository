@@ -11,7 +11,7 @@ class GraphqlSchemaGenerator {
 
         // Generate types
         let attributesTypeMap = new Map();
-        if (!bdm.businessObjectModel.businessObjects.businessObject) {
+       if (!bdm || !bdm.businessObjectModel || !bdm.businessObjectModel.businessObjects || !bdm.businessObjectModel.businessObjects.businessObject) {
             return;
         }
         let bdmBusObjects = this._asArray(bdm.businessObjectModel.businessObjects.businessObject);
