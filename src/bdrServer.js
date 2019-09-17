@@ -20,12 +20,20 @@ const fs = require('fs');
 let xmlParser = require('xml-js');
 let GraphqlSchemaGenerator = require('./GraphqlSchemaGenerator');
 
-let bdmFile;
+function getParameter(param) {
+    return param.substr(param.indexOf("=") + 1)
+}
+
+let bdmFile
+let port = 4000;
 
 // Handle server parameters
 process.argv.forEach(function (val, index, array) {
     if (val.startsWith("bdmFile")) {
-        bdmFile = val.substr(val.indexOf("=") + 1);
+        bdmFile = getParameter(val);
+    }
+    if (val.startsWith("port")) {
+        port = getParameter(val);
     }
 });
 
@@ -58,4 +66,5 @@ const server = new GraphQLServer({
         resolvers}
     );
 
-server.start({endpoint: "/repository"}, () => console.log(`Server is running on http://localhost:4000`));
+server.start({port: port, endpoint: "/repository"}, () =>
+    console.log(`Server is running on http://localhost:${port}`));
