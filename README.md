@@ -11,6 +11,11 @@ $ node src/server.js
 Server is running on http://localhost:4000
 ```
 
+To run server in custom port run
+```
+$ PORT=5000 node src/server.js
+```
+
 Start the server with a BDM:
 ```
 $ node src/server.js bdmFile=YOUR_PATH/bdm_simple.xml
