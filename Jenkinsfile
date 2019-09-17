@@ -13,17 +13,24 @@ node {
     }
 
     slackStage('🔧 Build', isBaseBranch) {
-        mvn "clean verify"
+        def mvnArgs = 'verify'
+        if (isBaseBranch) {
+            mvnArgs = "deploy -DaltDeploymentRepository=${env.ALT_DEPLOYMENT_REPOSITORY_SNAPSHOTS}"
+        }
+        mvn "${mvnArgs}"
+
+
     }
+
+    slackStage('📦 Archive', isBaseBranch) {
+        archiveArtifacts 'target/*.zip'
+    }
+
 }
 
 
 def mvn(args) {
-    sh """
-     # Set this environment variable is mandatory to build UID in ymci  
-     export LANG='en_US.UTF-8'
-     ./mvnw ${args}
-    """
+    sh "./mvnw  --no-transfer-progress  ${args}"
 }
 
 def slackStage(def name, boolean isBaseBranch, Closure body) {
