@@ -43,25 +43,23 @@ process.argv.forEach(function (val, index, array) {
     }
 });
 
-let bdmContentXml = '';
+let bdmXml = '';
 if (bdmFile) {
-    bdmContentXml = fs.readFileSync(bdmFile, 'utf8');
+    bdmXml = fs.readFileSync(bdmFile, 'utf8');
     console.log("BDM added: " + bdmFile);
 }
 
-let bdm = {
-    description: 'Bonitasoft BDM',
-    content: bdmContentXml
-};
-
-let bdmContentJson = xmlParser.xml2json(bdm.content, {compact: true, spaces: 4});
-
-let schemaGenerator = new GraphqlSchemaGenerator(bdmContentJson);
-schemaGenerator.generate();
-let schema = schemaGenerator.getSchema();
+let schema = 'type Query { content: String }';
+if (bdmFile) {
+    let bdmJson = xmlParser.xml2json(bdmXml, {compact: true, spaces: 4});
+    let schemaGenerator = new GraphqlSchemaGenerator(bdmJson);
+    schemaGenerator.generate();
+    schema = schemaGenerator.getSchema();
+}
 
 const resolvers = {
     Query: {
+        content: () => ``
     }
 };
 
@@ -70,6 +68,12 @@ const server = new GraphQLServer({
         typeDefs: schema,
         resolvers}
     );
+
+server.express.post('/bdm', function (req, res) {
+    console.log("BDM pushed.");
+    res.send();
+});
+
 
 server.start({port: port, endpoint: "/repository"}, () =>
     console.log(`Server is running on http://localhost:${port}`));
