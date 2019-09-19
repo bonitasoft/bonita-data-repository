@@ -42,8 +42,9 @@ function removeGraphqlRoute() {
         if (route.handle.name === 'graphqlMiddleware') {
             routes.splice(i, 1);
         }
-        if (route.route)
+        if (route.route) {
             route.route.stack.forEach(removeMiddlewares);
+        }
     }
 }
 
@@ -88,7 +89,6 @@ if (bdmFile) {
 
 const resolvers = {
     Query: {
-//         content: () => ``
     }
 };
 
@@ -102,14 +102,9 @@ app.use(bodyParser.json());
 app.post('/bdm', function (req, res) {
     console.log("BDM pushed.");
     let newSchema = getSchema(req.body.bdmXml);
-    // let newSchema = buildSchema('type Query { content2: String }');
     console.log("New schema = " + newSchema);
-    // server.close(function() {
     removeGraphqlRoute();
     addBdrRoute(newSchema);
-    // server = app.listen(port);
-    // });
-
     res.send();
 });
 
