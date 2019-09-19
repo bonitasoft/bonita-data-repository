@@ -1,25 +1,37 @@
 # BDM repository server
 
 ## Installation
+
 ```
 $ npm install
 ```
 
 ## Start the server
+
 ```
-$ node src/server.js
+$ npm run start
 Server is running on http://localhost:4000
 ```
 
-To run server in custom port run
-```
-$ PORT=5000 node src/server.js
-```
-
 Start the server with a BDM:
+
 ```
 $ node src/server.js bdmFile=YOUR_PATH/bdm_simple.xml
 ```
+
+### Options
+
+|     Options     |                              Description                              |            Example             | Default value |
+| :-------------: | :-------------------------------------------------------------------: | :----------------------------: | :-----------: |
+|     config      |                To run server with a config file (json)                | config=config/development.json |               |
+|     bdmFile     |                    File to load on server starting                    |    bdmFile=yourPath/bom.xml    |               |
+|      port       |                       Start sever on this port                        |           port=5000            |     4000      |
+| healthCheckUrl  | Url healthCheck. If option not found, server work without healthCheck | healthCheckUrl=/api/workspace  |               |
+| healthCheckPort | Port healCheck. If option not found, server work without healthCheck  |      healthCheckPort=5050      |               |
+|    logLevel     |               Level for log (error, warn, info, debug)                |         logLevel=debug         |     info      |
+|     logFile     |                Output file for logs. One file per day                 |     logFile=./logs/myLog/      |    ./logs/    |
+
+Each option can be given on server start command. Config parameter will be always override file configuration.
 
 ## Connect to GraphQL Playground
 
@@ -30,7 +42,6 @@ Click on the 'DOCS' tab to check the schema documentation.
 Enter queries on the left panel.
 
 Click on 'COPY CURL' to get the corresponding curl command
-
 
 ## Query Samples
 
@@ -141,8 +152,7 @@ fragment bdmAttributeFields on BdmAttribute {
 query {
   bdmTreeAsString {
     name
-    content 
+    content
   }
 }
 ```
-

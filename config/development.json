@@ -1,0 +1,6 @@
+{
+  "port": "4000",
+  "bdmFile": "resources/bomBBVA.xml",
+  "logLevel": "info",
+  "logfile": "./logs"
+}
