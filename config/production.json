@@ -1,0 +1,6 @@
+{
+  "port": "4000",
+  "bdmFile": "resources/bomAG2R.xml",
+  "logFile": "target/log/data-repository.log",
+  "logLevel": "debug"
+}

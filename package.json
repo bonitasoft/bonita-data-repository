@@ -2,12 +2,15 @@
   "name": "data-repository",
   "version": "1.0.0",
   "description": "",
-  "main": "src/bdrServer.js",
-  "bin": "src/bdrServer.js",
+  "main": "src/server/bdrServer.js",
+  "bin": "src/server/bdrServer.js",
   "scripts": {
     "start": "node .",
     "package": "pkg --out-path ./target/binaries -t node12-linux,node12-macos,node12-win .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prettier:check": "prettier --check \"src/**/*.js\"",
+    "prettier:fix": "prettier --write \"src/**/*.js\"",
+    "test": "jest",
+    "test:dev": "jest --watch"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +18,20 @@
   "dependencies": {
     "graphql-yoga": "^1.18.3",
     "pkg": "^4.4.0",
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^4.1.0",
     "xml-js": "^1.6.11"
+  },
+  "devDependencies": {
+    "husky": "^3.0.5",
+    "jest": "^24.9.0",
+    "mock-fs": "^4.10.1",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^1.10.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }
