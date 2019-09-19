@@ -33,6 +33,17 @@ $ node src/server.js bdmFile=YOUR_PATH/bdm_simple.xml
 
 Each option can be given on server start command. Config parameter will be always override file configuration.
 
+Example of config file:
+
+```
+{
+  "port": "5000",
+  "bdmFile": "resources/bomSimple.xml",
+  "logLevel": "warn",
+  "logfile": "./logs"
+}
+```
+
 ## Connect to GraphiQL
 
 ```
