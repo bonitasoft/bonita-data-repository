@@ -24,6 +24,10 @@ node {
 
     slackStage('📦 Archive', isBaseBranch) {
         archiveArtifacts 'target/*.zip,target/binaries/*,target/tests/*.html'
+        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false,
+                     reportDir: './target/tests/',
+                     reportFiles: 'data-repostory-test-report.html',
+                     reportName: 'data-repostory-test-report', reportTitles: ''])
     }
 
 }
