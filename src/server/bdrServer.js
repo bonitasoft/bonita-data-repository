@@ -68,7 +68,7 @@ function DoHealthCheck(config) {
   if (config.healthCheckUrl && config.healthCheckPort) {
     logger.info('Listen studio health check connection');
     let studioHealthCheck = new StudioHealthCheck(config.healthCheckUrl, config.healthCheckPort);
-    studioHealthCheck.healthCheckWithInterval(2000);
+    studioHealthCheck.healthCheckWithInterval(20000);
   } else {
     logger.info('Running without health check.');
   }
