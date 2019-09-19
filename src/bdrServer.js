@@ -15,14 +15,46 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-const {GraphQLServer} = require('graphql-yoga');
+const express = require('express');
+const graphqlHTTP = require('express-graphql');
+const { buildSchema } = require('graphql');
+const xmlParser = require('xml-js');
+const bodyParser = require('body-parser');
+const GraphqlSchemaGenerator = require('./GraphqlSchemaGenerator');
 const fs = require('fs');
-let xmlParser = require('xml-js');
-let GraphqlSchemaGenerator = require('./GraphqlSchemaGenerator');
 
 function getParameter(param) {
     return param.substr(param.indexOf("=") + 1)
 }
+
+function getSchema(bdmXml) {
+    let bdmJson = xmlParser.xml2json(bdmXml, {compact: true, spaces: 4});
+    let schemaGenerator = new GraphqlSchemaGenerator(bdmJson);
+    schemaGenerator.generate();
+    return buildSchema(schemaGenerator.getSchema());
+}
+
+function removeGraphqlRoute() {
+    let routes = app._router.stack;
+    routes.forEach(removeMiddlewares);
+
+    function removeMiddlewares(route, i, routes) {
+        if (route.handle.name === 'graphqlMiddleware') {
+            routes.splice(i, 1);
+        }
+        if (route.route)
+            route.route.stack.forEach(removeMiddlewares);
+    }
+}
+
+function addBdrRoute(graphqlSchema) {
+    app.use('/bdr', graphqlHTTP({
+        schema: graphqlSchema,
+        rootValue: resolvers,
+        graphiql: true,
+    }));
+}
+
 
 let bdmFile;
 let port = 4000;
@@ -49,31 +81,39 @@ if (bdmFile) {
     console.log("BDM added: " + bdmFile);
 }
 
-let schema = 'type Query { content: String }';
+let schema = buildSchema('type Query { content: String }');
 if (bdmFile) {
-    let bdmJson = xmlParser.xml2json(bdmXml, {compact: true, spaces: 4});
-    let schemaGenerator = new GraphqlSchemaGenerator(bdmJson);
-    schemaGenerator.generate();
-    schema = schemaGenerator.getSchema();
+    schema = getSchema(bdmXml);
 }
 
 const resolvers = {
     Query: {
-        content: () => ``
+//         content: () => ``
     }
 };
 
+var app = express();
 
-const server = new GraphQLServer({
-        typeDefs: schema,
-        resolvers}
-    );
+addBdrRoute(schema);
 
-server.express.post('/bdm', function (req, res) {
+// Tell Express to parse application/json
+app.use(bodyParser.json());
+
+app.post('/bdm', function (req, res) {
     console.log("BDM pushed.");
+    let newSchema = getSchema(req.body.bdmXml);
+    // let newSchema = buildSchema('type Query { content2: String }');
+    console.log("New schema = " + newSchema);
+    // server.close(function() {
+    removeGraphqlRoute();
+    addBdrRoute(newSchema);
+    // server = app.listen(port);
+    // });
+
     res.send();
 });
 
 
-server.start({port: port, endpoint: "/repository"}, () =>
-    console.log(`Server is running on http://localhost:${port}`));
+app.listen(port);
+
+console.log('Running a GraphQL API server at localhost:' + port + '/bdr');
