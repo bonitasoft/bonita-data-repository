@@ -23,7 +23,7 @@ node {
     }
 
     slackStage('📦 Archive', isBaseBranch) {
-        archiveArtifacts 'target/*.zip,target/binaries/*'
+        archiveArtifacts 'target/*.zip,target/binaries/*,target/tests/*.html'
     }
 
 }
