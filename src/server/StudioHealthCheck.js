@@ -22,21 +22,24 @@ const winston = require('winston');
  * @type {module.StudioHealthCheck}
  */
 class StudioHealthCheck {
-  constructor(workspaceApiUrl, port) {
-    this.workspaceApiUrl = workspaceApiUrl;
+  constructor(host, healthCheckUrl, port) {
+    this.host = host || 'http://localhost';
+    this.healthCheckUrl = healthCheckUrl;
     this.port = port;
     this.logger = winston.loggers.get('bo-logger');
+    this.logger.debug(`${this.host}:${this.port}${this.healthCheckUrl}`);
+  }
+
+  getRequestUrl() {
+    return `${this.host}:${this.port}${this.healthCheckUrl}`;
   }
 
   /**
    * Request endpoint and close process if error
    */
   healthCheck() {
-    request(`https://localhost:${this.port}/${this.workspaceApiUrl}/status/`, function(
-      error,
-      response,
-      body
-    ) {
+    request(this.getRequestUrl(), function(error, response, body) {
+      console.log(response.statusCode);
       if (error || response.statusCode !== 200) {
         try {
           this.logger.error('Connexion with Studio lost. Shutdown incoming');

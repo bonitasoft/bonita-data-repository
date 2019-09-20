@@ -21,15 +21,16 @@ $ node src/server.js bdmFile=YOUR_PATH/bdm_simple.xml
 
 ### Options
 
-|     Options     |                              Description                              |            Example             | Default value |
-| :-------------: | :-------------------------------------------------------------------: | :----------------------------: | :-----------: |
-|     config      |                To run server with a config file (json)                | config=config/development.json |               |
-|     bdmFile     |                    File to load on server starting                    |    bdmFile=yourPath/bom.xml    |               |
-|      port       |                       Start sever on this port                        |           port=5000            |     4000      |
-| healthCheckUrl  | Url healthCheck. If option not found, server work without healthCheck | healthCheckUrl=/api/workspace  |               |
-| healthCheckPort | Port healCheck. If option not found, server work without healthCheck  |      healthCheckPort=5050      |               |
-|    logLevel     |               Level for log (error, warn, info, debug)                |         logLevel=debug         |     info      |
-|     logFile     |                Output file for logs. One file per day                 |     logFile=./logs/myLog/      |    ./logs/    |
+|     Options     |                              Description                              |                Example                |  Default value   |
+| :-------------: | :-------------------------------------------------------------------: | :-----------------------------------: | :--------------: |
+|     config      |                To run server with a config file (json)                |    config=config/development.json     |                  |
+|     bdmFile     |                    File to load on server starting                    |       bdmFile=yourPath/bom.xml        |                  |
+|      port       |                       Start sever on this port                        |               port=5000               |       4000       |
+| healthCheckHost | Host healCheck. If option not found, server work without healthCheck  |   healthCheckHost=http://localhost    | http://localhost |
+| healthCheckUrl  | Url healthCheck. If option not found, server work without healthCheck | healthCheckUrl=/api/workspace/status/ |                  |
+| healthCheckPort | Port healCheck. If option not found, server work without healthCheck  |         healthCheckPort=5050          |                  |
+|    logLevel     |               Level for log (error, warn, info, debug)                |            logLevel=debug             |       info       |
+|     logFile     |                Output file for logs. One file per day                 |         logFile=./logs/myLog/         |     ./logs/      |
 
 Each option can be given on server start command. Config parameter will be always override file configuration.
 

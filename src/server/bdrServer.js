@@ -111,7 +111,11 @@ app.post('/bdm', function(req, res) {
 function DoHealthCheck(config) {
   if (config.healthCheckUrl && config.healthCheckPort) {
     logger.info('Listen studio health check connection');
-    let studioHealthCheck = new StudioHealthCheck(config.healthCheckUrl, config.healthCheckPort);
+    let studioHealthCheck = new StudioHealthCheck(
+      config.healthCheckHost,
+      config.healthCheckUrl,
+      config.healthCheckPort
+    );
     studioHealthCheck.healthCheckWithInterval(20000);
   } else {
     logger.info('Running without health check.');
