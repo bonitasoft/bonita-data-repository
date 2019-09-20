@@ -40,7 +40,7 @@ class StudioHealthCheck {
       if (error || response.statusCode !== 200) {
         try {
           this.logger.error('Connexion with Studio lost. Shutdown incoming');
-          process.exit(1);
+          throw new Error('Connexion with Studio lost. Shutdown incoming');
         } catch (ex) {
           next(ex);
         }

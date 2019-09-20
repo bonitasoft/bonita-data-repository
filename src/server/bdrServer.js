@@ -15,18 +15,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-const { GraphQLServer } = require('graphql-yoga');
+const express = require('express');
+const graphqlHTTP = require('express-graphql');
+const { buildSchema } = require('graphql');
+const xmlParser = require('xml-js');
+const bodyParser = require('body-parser');
 const fs = require('fs');
-let xmlParser = require('xml-js');
-let GraphqlSchemaGenerator = require('../schema/GraphqlSchemaGenerator');
-let StudioHealthCheck = require('./StudioHealthCheck');
-let ManageParameters = require('./ManageParameters');
-const Logger = require('../logger/logger');
 const winston = require('winston');
+let StudioHealthCheck = require('./StudioHealthCheck');
+const ManageParameters = require('./ManageParameters');
+const Logger = require('../logger/logger');
+const GraphqlSchemaGenerator = require('../schema/GraphqlSchemaGenerator');
 
-let port = 4000;
 // Handle server parameters
 let config = ManageParameters.buildConfig(process.argv);
+
+// Port default value
+let port = config.port || 4000;
 
 /**
  * LOGGER
@@ -34,30 +39,69 @@ let config = ManageParameters.buildConfig(process.argv);
 Logger.init(config);
 let logger = winston.loggers.get('bo-logger');
 
-let bdmContentXml = '';
-if (config.bdmFile) {
-  bdmContentXml = fs.readFileSync(config.bdmFile, 'utf8');
-  logger.info(`BDM added:  ${config.bdmFile}`);
+/**
+ * Build graphQL schema
+ */
+function getSchema(bdmXml) {
+  let bdmJson = xmlParser.xml2json(bdmXml, { compact: true, spaces: 4 });
+  let schemaGenerator = new GraphqlSchemaGenerator(bdmJson);
+  schemaGenerator.generate();
+  return buildSchema(schemaGenerator.getSchema());
 }
 
-let bdm = {
-  description: 'Bonitasoft BDM',
-  content: bdmContentXml
-};
-
-let bdmContentJson = xmlParser.xml2json(bdm.content, { compact: true, spaces: 4 });
-
-let schemaGenerator = new GraphqlSchemaGenerator(bdmContentJson);
-schemaGenerator.generate();
-let schema = schemaGenerator.getSchema();
+let schema = buildSchema('type Query { content: String }');
+if (config.bdmFile) {
+  let bdmXml = fs.readFileSync(config.bdmFile, 'utf8');
+  schema = getSchema(bdmXml);
+  logger.info(`BDM added:  ${config.bdmFile}`);
+}
 
 const resolvers = {
   Query: {}
 };
 
-const server = new GraphQLServer({
-  typeDefs: schema,
-  resolvers
+let app = express();
+
+/**
+ * Create Express routes
+ */
+
+function removeGraphqlRoute() {
+  let routes = app._router.stack;
+  routes.forEach(removeMiddlewares);
+
+  function removeMiddlewares(route, i, routes) {
+    if (route.handle.name === 'graphqlMiddleware') {
+      routes.splice(i, 1);
+    }
+    if (route.route) {
+      route.route.stack.forEach(removeMiddlewares);
+    }
+  }
+}
+
+function addBdrRoute(graphqlSchema) {
+  app.use(
+    '/bdr',
+    graphqlHTTP({
+      schema: graphqlSchema,
+      rootValue: resolvers,
+      graphiql: true
+    })
+  );
+}
+
+addBdrRoute(schema);
+
+// Tell Express to parse application/json
+app.use(bodyParser.json());
+
+app.post('/bdm', function(req, res) {
+  logger.info('BDM pushed.');
+  let newSchema = getSchema(req.body.bdmXml);
+  removeGraphqlRoute();
+  addBdrRoute(newSchema);
+  res.send();
 });
 
 /**
@@ -77,17 +121,18 @@ function DoHealthCheck(config) {
 /**
  * RUN Server
  */
-server.start({ port: port, endpoint: '/repository' }, () => {
-  logger.info(
-    '\n' +
-      '________          __                                                      .__  __                       \n' +
-      '\\______ \\ _____ _/  |______            _______   ____ ______   ____  _____|__|/  |_  ___________ ___.__.\n' +
-      ' |    |  \\\\__  \\\\   __\\__  \\    ______ \\_  __ \\_/ __ \\\\____ \\ /  _ \\/  ___/  \\   __\\/  _ \\_  __ <   |  |\n' +
-      ' |    `   \\/ __ \\|  |  / __ \\_ /_____/  |  | \\/\\  ___/|  |_> >  <_> )___ \\|  ||  | (  <_> )  | \\/\\___  |\n' +
-      '/_______  (____  /__| (____  /          |__|    \\___  >   __/ \\____/____  >__||__|  \\____/|__|   / ____|\n' +
-      '        \\/     \\/          \\/                       \\/|__|              \\/                       \\/     \n'
-  );
-  DoHealthCheck(config);
-  logger.debug(`Server is starting with following config ${JSON.stringify(config)}`);
-  logger.info(`Server is running on http://localhost:${port}`);
-});
+
+app.listen(port);
+
+logger.info(
+  '\n' +
+    '________          __                                                      .__  __                       \n' +
+    '\\______ \\ _____ _/  |______            _______   ____ ______   ____  _____|__|/  |_  ___________ ___.__.\n' +
+    ' |    |  \\\\__  \\\\   __\\__  \\    ______ \\_  __ \\_/ __ \\\\____ \\ /  _ \\/  ___/  \\   __\\/  _ \\_  __ <   |  |\n' +
+    ' |    `   \\/ __ \\|  |  / __ \\_ /_____/  |  | \\/\\  ___/|  |_> >  <_> )___ \\|  ||  | (  <_> )  | \\/\\___  |\n' +
+    '/_______  (____  /__| (____  /          |__|    \\___  >   __/ \\____/____  >__||__|  \\____/|__|   / ____|\n' +
+    '        \\/     \\/          \\/                       \\/|__|              \\/                       \\/     \n'
+);
+DoHealthCheck(config);
+logger.debug(`Server is starting with following config ${JSON.stringify(config)}`);
+logger.info(`Server is running on http://localhost:${port}/bdr`);
