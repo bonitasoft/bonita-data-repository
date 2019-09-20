@@ -19,8 +19,21 @@ const StudioHealthCheck = require('./StudioHealthCheck');
 
 describe('StudioHealthCheck', () => {
   test('should init when parameter is given in parameter', () => {
-    let healthCheck = new StudioHealthCheck('myCustomEndPoint/status', 64027);
+    let healthCheck = new StudioHealthCheck('http://myHost', '/myCustomEndPoint/status', 64027);
+    expect(healthCheck.host).toBe('http://myHost');
     expect(healthCheck.port).toBe(64027);
-    expect(healthCheck.workspaceApiUrl).toBe('myCustomEndPoint/status');
+    expect(healthCheck.healthCheckUrl).toBe('/myCustomEndPoint/status');
+  });
+
+  test('should init host when no host value is given in parameter', () => {
+    let healthCheck = new StudioHealthCheck('', '/myCustomEndPoint/status', 64027);
+    expect(healthCheck.host).toBe('http://localhost');
+    expect(healthCheck.port).toBe(64027);
+    expect(healthCheck.healthCheckUrl).toBe('/myCustomEndPoint/status');
+  });
+
+  test('should build a valid request url', () => {
+    let healthCheck = new StudioHealthCheck('', '/myCustomEndPoint/status', 64027);
+    expect(healthCheck.getRequestUrl()).toBe('http://localhost:64027/myCustomEndPoint/status');
   });
 });

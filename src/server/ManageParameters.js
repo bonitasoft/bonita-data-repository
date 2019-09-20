@@ -53,6 +53,9 @@ class ManageParameters {
       }
 
       // healCheck parameter
+      if (val.startsWith('healthCheckHost')) {
+        parameterConfig.healthCheckHost = getParameter(val);
+      }
       if (val.startsWith('healthCheckUrl')) {
         parameterConfig.healthCheckUrl = getParameter(val);
       }
