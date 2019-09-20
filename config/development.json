@@ -4,5 +4,6 @@
   "logLevel": "debug",
   "logfile": "./logs",
   "healthCheckPort": 54896,
-  "healthCheckUrl": "/api/workspace/status/"
+  "healthCheckUrl": "/api/workspace/status/",
+  "healthCheckHost": "http://localhost"
 }
