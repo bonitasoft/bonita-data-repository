@@ -64,7 +64,7 @@ class GraphqlSchemaGenerator {
       let bdmAtts = bdmBusObject.fields.field;
       if (bdmAtts) {
         myself._generateAttributeQueries(queries, bdmObjectName, myself._asArray(bdmAtts));
-        queries.push('\t', 'findBy: ', bdmObjectName, '\n');
+        queries.push('\t', 'find: ', bdmObjectName, '\n');
       }
       // Generate default queries from unique constraints
       let constraints = bdmBusObject.uniqueConstraints.uniqueConstraint;
