@@ -92,9 +92,6 @@ class GraphqlSchemaGenerator {
     // This is the (mandatory) Query root.
     // Note: not used for now. Could be one of the current xxxQuery (?)
     this.schema.push('type Query ', '{\n', '\t', 'content: String', '\n', '}\n\n');
-    let schemaStr = this.schema.join('');
-    console.log(schemaStr);
-    console.log('END SCHEMA');
   }
 
   getResolvers() {
