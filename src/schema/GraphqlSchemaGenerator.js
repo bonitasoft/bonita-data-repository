@@ -42,11 +42,11 @@ class GraphqlSchemaGenerator {
       myself.schema.push('type ', bdmObjectName, ' {\n');
       let bdmAtts = bdmBusObject.fields.field;
       if (bdmAtts) {
-        myself.schema.push(myself._generateAttributes(myself._asArray(bdmAtts), attributesTypeMap));
+        myself._generateAttributes(myself._asArray(bdmAtts), attributesTypeMap);
       }
       let bdmAttRels = bdmBusObject.fields.relationField;
       if (bdmAttRels) {
-        myself.schema.push(myself._generateRelationAttributes(myself._asArray(bdmAttRels)));
+        myself._generateRelationAttributes(myself._asArray(bdmAttRels));
       }
       myself.schema.push('}\n\n');
     });
@@ -55,40 +55,46 @@ class GraphqlSchemaGenerator {
     // Query generation
     //
 
-    // Start Query
-    this.schema.push('type Query {\n');
-
     // Generate queries
     bdmBusObjects.forEach(function(bdmBusObject) {
       let bdmObjectName = myself._getLastItem(bdmBusObject._attributes.qualifiedName);
+      // We may have no queries if no attribute (only relations)
+      let queries = [];
       // Generate default queries
       let bdmAtts = bdmBusObject.fields.field;
       if (bdmAtts) {
-        myself.schema.push(
-          myself._generateAttributeQueries(bdmObjectName, myself._asArray(bdmAtts))
-        );
-        myself.schema.push('\t', bdmObjectName, '_findBy: ', bdmObjectName, '\n');
+        myself._generateAttributeQueries(queries, bdmObjectName, myself._asArray(bdmAtts));
+        queries.push('\t', 'findBy: ', bdmObjectName, '\n');
       }
       // Generate default queries from unique constraints
       let constraints = bdmBusObject.uniqueConstraints.uniqueConstraint;
       if (constraints) {
-        myself.schema.push(
-          myself._generateQueriesFromConstraints(
-            bdmObjectName,
-            myself._asArray(constraints),
-            attributesTypeMap
-          )
+        myself._generateQueriesFromConstraints(
+          queries,
+          bdmObjectName,
+          myself._asArray(constraints),
+          attributesTypeMap
         );
       }
       // Generate custom queries
       //TODO
-    });
 
-    // End Query
-    this.schema.push('}\n\n');
+      if (queries.length !== 0) {
+        myself.schema.push('type ', bdmObjectName, 'Query {\n');
+        myself.schema.push(queries.join(''));
+        myself.schema.push('}\n\n');
+      }
+    });
 
     // Generate enums (?)
     // Add documentation for graphQL (?)
+
+    // This is the (mandatory) Query root.
+    // Note: not used for now. Could be one of the current xxxQuery (?)
+    this.schema.push('type Query ', '{\n', '\t', 'content: String', '\n', '}\n\n');
+    let schemaStr = this.schema.join('');
+    console.log(schemaStr);
+    console.log('END SCHEMA');
   }
 
   getResolvers() {
@@ -120,16 +126,15 @@ class GraphqlSchemaGenerator {
     });
   }
 
-  _generateAttributeQueries(bdmObjectName, bdmAttsArray) {
-    // e.g. : Customer_findByName(name: String!): Customer
+  _generateAttributeQueries(queries, bdmObjectName, bdmAttsArray) {
+    // e.g. : findByName(name: String!): Customer
     let myself = this;
     bdmAttsArray.forEach(bdmAtt => {
       let attName = bdmAtt._attributes.name;
       let type = myself._xmlToGraphqlType(bdmAtt._attributes.type);
-      myself.schema.push(
+      queries.push(
         '\t',
-        bdmObjectName,
-        '_findBy',
+        'findBy',
         myself._capitalizeFirstLetter(attName),
         '(',
         attName,
@@ -142,8 +147,8 @@ class GraphqlSchemaGenerator {
     });
   }
 
-  _generateQueriesFromConstraints(bdmObjectName, bdmConstraintsArray, attributesTypeMap) {
-    // e.g : Customer_findByNameAndPhoneNumber(name: String!, phoneNumber: String!): Customer
+  _generateQueriesFromConstraints(queries, bdmObjectName, bdmConstraintsArray, attributesTypeMap) {
+    // e.g : findByNameAndPhoneNumber(name: String!, phoneNumber: String!): Customer
     let myself = this;
     bdmConstraintsArray.forEach(bdmConstraint => {
       let parametersArray = bdmConstraint.fieldNames.fieldName;
@@ -158,10 +163,9 @@ class GraphqlSchemaGenerator {
       params.forEach(param => {
         findParametersArr.push(param + ': ' + attributesTypeMap.get(param) + '!');
       });
-      myself.schema.push(
+      queries.push(
         '\t',
-        bdmObjectName,
-        '_findBy',
+        'findBy',
         paramsCap.join('And'),
         '(',
         findParametersArr.join(', '),
