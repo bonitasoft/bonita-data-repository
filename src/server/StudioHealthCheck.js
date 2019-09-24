@@ -39,7 +39,6 @@ class StudioHealthCheck {
    */
   healthCheck() {
     request(this.getRequestUrl(), function(error, response, body) {
-      console.log(response.statusCode);
       if (error || response.statusCode !== 200) {
         try {
           this.logger.error('Connexion with Studio lost. Shutdown incoming');
