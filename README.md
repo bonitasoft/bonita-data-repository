@@ -25,8 +25,8 @@ $ node src/server.js bdmFile=YOUR_PATH/bdm_simple.xml
 | :-------------: | :-------------------------------------------------------------------: | :-----------------------------------: | :--------------: |
 |     config      |                To run server with a config file (json)                |    config=config/development.json     |                  |
 |     bdmFile     |                    File to load on server starting                    |       bdmFile=yourPath/bom.xml        |                  |
-|      host       |                       Start sever on this host                        |             host=0.0.0.0              |                  | 127.0.0.1 |
-|      port       |                       Start sever on this port                        |               port=5000               |       4000       |
+|      host       |                       Start server on this host                       |             host=0.0.0.0              |    127.0.0.1     |
+|      port       |                       Start server on this port                       |               port=5000               |       4000       |
 | healthCheckHost | Host healCheck. If option not found, server work without healthCheck  |   healthCheckHost=http://localhost    | http://localhost |
 | healthCheckUrl  | Url healthCheck. If option not found, server work without healthCheck | healthCheckUrl=/api/workspace/status/ |                  |
 | healthCheckPort | Port healCheck. If option not found, server work without healthCheck  |         healthCheckPort=5050          |                  |
