@@ -39,7 +39,6 @@ bdrServer.addBdmPostRoute();
  * Start Server
  */
 
-let routes = bdrServer.getExpressApp()._router.stack;
 bdrServer.start();
 
 /**

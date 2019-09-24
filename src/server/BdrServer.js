@@ -27,6 +27,9 @@ let StudioHealthCheck = require('./StudioHealthCheck');
 
 class BdrServer {
   constructor(config) {
+    if (!config) {
+      throw 'Missing server config';
+    }
     // Port default value
     this.config = config;
     this.port = config.port || 4000;
@@ -57,6 +60,10 @@ class BdrServer {
     return this.expressApp;
   }
 
+  getSchema() {
+    return this.schema;
+  }
+
   startHealthCheckIfNeeded() {
     if (this.config.healthCheckUrl && this.config.healthCheckPort) {
       this.logger.info('Listen Studio health check connection');
@@ -85,10 +92,8 @@ class BdrServer {
   addBdmPostRoute() {
     let myself = this;
     this.expressApp.post('/bdm', function(req, res) {
-      this.logger.info('BDM pushed.');
-      let newSchema = myself._getSchema(req.body.bdmXml);
-      myself._removeGraphqlRoute();
-      myself.addGraphqlRoute(newSchema);
+      myself.logger.info('BDM pushed.');
+      myself._handleNewBdmXml(req.body.bdmXml);
       res.send();
     });
   }
@@ -121,6 +126,13 @@ class BdrServer {
         route.route.stack.forEach(removeMiddlewares);
       }
     }
+  }
+
+  _handleNewBdmXml(bdmXml) {
+    let newSchema = this._getSchema(bdmXml);
+    this._removeGraphqlRoute();
+    this.schema = newSchema;
+    this.addGraphqlRoute();
   }
 }
 
