@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-const ManageParameters = require('./ManageParameters');
+const ManageParameters = require('../src/server/ManageParameters');
 const mock = require('mock-fs');
 
 describe('ManageParameters', () => {

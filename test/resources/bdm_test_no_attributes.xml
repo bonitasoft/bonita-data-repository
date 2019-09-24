@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<businessObjectModel modelVersion="1.0" productVersion="7.10.0-SNAPSHOT">
+    <businessObjects>
+        <businessObject qualifiedName="com.company.model.Customer">
+            <fields>
+                <relationField type="AGGREGATION" reference="com.company.model.OrderInfo" fetchType="LAZY" name="orders" nullable="true" collection="true"/>
+            </fields>
+            <uniqueConstraints>
+            </uniqueConstraints>
+            <queries>
+            </queries>
+            <indexes>
+            </indexes>
+        </businessObject>
+        <businessObject qualifiedName="com.company.model.OrderInfo">
+            <fields>
+                <field type="STRING" length="255" name="itemName" nullable="true" collection="false"/>
+                <field type="INTEGER" length="255" name="number" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+    </businessObjects>
+</businessObjectModel>

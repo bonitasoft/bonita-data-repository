@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-const StudioHealthCheck = require('./StudioHealthCheck');
+const StudioHealthCheck = require('../src/server/StudioHealthCheck');
 
 describe('StudioHealthCheck', () => {
   test('should init when parameter is given in parameter', () => {
