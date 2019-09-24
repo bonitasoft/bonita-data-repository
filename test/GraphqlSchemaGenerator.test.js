@@ -45,7 +45,6 @@ describe('GraphqlSchemaGenerator', () => {
 
   test('Generate expected custom queries in graphQL schema', () => {
     let schema = _getSchema('test/resources/bdm_CustomerOrder.xml');
-    console.log(schema);
     expect(schema).toContain(
       'query1(name: String!, address: String!, phoneNumber: String!): [Customer]'
     );
