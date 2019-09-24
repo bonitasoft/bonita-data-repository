@@ -17,6 +17,9 @@
  */
 class GraphqlSchemaGenerator {
   constructor(bdmJson) {
+    if (!bdmJson) {
+      throw 'Missing Bdm parameter';
+    }
     this.bdmJson = bdmJson;
     this.schema = [];
     this.resolvers = [];
