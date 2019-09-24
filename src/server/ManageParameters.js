@@ -51,6 +51,9 @@ class ManageParameters {
           process.exit(1);
         }
       }
+      if (val.startsWith('host')) {
+        parameterConfig.host = getParameter(val);
+      }
 
       // healCheck parameter
       if (val.startsWith('healthCheckHost')) {

@@ -30,6 +30,7 @@ class BdrServer {
     // Port default value
     this.config = config;
     this.port = config.port || 4000;
+    this.host = config.host || '127.0.0.1';
     this.graphqlPath = '/bdr';
     this.logger = winston.loggers.get('bo-logger');
     this.schema = this._buildInitialGraphqlSchema();
@@ -42,11 +43,15 @@ class BdrServer {
   }
 
   start() {
-    this.expressApp.listen(this.port);
+    this.expressApp.listen(this.port, this.host);
   }
 
   getPort() {
     return this.port;
+  }
+
+  getHost() {
+    return this.host;
   }
 
   getGraphqlPath() {

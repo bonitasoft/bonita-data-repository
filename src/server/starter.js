@@ -58,5 +58,5 @@ logger.info(
 );
 logger.debug(`Server is starting with following config ${JSON.stringify(config)}`);
 logger.info(
-  `Server is running on http://localhost:${bdrServer.getPort()}${bdrServer.getGraphqlPath()}`
+  `Server is running on http://${bdrServer.getHost()}:${bdrServer.getPort()}${bdrServer.getGraphqlPath()}`
 );
