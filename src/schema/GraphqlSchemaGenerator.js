@@ -166,9 +166,10 @@ class GraphqlSchemaGenerator {
     queries.push('type ', bdmObjectName, 'ConstraintQuery {\n');
     let myself = this;
     bdmConstraintsArray.forEach(bdmConstraint => {
-      let parametersArray = bdmConstraint.fieldNames.fieldName;
+      let parameters = bdmConstraint.fieldNames.fieldName;
       let params = [];
       let paramsCap = [];
+      let parametersArray = myself._asArray(parameters);
       parametersArray.forEach(parameter => {
         let paramName = parameter._text;
         params.push(paramName);
@@ -208,11 +209,12 @@ class GraphqlSchemaGenerator {
       if (returnType === 'List') {
         returnType = '[' + bdmObjectName + ']';
       }
-      let parametersArray = customQuery.queryParameters.queryParameter;
+      let parameters = customQuery.queryParameters.queryParameter;
       let paramsStr = '';
-      if (parametersArray) {
+      if (parameters) {
         // Map of paramName, paramType
         let paramsMap = new Map();
+        let parametersArray = myself._asArray(parameters);
         parametersArray.forEach(parameter => {
           let paramName = parameter._attributes.name;
           let paramType = parameter._attributes.className;

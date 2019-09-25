@@ -11,8 +11,10 @@ describe('GraphqlSchemaGenerator', () => {
   });
 
   test('Check valid graphQL schema with various BDMs', () => {
-    buildSchema(_getSchema('test/resources/bdm_CustomerOrder.xml'));
-    buildSchema(_getSchema('test/resources/bdm_test_no_attributes.xml'));
+    let xmlFiles = fs.readdirSync('test/resources');
+    xmlFiles.forEach(xmlFile => {
+      buildSchema(_getSchema('test/resources/' + xmlFile));
+    });
   });
 
   test('Check expected types in graphQL schema', () => {
