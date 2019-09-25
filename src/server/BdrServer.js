@@ -20,6 +20,7 @@ const fs = require('fs');
 const { buildSchema } = require('graphql');
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const xmlParser = require('xml-js');
 const GraphqlSchemaGenerator = require('../schema/GraphqlSchemaGenerator');
@@ -43,6 +44,8 @@ class BdrServer {
     this.expressApp = express();
     // Tell Express to parse application/json
     this.expressApp.use(bodyParser.json());
+    // Enable cors for all
+    this.expressApp.use(cors());
   }
 
   start() {
