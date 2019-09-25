@@ -80,7 +80,10 @@ class GraphqlSchemaGenerator {
         );
       }
       // Generate custom queries
-      //TODO
+      let customQueries = bdmBusObject.queries.query;
+      if (customQueries) {
+        myself._generateCustomQueries(queries, bdmObjectName, myself._asArray(customQueries));
+      }
 
       if (queries.length !== 0) {
         myself.schema.push('type ', bdmObjectName, 'Query {\n');
@@ -176,12 +179,44 @@ class GraphqlSchemaGenerator {
     });
   }
 
+  _generateCustomQueries(queries, bdmObjectName, customQueries) {
+    // e.g. : Customer_query1(name: String!): [Customer]
+    let myself = this;
+    customQueries.forEach(customQuery => {
+      let queryName = customQuery._attributes.name;
+      let returnType = myself._xmlToGraphqlType(
+        myself._getLastItem(customQuery._attributes.returnType)
+      );
+      if (returnType === 'List') {
+        returnType = '[' + bdmObjectName + ']';
+      }
+      let parametersArray = customQuery.queryParameters.queryParameter;
+      let paramsStr = '';
+      if (parametersArray) {
+        // Map of paramName, paramType
+        let paramsMap = new Map();
+        parametersArray.forEach(parameter => {
+          let paramName = parameter._attributes.name;
+          let paramType = parameter._attributes.className;
+          paramsMap.set(paramName, myself._xmlToGraphqlType(myself._getLastItem(paramType)));
+        });
+        let paramsStringArray = [];
+        paramsMap.forEach((value, key) => {
+          paramsStringArray.push(key + ': ' + value + '!');
+        });
+        paramsStr = '(' + paramsStringArray.join(', ') + ')';
+      }
+
+      queries.push('\t', queryName, paramsStr, ': ', returnType, '\n');
+    });
+  }
+
   _generateInfoResolver() {
     return { Query: { info: () => `This is the API of BDM repository` } };
   }
 
   _xmlToGraphqlType(xmlType) {
-    switch (xmlType) {
+    switch (xmlType.toUpperCase()) {
       case 'BOOLEAN':
         return 'Boolean';
       case 'INTEGER':

@@ -10,12 +10,12 @@ describe('GraphqlSchemaGenerator', () => {
     }).toThrow();
   });
 
-  test('Generate valid graphQL schema with various BDMs', () => {
+  test('Check valid graphQL schema with various BDMs', () => {
     buildSchema(_getSchema('test/resources/bdm_CustomerOrder.xml'));
     buildSchema(_getSchema('test/resources/bdm_test_no_attributes.xml'));
   });
 
-  test('Generate expected types in graphQL schema', () => {
+  test('Check expected types in graphQL schema', () => {
     let schema = _getSchema('test/resources/bdm_CustomerOrder.xml');
     expect(schema).toContain('type Customer');
     expect(schema).toContain('type CustomerQuery');
@@ -23,7 +23,7 @@ describe('GraphqlSchemaGenerator', () => {
     expect(schema).toContain('type OrderInfoQuery');
   });
 
-  test('Generate expected queries from attributes in graphQL schema', () => {
+  test('Check expected queries from attributes in graphQL schema', () => {
     let schema = _getSchema('test/resources/bdm_CustomerOrder.xml');
     expect(schema).toContain('type CustomerQuery');
     expect(schema).toContain('findByName(name: String!): Customer');
@@ -32,7 +32,7 @@ describe('GraphqlSchemaGenerator', () => {
     expect(schema).toContain('find: Customer');
   });
 
-  test('Generate expected queries from constraints in graphQL schema', () => {
+  test('Check expected queries from constraints in graphQL schema', () => {
     let schema = _getSchema('test/resources/bdm_CustomerOrder.xml');
     expect(schema).toContain('type CustomerQuery');
     expect(schema).toContain(
@@ -41,6 +41,18 @@ describe('GraphqlSchemaGenerator', () => {
     expect(schema).toContain(
       'findByAddressAndPhoneNumberAndName(address: String!, phoneNumber: String!, name: String!): Customer'
     );
+  });
+
+  test('Generate expected custom queries in graphQL schema', () => {
+    let schema = _getSchema('test/resources/bdm_CustomerOrder.xml');
+    expect(schema).toContain(
+      'query1(name: String!, address: String!, phoneNumber: String!): [Customer]'
+    );
+    expect(schema).toContain('query2(name: String!, address: String!): Customer');
+    expect(schema).toContain('query3: Int');
+    expect(schema).toContain('query4: Float');
+    expect(schema).toContain('query5: Float');
+    expect(schema).toContain('query6: Int');
   });
 
   function _getSchema(xmlFilePath) {
