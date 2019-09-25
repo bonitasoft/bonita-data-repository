@@ -59,6 +59,7 @@ class GraphqlSchemaGenerator {
     //
 
     // Generate queries
+    let bdmObjectsWithQuery = [];
     bdmBusObjects.forEach(function(bdmBusObject) {
       let bdmObjectName = myself._getLastItem(bdmBusObject._attributes.qualifiedName);
       // We may have no queries if no attribute (only relations)
@@ -67,7 +68,6 @@ class GraphqlSchemaGenerator {
       let bdmAtts = bdmBusObject.fields.field;
       if (bdmAtts) {
         myself._generateAttributeQueries(queries, bdmObjectName, myself._asArray(bdmAtts));
-        queries.push('\t', 'find: ', bdmObjectName, '\n');
       }
       // Generate default queries from unique constraints
       let constraints = bdmBusObject.uniqueConstraints.uniqueConstraint;
@@ -86,9 +86,9 @@ class GraphqlSchemaGenerator {
       }
 
       if (queries.length !== 0) {
-        myself.schema.push('type ', bdmObjectName, 'Query {\n');
         myself.schema.push(queries.join(''));
-        myself.schema.push('}\n\n');
+        myself._generateBdmObjectQuery(bdmObjectName, bdmAtts, constraints, customQueries);
+        bdmObjectsWithQuery.push(bdmObjectName);
       }
     });
 
@@ -96,8 +96,7 @@ class GraphqlSchemaGenerator {
     // Add documentation for graphQL (?)
 
     // This is the (mandatory) Query root.
-    // Note: not used for now. Could be one of the current xxxQuery (?)
-    this.schema.push('type Query ', '{\n', '\t', 'content: String', '\n', '}\n\n');
+    this._generateRootQuery(bdmObjectsWithQuery);
   }
 
   getResolvers() {
@@ -130,7 +129,13 @@ class GraphqlSchemaGenerator {
   }
 
   _generateAttributeQueries(queries, bdmObjectName, bdmAttsArray) {
-    // e.g. : findByName(name: String!): Customer
+    // e.g. :
+    // type CustomerAttributeQuery {
+    //   findByName(name: String!): Customer
+    //   ...
+    //   find: Customer
+    // }
+    queries.push('type ', bdmObjectName, 'AttributeQuery {\n');
     let myself = this;
     bdmAttsArray.forEach(bdmAtt => {
       let attName = bdmAtt._attributes.name;
@@ -148,10 +153,17 @@ class GraphqlSchemaGenerator {
         '\n'
       );
     });
+    queries.push('\t', 'find: ', bdmObjectName, '\n');
+    queries.push('}\n\n');
   }
 
   _generateQueriesFromConstraints(queries, bdmObjectName, bdmConstraintsArray, attributesTypeMap) {
-    // e.g : findByNameAndPhoneNumber(name: String!, phoneNumber: String!): Customer
+    // e.g. :
+    // type CustomerConstraintQuery {
+    //   findByNameAndPhoneNumber(name: String!, phoneNumber: String!): Customer
+    //   ...
+    // }
+    queries.push('type ', bdmObjectName, 'ConstraintQuery {\n');
     let myself = this;
     bdmConstraintsArray.forEach(bdmConstraint => {
       let parametersArray = bdmConstraint.fieldNames.fieldName;
@@ -177,10 +189,16 @@ class GraphqlSchemaGenerator {
         '\n'
       );
     });
+    queries.push('}\n\n');
   }
 
   _generateCustomQueries(queries, bdmObjectName, customQueries) {
-    // e.g. : Customer_query1(name: String!): [Customer]
+    // e.g. :
+    // type CustomerCustomQuery {
+    //   query1(name: String!): [Customer]
+    //   ...
+    // }
+    queries.push('type ', bdmObjectName, 'CustomQuery {\n');
     let myself = this;
     customQueries.forEach(customQuery => {
       let queryName = customQuery._attributes.name;
@@ -209,6 +227,51 @@ class GraphqlSchemaGenerator {
 
       queries.push('\t', queryName, paramsStr, ': ', returnType, '\n');
     });
+    queries.push('}\n\n');
+  }
+
+  _generateBdmObjectQuery(bdmObjectName, bdmAtts, constraints, customQueries) {
+    // e.g. :
+    // type CustomerQuery {
+    //  customerAttributeQuery: CustomerAttributeQuery
+    //  customerConstraintQuery: CustomerConstraintQuery
+    //  customerCustomQuery: CustomerCustomQuery
+    // }
+    this.schema.push('type ', bdmObjectName, 'Query {\n');
+    if (bdmAtts) {
+      this._generateBdmObjectQueryItem(bdmObjectName, 'AttributeQuery');
+    }
+    if (constraints) {
+      this._generateBdmObjectQueryItem(bdmObjectName, 'ConstraintQuery');
+    }
+    if (customQueries) {
+      this._generateBdmObjectQueryItem(bdmObjectName, 'CustomQuery');
+    }
+    this.schema.push('}\n\n');
+  }
+
+  _generateBdmObjectQueryItem(bdmObjectName, queryNamePostfix) {
+    let queryName = bdmObjectName + queryNamePostfix;
+    this.schema.push('\t', this._lowercaseFirstLetter(queryName), ': ', queryName, '\n');
+  }
+
+  _generateRootQuery(bdmObjectsWithQuery) {
+    // e.g. :
+    // type Query {
+    //  customerQuery: CustomerQuery
+    //  ...
+    // }
+    this.schema.push('type ', 'Query {\n');
+    let myself = this;
+    bdmObjectsWithQuery.forEach(bdmObjectName => {
+      myself._generateRootQueryItem(bdmObjectName);
+    });
+    this.schema.push('}\n\n');
+  }
+
+  _generateRootQueryItem(bdmObjectName) {
+    let queryName = bdmObjectName + 'Query';
+    this.schema.push('\t', this._lowercaseFirstLetter(queryName), ': ', queryName, '\n');
   }
 
   _generateInfoResolver() {
@@ -255,6 +318,10 @@ class GraphqlSchemaGenerator {
 
   _capitalizeFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  _lowercaseFirstLetter(str) {
+    return str.charAt(0).toLowerCase() + str.slice(1);
   }
 }
 
