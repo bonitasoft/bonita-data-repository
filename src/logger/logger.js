@@ -23,9 +23,13 @@ const path = require('path');
 
 class Logger {
   init(config) {
+    let label = '';
+    if (process.mainModule) {
+      label = path.basename(process.mainModule.filename);
+    }
     winston.loggers.add('bo-logger', {
       format: winston.format.combine(
-        winston.format.label({ label: path.basename(process.mainModule.filename) }),
+        winston.format.label({ label: label }),
         winston.format.colorize(),
         winston.format.timestamp(),
         winston.format.printf(info => {

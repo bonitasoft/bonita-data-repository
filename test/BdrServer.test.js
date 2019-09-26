@@ -1,5 +1,8 @@
 const BdrServer = require('../src/server/BdrServer');
 const fs = require('fs');
+const Logger = require('../src/logger/logger');
+
+Logger.init({});
 
 describe('BdrServer', () => {
   test('should return an error if no config given at init', () => {

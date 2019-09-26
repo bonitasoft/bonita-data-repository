@@ -100,7 +100,7 @@ class BdrServer {
   addBdmPostRoute() {
     let myself = this;
     this.expressApp.post('/bdm', function(req, res) {
-      myself.logger.info('BDM pushed.');
+      myself.logger.debug('BDM pushed.');
       myself._handleNewBdmXml(req.body.bdmXml);
       res.send();
     });
@@ -111,7 +111,7 @@ class BdrServer {
     if (this.config.bdmFile) {
       let bdmXml = fs.readFileSync(this.config.bdmFile, 'utf8');
       schema = this._getSchema(bdmXml);
-      this.logger.info(`BDM added:  ${this.config.bdmFile}`);
+      this.logger.debug(`BDM added:  ${this.config.bdmFile}`);
     }
     return schema;
   }

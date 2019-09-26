@@ -16,6 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 const StudioHealthCheck = require('../src/server/StudioHealthCheck');
+const Logger = require('../src/logger/logger');
+
+Logger.init({});
 
 describe('StudioHealthCheck', () => {
   test('should init when parameter is given in parameter', () => {

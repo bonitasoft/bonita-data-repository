@@ -2,6 +2,9 @@ const GraphqlSchemaGenerator = require('../src/schema/GraphqlSchemaGenerator');
 const fs = require('fs');
 const xmlParser = require('xml-js');
 const { buildSchema } = require('graphql');
+const Logger = require('../src/logger/logger');
+
+Logger.init({});
 
 describe('GraphqlSchemaGenerator', () => {
   test('should return an error if no bdm given at init', () => {

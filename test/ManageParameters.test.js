@@ -17,6 +17,9 @@
  */
 const ManageParameters = require('../src/server/ManageParameters');
 const mock = require('mock-fs');
+const Logger = require('../src/logger/logger');
+
+Logger.init({});
 
 describe('ManageParameters', () => {
   test('should build load config file when config parameter is define', () => {

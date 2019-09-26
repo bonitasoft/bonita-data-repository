@@ -1,5 +1,8 @@
 const request = require('supertest');
 const BdrServer = require('../src/server/BdrServer');
+const Logger = require('../src/logger/logger');
+
+Logger.init({});
 
 describe('BdrServer_e2e', () => {
   const simpleBdmXml =
