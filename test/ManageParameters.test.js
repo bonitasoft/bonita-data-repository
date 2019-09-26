@@ -41,6 +41,7 @@ describe('ManageParameters', () => {
     expect(config.bdmFile).toBe('resources/bomAG2R.xml');
     expect(config.logFile).toBe('target/log/data-repository.log');
     expect(config.logLevel).toBe('debug');
+    mock.restore();
   });
 
   test('should build override port parameter when is passed as parameter and in file config', () => {
@@ -65,6 +66,7 @@ describe('ManageParameters', () => {
     expect(config.bdmFile).toBe('resources/bomAG2R.xml');
     expect(config.logFile).toBe('target/log/data-repository.log');
     expect(config.logLevel).toBe('debug');
+    mock.restore();
   });
 
   test('should build parameter when parameters is only given on starting', () => {
@@ -93,5 +95,6 @@ describe('ManageParameters', () => {
     expect(config.bdmFile).toBe(undefined);
     expect(config.logFile).toBe('target/log/data-repository.log');
     expect(config.logLevel).toBe('debug');
+    mock.restore();
   });
 });
