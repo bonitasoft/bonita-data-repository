@@ -41,7 +41,7 @@ class GraphqlSchemaGenerator {
     let bdmBusObjects = this._asArray(bdm.businessObjectModel.businessObjects.businessObject);
     let myself = this;
     bdmBusObjects.forEach(function(bdmBusObject) {
-      let bdmObjectName = myself._getLastItem(bdmBusObject._attributes.qualifiedName);
+      let bdmObjectName = myself._getQualifiedName(bdmBusObject._attributes.qualifiedName);
       myself.schema.push('type ', bdmObjectName, ' {\n');
       let bdmAtts = bdmBusObject.fields.field;
       if (bdmAtts) {
@@ -61,7 +61,7 @@ class GraphqlSchemaGenerator {
     // Generate queries
     let bdmObjectsWithQuery = [];
     bdmBusObjects.forEach(function(bdmBusObject) {
-      let bdmObjectName = myself._getLastItem(bdmBusObject._attributes.qualifiedName);
+      let bdmObjectName = myself._getQualifiedName(bdmBusObject._attributes.qualifiedName);
       // We may have no queries if no attribute (only relations)
       let queries = [];
       // Generate default queries
@@ -122,7 +122,7 @@ class GraphqlSchemaGenerator {
   _generateRelationAttributes(bdmRelAttsArray) {
     let myself = this;
     bdmRelAttsArray.forEach(bdmRelAtt => {
-      let relType = this._getLastItem(bdmRelAtt._attributes.reference);
+      let relType = this._getQualifiedName(bdmRelAtt._attributes.reference);
       let mandatoryStr = bdmRelAtt._attributes.nullable === 'true' ? '' : '!';
       myself.schema.push('\t', bdmRelAtt._attributes.name, ': ', relType + mandatoryStr, '\n');
     });
@@ -203,11 +203,14 @@ class GraphqlSchemaGenerator {
     let myself = this;
     customQueries.forEach(customQuery => {
       let queryName = customQuery._attributes.name;
-      let returnType = myself._xmlToGraphqlType(
-        myself._getLastItem(customQuery._attributes.returnType)
-      );
-      if (returnType === 'List') {
+      let bdmReturnType = customQuery._attributes.returnType;
+      let returnType;
+      if (bdmReturnType === 'java.util.List') {
         returnType = '[' + bdmObjectName + ']';
+      } else if (myself._getQualifiedName(bdmReturnType) === bdmObjectName) {
+        returnType = bdmObjectName;
+      } else {
+        returnType = myself._xmlToGraphqlType(myself._getLastItem(bdmReturnType));
       }
       let parameters = customQuery.queryParameters.queryParameter;
       let paramsStr = '';
@@ -235,9 +238,9 @@ class GraphqlSchemaGenerator {
   _generateBdmObjectQuery(bdmObjectName, bdmAtts, constraints, customQueries) {
     // e.g. :
     // type CustomerQuery {
-    //  customerAttributeQuery: CustomerAttributeQuery
-    //  customerConstraintQuery: CustomerConstraintQuery
-    //  customerCustomQuery: CustomerCustomQuery
+    //  attributeQuery: CustomerAttributeQuery
+    //  constraintQuery: CustomerConstraintQuery
+    //  customQuery: CustomerCustomQuery
     // }
     this.schema.push('type ', bdmObjectName, 'Query {\n');
     if (bdmAtts) {
@@ -252,9 +255,9 @@ class GraphqlSchemaGenerator {
     this.schema.push('}\n\n');
   }
 
-  _generateBdmObjectQueryItem(bdmObjectName, queryNamePostfix) {
-    let queryName = bdmObjectName + queryNamePostfix;
-    this.schema.push('\t', this._lowercaseFirstLetter(queryName), ': ', queryName, '\n');
+  _generateBdmObjectQueryItem(bdmObjectName, queryName) {
+    let queryType = bdmObjectName + queryName;
+    this.schema.push('\t', this._lowercaseFirstLetter(queryName), ': ', queryType, '\n');
   }
 
   _generateRootQuery(bdmObjectsWithQuery) {
@@ -324,6 +327,11 @@ class GraphqlSchemaGenerator {
 
   _lowercaseFirstLetter(str) {
     return str.charAt(0).toLowerCase() + str.slice(1);
+  }
+
+  _getQualifiedName(dotQualifiedName) {
+    // Replace '.' by '_', since graphQL does not support '.' in names
+    return dotQualifiedName.replace(/\./g, '_');
   }
 }
 
