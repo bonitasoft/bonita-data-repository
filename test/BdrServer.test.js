@@ -30,13 +30,13 @@ describe('BdrServer', () => {
   test('should handle new BDM xml', () => {
     let server = new BdrServer([]);
     let graphqlTypes = server.getSchema()._typeMap;
-    expect(graphqlTypes.Customer).toBeUndefined();
-    expect(graphqlTypes.CustomerQuery).toBeUndefined();
+    expect(graphqlTypes.com_company_model_Customer).toBeUndefined();
+    expect(graphqlTypes.com_company_model_CustomerQuery).toBeUndefined();
     let bdmXml = _getBdmXml('test/resources/bdm_CustomerOrder.xml');
     server._handleNewBdmXml(bdmXml);
     graphqlTypes = server.getSchema()._typeMap;
-    expect(graphqlTypes.Customer).toBeDefined();
-    expect(graphqlTypes.CustomerQuery).toBeDefined();
+    expect(graphqlTypes.com_company_model_Customer).toBeDefined();
+    expect(graphqlTypes.com_company_model_CustomerQuery).toBeDefined();
   });
 
   function _getBdmXml(xmlFilePath) {
