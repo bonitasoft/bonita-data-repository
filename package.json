@@ -9,7 +9,7 @@
     "package": "pkg --out-path ./target/binaries -t node12-linux,node12-macos,node12-win .",
     "prettier:check": "prettier --check \"src/**/*.js\"",
     "prettier:fix": "prettier --write \"src/**/*.js\"",
-    "test": "jest",
+    "test": "jest 2>&1",
     "test:dev": "jest --watch"
   },
   "keywords": [],
@@ -37,5 +37,9 @@
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bonitasoft/bonita-data-repository"
   }
 }
