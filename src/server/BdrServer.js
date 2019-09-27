@@ -21,7 +21,6 @@ const { buildSchema } = require('graphql');
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const xmlParser = require('xml-js');
 const GraphqlSchemaGenerator = require('../schema/GraphqlSchemaGenerator');
 let StudioHealthCheck = require('./StudioHealthCheck');
@@ -43,7 +42,12 @@ class BdrServer {
     };
     this.expressApp = express();
     // Tell Express to parse application/json
-    this.expressApp.use(bodyParser.json());
+    // Note: the limit has been increased from 100k (default) to 1mb, so that we can handle 3x the max known BDM.
+    this.expressApp.use(
+      express.json({
+        limit: '1mb'
+      })
+    );
     // Enable cors for all
     this.expressApp.use(cors());
   }
