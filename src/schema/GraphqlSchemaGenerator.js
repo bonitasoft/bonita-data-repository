@@ -153,7 +153,13 @@ class GraphqlSchemaGenerator {
         '\n'
       );
     });
+
+    // Generate find() query
     queries.push('\t', 'find: ', bdmObjectName, '\n');
+
+    // Generate findByPersistenceId() query
+    queries.push('\t', 'findByPersistenceId(persistenceId: Int!): ', bdmObjectName, '\n');
+
     queries.push('}\n\n');
   }
 
