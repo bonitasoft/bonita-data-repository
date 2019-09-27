@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<businessObjectModel modelVersion="1.0" productVersion="7.2.3">
+    <businessObjects>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.Mailgnghhkdnt">
+            <description>Contains mailing gnghhkdnt for gnhkpdger comunication</description>
+            <fields>
+                <field type="STRING" length="10" name="code" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="gnghhkdntgroup" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="description" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="subject" nullable="true" collection="false"/>
+                <field type="TEXT" length="4096" name="content" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="UNIQUE_CONSTRAINT_1">
+                    <fieldNames>
+                        <fieldName>code</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.dsfnghnofnhsdfmngolrmhgerType">
+            <description>sdfmngolrmhger Type</description>
+            <fields>
+                <field type="STRING" length="255" name="Name" nullable="false" collection="false"/>
+                <field type="STRING" length="1000" name="Description" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="hnhjptffgheFlag" nullable="false" collection="false"/>
+                <field type="DATE" length="255" name="hnhjptffghefdgfdhmhh" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="UNIQUE_CONSTRAINT_1">
+                    <fieldNames>
+                        <fieldName>Name</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeType">
+            <description>gnhgjojnze Type</description>
+            <fields>
+                <field type="STRING" length="255" name="Name" nullable="false" collection="false"/>
+                <field type="STRING" length="1000" name="Description" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="hnhjptffgheFlag" nullable="false" collection="false"/>
+                <field type="DATE" length="255" name="hnhjptffghefdgfdhmhh" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="UNIQUE_CONSTRAINT_1">
+                    <fieldNames>
+                        <fieldName>Name</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries>
+                <query name="findByNames" content="SELECT c &#xA;FROM dsfnghnofnhgnhgjojnzeType c &#xA;WHERE c.Name IN :Name&#xA;AND c.hnhjptffgheFlag = false&#xA;ORDER BY c.Description ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="Name" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeStatus">
+            <description>gnhgjojnze Status</description>
+            <fields>
+                <field type="STRING" length="255" name="Name" nullable="false" collection="false"/>
+                <field type="STRING" length="1000" name="Description" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="hnhjptffgheFlag" nullable="false" collection="false"/>
+                <field type="DATE" length="255" name="hnhjptffghefdgfdhmhh" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="UNIQUE_CONSTRAINT_1">
+                    <fieldNames>
+                        <fieldName>Name</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.dsfnghnofnhsdfmngolrmhger">
+            <description>sdfmngolrmhger</description>
+            <fields>
+                <relationField type="AGGREGATION" reference="com.gnfjfpked.ghbdjkoe.dsfnghnofnhsdfmngolrmhgerType" fetchType="EAGER" name="sdfmngolrmhgerType" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="Name" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="Email" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="Telephone" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="DecisionMaker" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="PositionInfdfgderegnertgy" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="fdghnjhjfdgfdhmhh" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="fdghnjhjsdfnbhbjfkkd" nullable="false" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries>
+                <query name="findByPersistendsfnghnofnhd" content="SELECT c &#xA;FROM dsfnghnofnhsdfmngolrmhger c join fetch c.sdfmngolrmhgerType &#xA;WHERE c.persistendsfnghnofnhd = :Persistendsfnghnofnhd" returnType="com.gnfjfpked.ghbdjkoe.dsfnghnofnhsdfmngolrmhger">
+                    <queryParameters>
+                        <queryParameter name="Persistendsfnghnofnhd" className="java.lang.Long"/>
+                    </queryParameters>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnze">
+            <description>gnhgjojnze</description>
+            <fields>
+                <field type="LONG" length="255" name="sdfsdkngjdgCaseID" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="sdfmngolrmhgerId" nullable="true" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeType" fetchType="EAGER" name="gnhgjojnzeType" nullable="false" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeSubtype" fetchType="EAGER" name="gnhgjojnzeSubtype" nullable="true" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeStatus" fetchType="EAGER" name="Status" nullable="false" collection="false"/>
+                <field type="TEXT" length="16000" name="Content" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="fgnmlpgsCompletefdgfdhmhh" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="fdfgderegnertgyBranchName" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="BranchId" nullable="true" collection="false"/>
+                <field type="STRING" length="20" name="BranchPostcode" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="fdghnjhjfdgfdhmhh" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="fdghnjhjsdfnbhbjfkkd" nullable="false" collection="false"/>
+                <field type="DATE" length="255" name="Updatefdgfdhmhh" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="Updatesdfnbhbjfkkd" nullable="false" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeActivity" fetchType="EAGER" name="Activities" nullable="true" collection="true"/>
+                <field type="BOOLEAN" length="255" name="Internal" nullable="false" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeADFfgnmlpgs" fetchType="EAGER" name="Adffgnmlpgs" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeDataQualityfgnmlpgs" fetchType="EAGER" name="DataQualityfgnmlpgs" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeLocnHandlingfgnmlpgs" fetchType="EAGER" name="LocationHandlingfgnmlpgs" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="ServiceDeskId" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeDesignfgnmlpgs" fetchType="EAGER" name="Designfgnmlpgs" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeSoldPricesfgnmlpgs" fetchType="EAGER" name="SoldPricesfgnmlpgs" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeFraudfgnmlpgs" fetchType="EAGER" name="Fraudfgnmlpgs" nullable="true" collection="false"/>
+                <field type="STRING" length="64" name="Source" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="Closed" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="Closurefdgfdhmhh" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.dsfnghnofnhMailgnghhkdnt">
+            <description>Mail gnghhkdnts</description>
+            <fields>
+                <field type="STRING" length="255" name="code" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="gnghhkdntgroup" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="description" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="subject" nullable="false" collection="false"/>
+                <field type="TEXT" length="255" name="content" nullable="false" collection="false"/>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="UNIQUE_CONSTRAINT_1">
+                    <fieldNames>
+                        <fieldName>code</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeActivity">
+            <description>gnhgjojnze Activity</description>
+            <fields>
+                <relationField type="AGGREGATION" reference="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeActivityType" fetchType="EAGER" name="Type" nullable="false" collection="false"/>
+                <field type="TEXT" length="255" name="Content" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="fdghnjhjsdfnbhbjfkkd" nullable="false" collection="false"/>
+                <field type="DATE" length="255" name="fdghnjhjfdgfdhmhh" nullable="false" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeActivityType">
+            <description>gnhgjojnze Activity Type</description>
+            <fields>
+                <field type="STRING" length="255" name="Name" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="Description" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="hnhjptffgheFlag" nullable="false" collection="false"/>
+                <field type="DATE" length="255" name="hnhjptffghefdgfdhmhh" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="DisplayOrder" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="UNIQUE_CONSTRAINT_1">
+                    <fieldNames>
+                        <fieldName>Name</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries>
+                <query name="findbyNameStartsWith" content="SELECT c &#xA;FROM dsfnghnofnhgnhgjojnzeActivityType c &#xA;WHERE c.Name like :Name&#xA;ORDER BY c.persistendsfnghnofnhd ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="Name" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+                <query name="findOrderedByNameStartsWithUnhnhjptffghed" content="SELECT c &#xD;&#xA;FROM dsfnghnofnhgnhgjojnzeActivityType c &#xD;&#xA;WHERE c.Name like :Name&#xD;&#xA;AND c.hnhjptffgheFlag = 0&#xD;&#xA;ORDER BY c.DisplayOrder ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="Name" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.dsfnghnofnhsdfmngolrmhgergnhgjojnzeTypeMapping">
+            <description></description>
+            <fields>
+                <relationField type="AGGREGATION" reference="com.gnfjfpked.ghbdjkoe.dsfnghnofnhsdfmngolrmhgerType" fetchType="EAGER" name="sdfmngolrmhgerType" nullable="false" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeType" fetchType="EAGER" name="gnhgjojnzeType" nullable="false" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeSubtype" fetchType="EAGER" name="gnhgjojnzeSubtype" nullable="true" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.gnfjfpked.ghbdjkoe.dsfnghnofnhFormgnghhkdnt" fetchType="EAGER" name="Formgnghhkdnt" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries>
+                <query name="getgnhgjojnzeTypesForsdfmngolrmhgerType" content="SELECT c&#xA;FROM dsfnghnofnhsdfmngolrmhgergnhgjojnzeTypeMapping c &#xD;&#xA;join fetch c.sdfmngolrmhgerType join fetch c.gnhgjojnzeType&#xD;&#xA;WHERE c.sdfmngolrmhgerType.Name = :sdfmngolrmhgerTypeName&#xA;ORDER BY c.gnhgjojnzeType.Description ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="sdfmngolrmhgerTypeName" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+                <query name="getForsdfmngolrmhgergnhgjojnzeSubtype" content="SELECT c &#xA;FROM dsfnghnofnhsdfmngolrmhgergnhgjojnzeTypeMapping c&#xD;&#xA;join fetch c.sdfmngolrmhgerType&#xD;&#xA;join fetch c.gnhgjojnzeType&#xD;&#xA;join fetch c.gnhgjojnzeSubtype&#xD;&#xA;join fetch c.Formgnghhkdnt &#xA;WHERE c.sdfmngolrmhgerType.Name = :sdfmngolrmhgerTypeName&#xD;&#xA;AND c.gnhgjojnzeType.Name = :gnhgjojnzeTypeName&#xD;&#xA;AND c.gnhgjojnzeSubtype.Name = :gnhgjojnzeSubtypeName&#xA;ORDER BY c.persistendsfnghnofnhd ASC&#xD;&#xA;" returnType="com.gnfjfpked.ghbdjkoe.dsfnghnofnhsdfmngolrmhgergnhgjojnzeTypeMapping">
+                    <queryParameters>
+                        <queryParameter name="sdfmngolrmhgerTypeName" className="java.lang.String"/>
+                        <queryParameter name="gnhgjojnzeTypeName" className="java.lang.String"/>
+                        <queryParameter name="gnhgjojnzeSubtypeName" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeADFfgnmlpgs">
+            <fields>
+                <field type="STRING" length="255" name="DatafeedProviderName" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="sdfnhjkfjbyhReference" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="sdfnhjkfjbyhAddress" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="Examplesdfnhjkfjbyh" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dfgnhkngAgentWebsite" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="NewFeedProvider" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeLocnHandlingfgnmlpgs">
+            <fields>
+                <field type="STRING" length="255" name="Postcodes" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="DeliveryPoints" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="RegionName" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="LocationIdentifier" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeDataQualityfgnmlpgs">
+            <fields>
+                <field type="STRING" length="255" name="OffendingBranchName" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="OffendingBranchAddress" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="OffendingBranchID" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dfgnhkngsdfnhjkfjbyh" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dfgnhkngEvidence" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeSubtype">
+            <fields>
+                <field type="STRING" length="255" name="Name" nullable="false" collection="false"/>
+                <field type="STRING" length="1000" name="Description" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="hnhjptffgheFlag" nullable="false" collection="false"/>
+                <field type="DATE" length="255" name="hnhjptffghefdgfdhmhh" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="UNIQUE_CONSTRAINT_1">
+                    <fieldNames>
+                        <fieldName>Name</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.dsfnghnofnhFormgnghhkdnt">
+            <fields>
+                <field type="STRING" length="255" name="Name" nullable="false" collection="false"/>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="UNIQUE_CONSTRAINT_1">
+                    <fieldNames>
+                        <fieldName>Name</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.dsfnghnofnhFormField">
+            <fields>
+                <field type="STRING" length="255" name="Name" nullable="false" collection="false"/>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="UNIQUE_CONSTRAINT_1">
+                    <fieldNames>
+                        <fieldName>Name</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.dsfnghnofnhFormgnghhkdntFieldMapping">
+            <fields>
+                <relationField type="AGGREGATION" reference="com.gnfjfpked.ghbdjkoe.dsfnghnofnhFormgnghhkdnt" fetchType="EAGER" name="Formgnghhkdnt" nullable="false" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.gnfjfpked.ghbdjkoe.dsfnghnofnhFormField" fetchType="EAGER" name="FormField" nullable="false" collection="false"/>
+                <field type="BOOLEAN" length="255" name="Mandatory" nullable="false" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries>
+                <query name="findBygnghhkdntNameFieldName" content="SELECT c &#xA;FROM dsfnghnofnhFormgnghhkdntFieldMapping c&#xD;&#xA;join fetch c.Formgnghhkdnt&#xD;&#xA;join fetch c.FormField &#xA;WHERE c.Formgnghhkdnt.Name = :formgnghhkdntName&#xD;&#xA;AND c.FormField.Name = :formFieldName&#xA;ORDER BY c.persistendsfnghnofnhd ASC" returnType="com.gnfjfpked.ghbdjkoe.dsfnghnofnhFormgnghhkdntFieldMapping">
+                    <queryParameters>
+                        <queryParameter name="formgnghhkdntName" className="java.lang.String"/>
+                        <queryParameter name="formFieldName" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+                <query name="findMandatoryBygnghhkdntName" content="SELECT c &#xA;FROM dsfnghnofnhFormgnghhkdntFieldMapping c join fetch c.Formgnghhkdnt join fetch c.FormField &#xA;WHERE c.Mandatory = true&#xD;&#xA;AND&#xD;&#xA;c.Formgnghhkdnt.Name = :FormgnghhkdntName&#xA;ORDER BY c.persistendsfnghnofnhd ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="FormgnghhkdntName" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeDesignfgnmlpgs">
+            <fields>
+                <field type="STRING" length="255" name="LhpReference" nullable="true" collection="false"/>
+                <field type="STRING" length="512" name="LinkAdvertTo" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="Text" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="Branding" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="Font" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="Colours" nullable="true" collection="false"/>
+                <field type="STRING" length="512" name="TermsAndConditionsLink" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeSoldPricesfgnmlpgs">
+            <fields>
+                <field type="STRING" length="255" name="sdfnhjkfjbyhAddress" nullable="true" collection="false"/>
+                <field type="STRING" length="512" name="dfgnhkngExample" nullable="true" collection="false"/>
+                <field type="STRING" length="512" name="dfgnhkngEvidence" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.dsfnghnofnhgnhgjojnzeFraudfgnmlpgs">
+            <fields>
+                <field type="STRING" length="4000" name="WhatHasBeenTaken" nullable="true" collection="false"/>
+                <field type="STRING" length="4000" name="ReasonForKnowing" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="UsedNameOfScammer" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="HasMoneyBeenPaid" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="AmountPaid" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="NameOfAgency" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="BranchIdOfConcern" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.sdfsdkngjdgProduct">
+            <fields>
+                <field type="STRING" length="255" name="name" nullable="true" collection="false"/>
+                <field type="DOUBLE" length="255" name="price" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.sdfsdkngjdggnhkpdger">
+            <fields>
+                <field type="STRING" length="255" name="name" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="gnhkpdgerId" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.sdfsdkngjdgsdfhgnhklg">
+            <fields>
+                <relationField type="AGGREGATION" reference="com.gnfjfpked.ghbdjkoe.sdfsdkngjdggnhkpdger" fetchType="LAZY" name="gnhkpdger" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.gnfjfpked.ghbdjkoe.sdfsdkngjdgsdfhgnhklgLine" fetchType="LAZY" name="lines" nullable="true" collection="true"/>
+                <field type="DATE" length="255" name="sdfhgnhklgfdgfdhmhh" nullable="true" collection="false"/>
+                <field type="DOUBLE" length="255" name="total" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gnfjfpked.ghbdjkoe.sdfsdkngjdgsdfhgnhklgLine">
+            <fields>
+                <relationField type="AGGREGATION" reference="com.gnfjfpked.ghbdjkoe.sdfsdkngjdgProduct" fetchType="LAZY" name="product" nullable="true" collection="false"/>
+                <field type="INTEGER" length="255" name="quantity" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+    </businessObjects>
+</businessObjectModel>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<businessObjectModel modelVersion="1.0" productVersion="7.7.1">
+    <businessObjects>
+        <businessObject qualifiedName="com.gglpenwax.fpopenfs.model.sdfdsfggghData">
+            <fields>
+                <field type="STRING" length="255" name="name" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="valueDefault" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="valueAlternative" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="project" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="list" nullable="true" collection="false"/>
+                <field type="INTEGER" length="255" name="orderPosition" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="enabled" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries>
+                <query name="selectProjects" content="SELECT m &#xA;FROM sdfdsfggghData m &#xA;WHERE &#xA;m.project = 'Framework'&#xA;AND m.list = 'Projects'&#xD;&#xA;AND m.enabled = true&#xA;ORDER BY m.orderPosition ASC" returnType="java.util.List">
+                    <queryParameters/>
+                </query>
+                <query name="selectListsOfProject" content="SELECT m &#xD;&#xA;FROM sdfdsfggghData m &#xD;&#xA;WHERE &#xD;&#xA;m.project = :project&#xD;&#xA;AND m.list = 'Lists'&#xD;&#xA;AND m.enabled = true&#xD;&#xA;ORDER BY m.orderPosition ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="project" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+                <query name="selectItemsOfListOfProject" content="SELECT m &#xA;FROM sdfdsfggghData m &#xA;WHERE &#xA;m.project = :project&#xA;AND m.list = :list&#xA;ORDER BY m.persistenceId ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="project" className="java.lang.String"/>
+                        <queryParameter name="list" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+                <query name="getList" content="SELECT m &#xD;&#xA;FROM sdfdsfggghData m &#xD;&#xA;WHERE &#xD;&#xA;m.project = :project&#xD;&#xA;AND m.list = :list&#xD;&#xA;AND m.enabled = true&#xD;&#xA;ORDER BY m.persistenceId ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="project" className="java.lang.String"/>
+                        <queryParameter name="list" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gglpenwax.fpopenfs.model.fjkpwnaqdation">
+            <fields>
+                <field type="LONG" length="255" name="fjkpwnaqdatorId" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="fjkpwnaqdateId" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="project" nullable="true" collection="false"/>
+                <field type="LOCALDATETIME" length="255" name="sdfdsdfgtbqStart" nullable="true" collection="false"/>
+                <field type="LOCALDATETIME" length="255" name="sdfdsdfgtbqEnd" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="active" nullable="true" collection="false"/>
+                <field type="STRING" length="512" name="comment" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="caseId" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="status" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries>
+                <query name="checkfjkpwnaqdationActive" content="SELECT d &#xA;FROM fjkpwnaqdation d &#xA;WHERE d.fjkpwnaqdatorId = :fjkpwnaqdatorId&#xA;AND d.fjkpwnaqdateId = :fjkpwnaqdateId&#xA;AND d.project = :project&#xD;&#xA;AND d.active = true&#xA;ORDER BY d.persistenceId ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="fjkpwnaqdatorId" className="java.lang.Long"/>
+                        <queryParameter name="fjkpwnaqdateId" className="java.lang.Long"/>
+                        <queryParameter name="project" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+                <query name="countForCheckfjkpwnaqdationActive" content="SELECT count(d)&#xD;&#xA;FROM fjkpwnaqdation d &#xD;&#xA;WHERE d.fjkpwnaqdatorId = :fjkpwnaqdatorId&#xD;&#xA;AND d.fjkpwnaqdateId = :fjkpwnaqdateId&#xD;&#xA;AND d.project = :project&#xD;&#xA;AND d.active = true" returnType="java.lang.Long">
+                    <queryParameters>
+                        <queryParameter name="fjkpwnaqdatorId" className="java.lang.Long"/>
+                        <queryParameter name="fjkpwnaqdateId" className="java.lang.Long"/>
+                        <queryParameter name="project" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+                <query name="listfjkpwnaqdationActivesUser" content="SELECT d &#xA;FROM fjkpwnaqdation d &#xA;WHERE (d.fjkpwnaqdatorId = :fjkpwnaqdatorId OR d.fjkpwnaqdateId= :fjkpwnaqdatorId)&#xA;AND d.active = true&#xA;ORDER BY d.persistenceId ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="fjkpwnaqdatorId" className="java.lang.Long"/>
+                    </queryParameters>
+                </query>
+                <query name="countForListfjkpwnaqdationActivesUser" content="SELECT count(d )&#xD;&#xA;FROM fjkpwnaqdation d &#xD;&#xA;WHERE (d.fjkpwnaqdatorId = :fjkpwnaqdatorId OR d.fjkpwnaqdateId= :fjkpwnaqdatorId)&#xD;&#xA;AND d.active = true" returnType="java.lang.Long">
+                    <queryParameters>
+                        <queryParameter name="fjkpwnaqdatorId" className="java.lang.Long"/>
+                    </queryParameters>
+                </query>
+                <query name="listfjkpwnaqdationExpireesUser" content="SELECT d &#xD;&#xA;FROM fjkpwnaqdation d &#xD;&#xA;WHERE d.fjkpwnaqdatorId = :fjkpwnaqdatorId&#xD;&#xA;AND d.active = false&#xD;&#xA;AND (d.status='Expired' OR d.status='Deleted')&#xD;&#xA;ORDER BY d.persistenceId ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="fjkpwnaqdatorId" className="java.lang.Long"/>
+                    </queryParameters>
+                </query>
+                <query name="countForListfjkpwnaqdationExpireesUser" content="SELECT count(d)&#xD;&#xA;FROM fjkpwnaqdation d &#xD;&#xA;WHERE d.fjkpwnaqdatorId = :fjkpwnaqdatorId&#xD;&#xA;AND (d.status='Expired' OR d.status='Deleted')&#xD;&#xA;AND d.active = false" returnType="java.lang.Long">
+                    <queryParameters>
+                        <queryParameter name="fjkpwnaqdatorId" className="java.lang.Long"/>
+                    </queryParameters>
+                </query>
+                <query name="listDelationActivefjkpwnaqdatorDomain" content="SELECT d &#xA;FROM fjkpwnaqdation d &#xA;WHERE d.fjkpwnaqdatorId = :fjkpwnaqdatorId&#xA;AND d.project = :project&#xA;AND (d.sdfdsdfgtbqStart BETWEEN :sdfdsdfgtbqStart1 AND :sdfdsdfgtbqStart2 OR d.sdfdsdfgtbqEnd BETWEEN :sdfdsdfgtbqStart1 AND :sdfdsdfgtbqStart2)&#xA;ORDER BY d.persistenceId ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="fjkpwnaqdatorId" className="java.lang.Long"/>
+                        <queryParameter name="project" className="java.lang.String"/>
+                        <queryParameter name="sdfdsdfgtbqStart1" className="java.time.LocalDateTime"/>
+                        <queryParameter name="sdfdsdfgtbqStart2" className="java.time.LocalDateTime"/>
+                    </queryParameters>
+                </query>
+                <query name="countForListDelationActivefjkpwnaqdatorDomain" content="SELECT count(d)&#xD;&#xA;FROM fjkpwnaqdation d &#xD;&#xA;WHERE d.fjkpwnaqdatorId = :fjkpwnaqdatorId&#xD;&#xA;AND d.project = :project&#xD;&#xA;AND ((d.sdfdsdfgtbqStart BETWEEN :sdfdsdfgtbqStart1 AND :sdfdsdfgtbqStart2) OR (d.sdfdsdfgtbqEnd BETWEEN :sdfdsdfgtbqStart1 AND :sdfdsdfgtbqStart2))&#xD;&#xA;AND d.status!='Deleted'&#xD;&#xA;" returnType="java.lang.Long">
+                    <queryParameters>
+                        <queryParameter name="fjkpwnaqdatorId" className="java.lang.Long"/>
+                        <queryParameter name="project" className="java.lang.String"/>
+                        <queryParameter name="sdfdsdfgtbqStart1" className="java.time.LocalDateTime"/>
+                        <queryParameter name="sdfdsdfgtbqStart2" className="java.time.LocalDateTime"/>
+                    </queryParameters>
+                </query>
+                <query name="listDelationActivefjkpwnaqdateDomain" content="SELECT d &#xA;FROM fjkpwnaqdation d &#xA;WHERE d.fjkpwnaqdateId = :fjkpwnaqdateId&#xA;AND d.project = :project&#xA;AND (d.sdfdsdfgtbqStart BETWEEN :sdfdsdfgtbqStart1 AND :sdfdsdfgtbqStart2 OR d.sdfdsdfgtbqEnd BETWEEN :sdfdsdfgtbqStart1 AND :sdfdsdfgtbqStart2)&#xA;ORDER BY d.persistenceId ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="fjkpwnaqdateId" className="java.lang.Long"/>
+                        <queryParameter name="project" className="java.lang.String"/>
+                        <queryParameter name="sdfdsdfgtbqStart1" className="java.time.LocalDateTime"/>
+                        <queryParameter name="sdfdsdfgtbqStart2" className="java.time.LocalDateTime"/>
+                    </queryParameters>
+                </query>
+                <query name="countForListDelationActivefjkpwnaqdateDomain" content="SELECT count(d) &#xD;&#xA;FROM fjkpwnaqdation d &#xD;&#xA;WHERE d.fjkpwnaqdateId = :fjkpwnaqdateId&#xD;&#xA;AND d.project = :project&#xD;&#xA;AND ((d.sdfdsdfgtbqStart BETWEEN :sdfdsdfgtbqStart1 AND :sdfdsdfgtbqStart2 OR d.sdfdsdfgtbqEnd BETWEEN :sdfdsdfgtbqStart1 AND :sdfdsdfgtbqStart2) &#xD;&#xA;OR (d.sdfdsdfgtbqStart&lt;= :sdfdsdfgtbqStart1 AND d.sdfdsdfgtbqEnd&gt;=:sdfdsdfgtbqStart2) )&#xD;&#xA;AND d.status!='Deleted'" returnType="java.lang.Long">
+                    <queryParameters>
+                        <queryParameter name="fjkpwnaqdateId" className="java.lang.Long"/>
+                        <queryParameter name="project" className="java.lang.String"/>
+                        <queryParameter name="sdfdsdfgtbqStart1" className="java.time.LocalDateTime"/>
+                        <queryParameter name="sdfdsdfgtbqStart2" className="java.time.LocalDateTime"/>
+                    </queryParameters>
+                </query>
+                <query name="listfjkpwnaqdationNonActivesUser" content="SELECT d &#xD;&#xA;FROM fjkpwnaqdation d &#xD;&#xA;WHERE d.fjkpwnaqdatorId = :fjkpwnaqdatorId&#xD;&#xA;AND d.active = false&#xD;&#xA;AND d.status='Inactive'&#xD;&#xA;ORDER BY d.persistenceId ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="fjkpwnaqdatorId" className="java.lang.Long"/>
+                    </queryParameters>
+                </query>
+                <query name="countForListfjkpwnaqdationNonActivesUser" content="SELECT count(d)&#xD;&#xA;FROM fjkpwnaqdation d &#xD;&#xA;WHERE d.fjkpwnaqdatorId = :fjkpwnaqdatorId&#xD;&#xA;AND d.active = false&#xD;&#xA;AND d.status='Inactive'" returnType="java.lang.Long">
+                    <queryParameters>
+                        <queryParameter name="fjkpwnaqdatorId" className="java.lang.Long"/>
+                    </queryParameters>
+                </query>
+                <query name="listfjkpwnaqdationNonActivesAdmin" content="SELECT d &#xD;&#xA;FROM fjkpwnaqdation d &#xD;&#xA;WHERE d.active = false&#xD;&#xA;AND d.status='Inactive'&#xD;&#xA;ORDER BY d.persistenceId ASC" returnType="java.util.List">
+                    <queryParameters/>
+                </query>
+                <query name="countForListfjkpwnaqdationNonActivesAdmin" content="SELECT count(d)&#xD;&#xA;FROM fjkpwnaqdation d &#xD;&#xA;WHERE d.active = false&#xD;&#xA;AND d.status='Inactive'" returnType="java.lang.Long">
+                    <queryParameters/>
+                </query>
+                <query name="listfjkpwnaqdationExpireesAdmin" content="SELECT d &#xD;&#xA;FROM fjkpwnaqdation d &#xD;&#xA;WHERE d.active = false&#xD;&#xA;AND (d.status='Expired' OR d.status='Deleted')&#xD;&#xA;ORDER BY d.persistenceId ASC" returnType="java.util.List">
+                    <queryParameters/>
+                </query>
+                <query name="countForListfjkpwnaqdationExpireesAdmin" content="SELECT count(d)&#xD;&#xA;FROM fjkpwnaqdation d &#xD;&#xA;WHERE d.active = false&#xD;&#xA;AND (d.status='Expired' OR d.status='Deleted')" returnType="java.lang.Long">
+                    <queryParameters/>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gglpenwax.fpopenfs.model.RelRecoL">
+            <fields>
+                <field type="STRING" length="255" name="requester" nullable="true" collection="false"/>
+                <field type="OFFSETDATETIME" length="255" name="creationDate" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="modifyBy" nullable="true" collection="false"/>
+                <field type="OFFSETDATETIME" length="255" name="modificationDate" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="category" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="projectName" nullable="true" collection="false"/>
+                <field type="TEXT" length="255" name="projectDescription" nullable="true" collection="false"/>
+                <field type="LOCALDATE" length="255" name="launchDate" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="factory" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="phase" nullable="true" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.gglpenwax.fpopenfs.model.RelComments" fetchType="LAZY" name="comments" nullable="true" collection="true"/>
+                <field type="STRING" length="255" name="finalDecision" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="projectCode" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="process" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.gglpenwax.fpopenfs.model.RelComments">
+            <fields>
+                <field type="STRING" length="255" name="author" nullable="true" collection="false"/>
+                <field type="OFFSETDATETIME" length="255" name="creationDate" nullable="true" collection="false"/>
+                <field type="TEXT" length="255" name="comment" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="taskName" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="decision" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+    </businessObjects>
+</businessObjectModel>

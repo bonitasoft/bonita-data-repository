@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<businessObjectModel modelVersion="1.0" productVersion="7.5.4">
+    <businessObjects>
+        <businessObject qualifiedName="fr.klenksglmnxope.dsngapv2.bdm.kdsjfhgfrionSocialesdfbgrnative">
+            <fields>
+                <relationField type="AGGREGATION" reference="fr.klenksglmnxope.dsngapv2.bdm.DSN" fetchType="LAZY" name="dsn" nullable="true" collection="false"/>
+                <relationField type="AGGREGATION" reference="fr.klenksglmnxope.dsngapv2.bdm.dsfbyedtts" fetchType="LAZY" name="dsfbyedtts" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="fr.klenksglmnxope.dsngapv2.bdm.DSN">
+            <fields>
+                <relationField type="AGGREGATION" reference="fr.klenksglmnxope.dsngapv2.bdm.sdvyezx" fetchType="LAZY" name="sdvyezx" nullable="true" collection="false"/>
+                <relationField type="AGGREGATION" reference="fr.klenksglmnxope.dsngapv2.bdm.egernmgmerglsdvyezx" fetchType="LAZY" name="egernmgmerglsdvyezx" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="fr.klenksglmnxope.dsngapv2.bdm.sdvyezx">
+            <fields>
+                <field type="STRING" length="255" name="nomLogiciel" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nomEditeur" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="versionLogiciel" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codesdvyezx" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="versionNorme" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="pointDepot" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="typesdvyezx" nullable="true" collection="false"/>
+                <relationField type="AGGREGATION" reference="fr.klenksglmnxope.dsngapv2.bdm.Emetteur" fetchType="LAZY" name="emetteur" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="fr.klenksglmnxope.dsngapv2.bdm.ContactEmetteur" fetchType="LAZY" name="contactEmetteur" nullable="true" collection="true"/>
+                <relationField type="AGGREGATION" reference="fr.klenksglmnxope.dsngapv2.bdm.DestinataireCRE" fetchType="LAZY" name="destinataireCRE" nullable="true" collection="false"/>
+                <relationField type="AGGREGATION" reference="fr.klenksglmnxope.dsngapv2.bdm.Declarant" fetchType="LAZY" name="declarant" nullable="true" collection="false"/>
+                <relationField type="AGGREGATION" reference="fr.klenksglmnxope.dsngapv2.bdm.InformationsConcentrateurFFSA" fetchType="LAZY" name="informationsConcentrateurFFSA" nullable="true" collection="false"/>
+                <relationField type="AGGREGATION" reference="fr.klenksglmnxope.dsngapv2.bdm.kdsjfhgfrion" fetchType="LAZY" name="kdsjfhgfrion" nullable="true" collection="false"/>
+                <relationField type="AGGREGATION" reference="fr.klenksglmnxope.dsngapv2.bdm.egernmgmerglsdvyezx" fetchType="EAGER" name="egernmgmerglsdvyezx" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="fr.klenksglmnxope.dsngapv2.bdm.Emetteur">
+            <fields>
+                <field type="STRING" length="255" name="SIRENEmetteur" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="NICEmetteur" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="raisonSocialeEmetteur" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="adresseEmetteur" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codePostalEmetteur" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="localiteEmetteur" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="complementLocalisationEmetteur" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="fr.klenksglmnxope.dsngapv2.bdm.ContactEmetteur">
+            <fields>
+                <field type="STRING" length="255" name="civilite" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nomComplet" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="domaineIntervention" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="emailContactEmetteur" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="telephoneContactEmetteur" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="fr.klenksglmnxope.dsngapv2.bdm.DestinataireCRE">
+            <fields>
+                <field type="STRING" length="255" name="SIRENDestinataire" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="NICDestinataire" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="emailDestinataire" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="fr.klenksglmnxope.dsngapv2.bdm.Declarant">
+            <fields>
+                <field type="STRING" length="255" name="nomDeclarant" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="prenomDeclarant" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="SIRETDeclarant" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="modeDepot" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dfgjdfkgjhDepot" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="idFlux" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="emailDeclarant" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="fr.klenksglmnxope.dsngapv2.bdm.InformationsConcentrateurFFSA">
+            <fields>
+                <field type="STRING" length="255" name="idDSNFFSA" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dfgjdfkgjhTraitementFFSA" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="heureTraitementFFSA" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="fr.klenksglmnxope.dsngapv2.bdm.kdsjfhgfrion">
+            <fields>
+                <field type="STRING" length="255" name="naturekdsjfhgfrion" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="typekdsjfhgfrion" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="numFractionkdsjfhgfrion" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="numOrdrekdsjfhgfrion" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="moisConcerne" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dfgjdfkgjhConstitutionfdglpenw" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="champkdsjfhgfrion" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="idEvenement" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="fr.klenksglmnxope.dsngapv2.bdm.dfmlopification" fetchType="LAZY" name="dfmlopification" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="fr.klenksglmnxope.dsngapv2.bdm.glpezn">
+            <fields>
+                <field type="STRING" length="255" name="SIRENglpezn" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="NICglpezn" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="APEN" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="adresseglpezn" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codePostalglpezn" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="localiteglpezn" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="raisonSocialeglpezn" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="fr.klenksglmnxope.dsngapv2.bdm.dfglmrecxssementdfgplencrion" fetchType="LAZY" name="dfglmrecxssementdfgplencrion" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="fr.klenksglmnxope.dsngapv2.bdm.dfglmrecxssementdfgplencrion">
+            <fields>
+                <field type="STRING" length="255" name="NICdfglmrecxssementdfgplencrion" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="APETdfglmrecxssementdfgplencrion" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="adressedfglmrecxssementdfgplencrion" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="codePostaldfglmrecxssementdfgplencrion" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="localitedfglmrecxssementdfgplencrion" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="complementLocalisationdfglmrecxssementdfgplencrion" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dfgjdfkgjhEcheance" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="enseignedfglmrecxssementdfgplencrion" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="fr.klenksglmnxope.dsngapv2.bdm.giopenhie" fetchType="LAZY" name="giopenhie" nullable="true" collection="true"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="fr.klenksglmnxope.dsngapv2.bdm.egernmgmerglsdvyezx">
+            <fields>
+                <field type="STRING" length="255" name="dfbupiRubriques" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dfbupiDSN" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="fr.klenksglmnxope.dsngapv2.bdm.dsfbyedtts">
+            <fields>
+                <field type="STRING" length="255" name="origine" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="hklpenzeurmglopafication" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dfgjdfkgjhCreationdfgdfgdfg" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dfgjdfkgjhmglopafication" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="idfdglpenw" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="statut" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="caseId" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="fr.klenksglmnxope.dsngapv2.bdm.dfmlopification">
+            <fields>
+                <field type="STRING" length="255" name="idDansFlux" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="fr.klenksglmnxope.dsngapv2.bdm.giopenhie">
+            <fields>
+                <field type="STRING" length="255" name="giopenhie" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+    </businessObjects>
+</businessObjectModel>

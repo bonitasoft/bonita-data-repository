@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<businessObjectModel modelVersion="1.0" productVersion="7.6.0">
+    <businessObjects>
+        <businessObject qualifiedName="gh.jlks.gggg.dldkd.fdgfdgknjkrujhg">
+            <fields>
+                <field type="STRING" length="255" name="typefdgfdgknjkrujhg" nullable="true" collection="false"/>
+                <field type="LOCALDATE" length="255" name="fdgfngjkklrbhfdgfdgknjkrujhg" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nomApplicfdgfngjkklrbh" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="fdgfngjkklrbhLivraisonSouhaitee" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="redacteurId" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="redacteurNom" nullable="true" collection="false"/>
+                <field type="TEXT" length="255" name="prerequis" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="hierarchiqueId" nullable="true" collection="false"/>
+                <relfdgfngjkklrbhField type="COMPOSITION" reference="gh.jlks.gggg.dldkd.dfgfdgkjbdfkne" fetchType="LAZY" name="dfgfdgkjbdfknesRessources" nullable="true" collection="true"/>
+                <field type="TEXT" length="255" name="resume" nullable="true" collection="false"/>
+                <field type="TEXT" length="255" name="contexte" nullable="true" collection="false"/>
+                <field type="TEXT" length="255" name="finalites" nullable="true" collection="false"/>
+                <field type="TEXT" length="255" name="existant" nullable="true" collection="false"/>
+                <field type="TEXT" length="255" name="gainAttendu" nullable="true" collection="false"/>
+                <field type="TEXT" length="255" name="pointsAppuis" nullable="true" collection="false"/>
+                <field type="TEXT" length="255" name="risques" nullable="true" collection="false"/>
+                <field type="TEXT" length="255" name="publicConcerne" nullable="true" collection="false"/>
+                <relfdgfngjkklrbhField type="COMPOSITION" reference="gh.jlks.gggg.dldkd.dfgnfpernjlaire" fetchType="LAZY" name="dfgnfpernjlaires" nullable="true" collection="true"/>
+                <relfdgfngjkklrbhField type="COMPOSITION" reference="gh.jlks.gggg.dldkd.sdfmnbntjp" fetchType="LAZY" name="sdfmnbntjps" nullable="true" collection="true"/>
+                <field type="STRING" length="255" name="statutfdgfdgknjkrujhg" nullable="true" collection="false"/>
+                <field type="OFFSETDATETIME" length="255" name="fdgfngjkklrbhdfgkntjpzve" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dfgfdgkjbdfknedfgkntjpzveId" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dfgfdgkjbdfknedfgkntjpzveNom" nullable="true" collection="false"/>
+                <field type="OFFSETDATETIME" length="255" name="fdgfngjkklrbhdfgnhpmjffdgfngjkklrbh" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dfgfdgkjbdfknedfgnhpmjffdgfngjkklrbhId" nullable="true" collection="false"/>
+                <field type="OFFSETDATETIME" length="255" name="fdgfngjkklrbhAvantProjet" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dfgfdgkjbdfkneAvantProjetId" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dfgfdgkjbdfkneAvantProjetNom" nullable="true" collection="false"/>
+                <field type="OFFSETDATETIME" length="255" name="fdgfngjkklrbhcvbnpdemnmrfdgfngjkklrbh" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dfgfdgkjbdfknecvbnpdemnmrfdgfngjkklrbhId" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dfgfdgkjbdfknecvbnpdemnmrfdgfngjkklrbhNom" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="coutEconomique" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="coutHumain" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="equipeProjet" nullable="true" collection="false"/>
+                <field type="TEXT" length="255" name="avantProjetdfgnfpernjlaires" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="fdgfngjkklrbhLivraisonPrevue" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="hierarchiqueNom" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dfgfdgkjbdfknedfgnhpmjffdgfngjkklrbhNom" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="caseId" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="gh.jlks.gggg.dldkd.sdfmnbntjp">
+            <fields>
+                <field type="OFFSETDATETIME" length="255" name="fdgfngjkklrbhCrefdgfngjkklrbh" nullable="true" collection="false"/>
+                <field type="OFFSETDATETIME" length="255" name="fdgfngjkklrbhAssignfdgfngjkklrbh" nullable="true" collection="false"/>
+                <field type="OFFSETDATETIME" length="255" name="fdgfngjkklrbhFinalisfdgfngjkklrbh" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dfgfdgkjbdfkneId" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="dfgfdgkjbdfkneNom" nullable="true" collection="false"/>
+                <field type="TEXT" length="255" name="dfgnfpernjlaire" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="taskName" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="gh.jlks.gggg.dldkd.dfgfdgkjbdfkne">
+            <fields>
+                <field type="STRING" length="255" name="id" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nom" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="structureDivision" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="fonction" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="coordonnees" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="gh.jlks.gggg.dldkd.dfgnfpernjlaire">
+            <fields>
+                <field type="OFFSETDATETIME" length="255" name="fdgfngjkklrbhdfgnfpernjlaire" nullable="true" collection="false"/>
+                <field type="TEXT" length="255" name="dfgnfpernjlaire" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="auteurId" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="auteurNom" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="auteurRole" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+    </businessObjects>
+</businessObjectModel>
