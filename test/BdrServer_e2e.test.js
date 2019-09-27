@@ -1,6 +1,7 @@
 const request = require('supertest');
 const BdrServer = require('../src/server/BdrServer');
 const Logger = require('../src/logger/logger');
+const fs = require('fs');
 
 Logger.init({});
 
@@ -58,5 +59,18 @@ describe('BdrServer_e2e', () => {
         },
         done
       );
+  });
+
+  test('POST all bdms content', async () => {
+    let xmlFiles = fs.readdirSync('test/resources');
+    for (const xmlFile of xmlFiles) {
+      let bdmXmlContent = fs.readFileSync('test/resources/' + xmlFile, 'utf8');
+      const res = await request(myself.app)
+        .post('/bdm')
+        .set('Content-Type', 'application/json')
+        .send({ bdmXml: bdmXmlContent });
+
+      expect(res.statusCode).toEqual(200);
+    }
   });
 });
