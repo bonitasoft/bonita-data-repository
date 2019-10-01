@@ -23,7 +23,8 @@ const graphqlHTTP = require('express-graphql');
 const cors = require('cors');
 const xmlParser = require('xml-js');
 const GraphqlSchemaGenerator = require('../schema/GraphqlSchemaGenerator');
-let StudioHealthCheck = require('./StudioHealthCheck');
+const StudioHealthCheck = require('./StudioHealthCheck');
+const emptySchema = 'type Query { content: String }';
 
 class BdrServer {
   constructor(config) {
@@ -110,8 +111,17 @@ class BdrServer {
     });
   }
 
+  addBdmDeleteRoute() {
+    let myself = this;
+    this.expressApp.delete('/bdm', function(req, res) {
+      myself.logger.debug('BDM deleted.');
+      myself._deleteBdm();
+      res.send();
+    });
+  }
+
   _buildInitialGraphqlSchema() {
-    let schema = buildSchema('type Query { content: String }');
+    let schema = buildSchema(emptySchema);
     if (this.config.bdmFile) {
       let bdmXml = fs.readFileSync(this.config.bdmFile, 'utf8');
       schema = this._getSchema(bdmXml);
@@ -142,6 +152,14 @@ class BdrServer {
 
   _handleNewBdmXml(bdmXml) {
     let newSchema = this._getSchema(bdmXml);
+    this._updateSchema(newSchema);
+  }
+
+  _deleteBdm() {
+    this._updateSchema(buildSchema(emptySchema));
+  }
+
+  _updateSchema(newSchema) {
     this._removeGraphqlRoute();
     this.schema = newSchema;
     this.addGraphqlRoute();

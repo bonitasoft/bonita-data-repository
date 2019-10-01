@@ -42,6 +42,19 @@ describe('BdrServer', () => {
     expect(graphqlTypes.com_company_model_CustomerQuery).toBeDefined();
   });
 
+  test('should remove BDM', () => {
+    let server = new BdrServer([]);
+    let bdmXml = _getBdmXml('test/resources/bdm_CustomerOrder.xml');
+    server._handleNewBdmXml(bdmXml);
+    let graphqlTypes = server.getSchema()._typeMap;
+    expect(graphqlTypes.com_company_model_Customer).toBeDefined();
+    expect(graphqlTypes.com_company_model_CustomerQuery).toBeDefined();
+    server._deleteBdm();
+    graphqlTypes = server.getSchema()._typeMap;
+    expect(graphqlTypes.com_company_model_Customer).toBeUndefined();
+    expect(graphqlTypes.com_company_model_CustomerQuery).toBeUndefined();
+  });
+
   function _getBdmXml(xmlFilePath) {
     return fs.readFileSync(xmlFilePath, 'utf8');
   }
