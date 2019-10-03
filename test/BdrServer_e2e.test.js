@@ -17,6 +17,7 @@ describe('BdrServer_e2e', () => {
     let server = new BdrServer([]);
     server.addGraphqlRoute();
     server.addBdmPostRoute();
+    server.addBdmDeleteRoute();
     myself.app = server.getExpressApp();
   });
 
@@ -72,5 +73,31 @@ describe('BdrServer_e2e', () => {
 
       expect(res.statusCode).toEqual(200);
     }
+  });
+
+  test('DELETE bdm', async done => {
+    // Post BDM
+    const resPost = await request(myself.app)
+      .post('/bdm')
+      .set('Content-Type', 'application/json')
+      .send({ bdmXml: simpleBdmXml });
+    expect(resPost.statusCode).toEqual(200);
+
+    const resDelete = await request(myself.app).delete('/bdm');
+    expect(resDelete.statusCode).toEqual(200);
+
+    // Check graphQL introspection : should have no type
+    request(myself.app)
+      .post('/bdr')
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json')
+      .send({ query: ' { __type(name: "com_company_model_BusinessObject") { name }}' })
+      .expect(
+        200,
+        {
+          data: { __type: null }
+        },
+        done
+      );
   });
 });
