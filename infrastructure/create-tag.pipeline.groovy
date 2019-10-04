@@ -17,16 +17,13 @@ pipeline {
 
         }
         stage('Tag') {
-            when {
-                expression { params.TAG }
-            }
             steps {
                 script {
                     withCredentials([usernamePassword(
                             credentialsId: 'github',
                             passwordVariable: 'GIT_PASSWORD',
                             usernameVariable: 'GIT_USERNAME')]) {
-                        sh "./infrastructure/release.sh ${tag}" true
+                        sh "./infrastructure/release.sh ${tag} true"
                     }
                 }
             }
