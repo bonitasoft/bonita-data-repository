@@ -1,4 +1,4 @@
-# BDM repository server
+# Bonita Data Repository server
 
 ## Installation
 
@@ -55,5 +55,13 @@ http://localhost:4000/bdr
 ## Post a BDM (from string)
 
 ```
-$ curl -v -H "Content-Type: application/json" localhost:4000/bdm -d '{"bdmXml": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?> <businessObjectModel modelVersion=\"1.0\" productVersion=\"7.10.0-SNAPSHOT\"> <businessObjects> <businessObject qualifiedName=\"com.company.model.BusinessObject1\"> <fields> <field type=\"STRING\" length=\"255\" name=\"attribute1\" nullable=\"true\" collection=\"false\"/> </fields> <uniqueConstraints/> <queries/> <indexes/> </businessObject> </businessObjects> </businessObjectModel>"}'
+$ curl -H "Content-Type: application/json" localhost:4000/bdm -d '{"bdmXml": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?> <businessObjectModel modelVersion=\"1.0\" productVersion=\"7.10.0-SNAPSHOT\"> <businessObjects> <businessObject qualifiedName=\"com.company.model.BusinessObject1\"> <fields> <field type=\"STRING\" length=\"255\" name=\"attribute1\" nullable=\"true\" collection=\"false\"/> </fields> <uniqueConstraints/> <queries/> <indexes/> </businessObject> </businessObjects> </businessObjectModel>"}'
+```
+
+## Delete a BDM
+
+Reset the repository in its initial state (with no BDM)
+
+```
+curl -X DELETE localhost:4000/bdm
 ```
