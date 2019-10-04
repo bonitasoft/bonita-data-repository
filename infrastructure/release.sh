@@ -14,7 +14,6 @@ commit_and_push() {
       git commit -a -m "chore(release) prepare next development version $RELEASE_VERSION"
       git push
   fi
-  popd
 }
 
 usage() {
@@ -51,9 +50,6 @@ then
     exit 1
 fi
 
-BASEDIR=$(dirname $(readlink -f "$0"))/..
-pushd $BASEDIR
-
 RELEASE_VERSION=$1
 
 ###################################################################################################
@@ -73,4 +69,3 @@ fi
 
 # Commit and tag
 commit_and_push $isRelease
-popd

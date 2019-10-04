@@ -28,15 +28,10 @@ get_current_version() {
     grep -Po -m1 '(?<=<version>).*(?=</version>)' $1
 }
 
-BASEDIR=$(dirname $(readlink -f "$0"))/..
-pushd $BASEDIR
-
 RELEASE_VERSION=$1
 CUR_VERSION=$(get_current_version pom.xml)
 
 
 echo "--- Changing version from $CUR_VERSION to $RELEASE_VERSION"
 # replace first <version> value in poms
-find . -name "pom.xml" | while read pom; do replace_first_version $RELEASE_VERSION "$pom"; done\
-
-popd
+find . -name "pom.xml" | while read pom; do replace_first_version $RELEASE_VERSION "$pom"; done
