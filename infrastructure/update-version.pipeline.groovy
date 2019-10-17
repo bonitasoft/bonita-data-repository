@@ -18,6 +18,7 @@ pipeline {
         stage('Tag') {
             steps {
                 script {
+                    sh " git config --global push.default matching"
                     sh "./infrastructure/release.sh ${params.newVersion} false"
 
                 }
