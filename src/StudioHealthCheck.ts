@@ -55,12 +55,8 @@ export class StudioHealthCheck {
     let myself = this;
     request(this.getRequestUrl(), function(error: any, response: any, body: any) {
       if (error || response.statusCode !== 200) {
-        try {
-          myself.logger.error('Connexion with Studio lost. Shutdown incoming');
-          throw new Error('Connexion with Studio lost. Shutdown incoming');
-        } catch (ex) {
-          // nothing to do
-        }
+        myself.logger.error('Connexion with Studio lost. Shutdown incoming');
+        process.exit(1);
       }
     });
   }
