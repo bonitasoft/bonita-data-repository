@@ -15,15 +15,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+import { Configuration } from './Configuration';
+
 const winston = require('winston');
-const ManageParameters = require('./ManageParameters');
-const Logger = require('../logger/logger');
-const BdrServer = require('./BdrServer');
+import { BdrServer } from './BdrServer';
+import { ConfigurationManager } from './ConfigurationManager';
+import { BdrLogger } from '../logger/BdrLogger';
 
 // Handle server parameters
-let config = ManageParameters.buildConfig(process.argv);
+let config: Configuration = new ConfigurationManager(process.argv).getConfig();
 
-Logger.init(config);
+BdrLogger.init(config);
 let logger = winston.loggers.get('bo-logger');
 
 const bdrServer = new BdrServer(config);
@@ -58,5 +60,5 @@ logger.info(
 );
 logger.debug(`Server is starting with following config ${JSON.stringify(config)}`);
 logger.info(
-  `Server is running on http://${bdrServer.getHost()}:${bdrServer.getPort()}${bdrServer.getGraphqlPath()}`
+  `Server is running on http://${bdrServer.getHost()}:${bdrServer.getPort()}${BdrServer.getGraphqlPath()}`
 );

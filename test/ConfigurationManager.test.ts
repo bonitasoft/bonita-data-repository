@@ -15,11 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-const ManageParameters = require('../src/server/ManageParameters');
-const mock = require('mock-fs');
-const Logger = require('../src/logger/logger');
+import { BdrLogger } from '../src/logger/BdrLogger';
+import { Configuration } from '../src/server/Configuration';
+import { ConfigurationManager } from '../src/server/ConfigurationManager';
 
-Logger.init({});
+const mock = require('mock-fs');
+
+BdrLogger.init(new Configuration());
 
 describe('ManageParameters', () => {
   test('should build load config file when config parameter is define', () => {
@@ -27,10 +29,14 @@ describe('ManageParameters', () => {
       configs: {
         'development.json':
           '{\n' +
-          '  "port": "4000",\n' +
           '  "bdmFile": "resources/bomAG2R.xml",\n' +
+          '  "host": "myHost",\n' +
+          '  "port": "4000",\n' +
           '  "logFile": "target/log/data-repository.log",\n' +
-          '  "logLevel": "debug"\n' +
+          '  "logLevel": "debug",\n' +
+          '  "healthCheckUrl": "/api/workspace/status",\n' +
+          '  "healthCheckHost": "http://myHealthCheckHost",\n' +
+          '  "healthCheckPort": "5051"\n' +
           '}\n',
         'empty-dir': {
           /** empty directory */
@@ -38,12 +44,17 @@ describe('ManageParameters', () => {
       }
     });
 
-    let config = ManageParameters.buildConfig(['config=configs/development.json']);
+    let manager = new ConfigurationManager(['config=configs/development.json']);
+    let config = manager.getConfig();
 
+    expect(config.host).toBe('myHost');
     expect(config.port).toBe('4000');
     expect(config.bdmFile).toBe('resources/bomAG2R.xml');
     expect(config.logFile).toBe('target/log/data-repository.log');
     expect(config.logLevel).toBe('debug');
+    expect(config.healthCheckUrl).toBe('/api/workspace/status');
+    expect(config.healthCheckHost).toBe('http://myHealthCheckHost');
+    expect(config.healthCheckPort).toBe('5051');
     mock.restore();
   });
 
@@ -63,9 +74,12 @@ describe('ManageParameters', () => {
       }
     });
 
-    let config = ManageParameters.buildConfig(['config=configs/development.json', 'port=4444']);
+    let config = new ConfigurationManager([
+      'config=configs/development.json',
+      'port=4444'
+    ]).getConfig();
 
-    expect(config.port).toBe('4444');
+    expect(config.port).toBe(4444);
     expect(config.bdmFile).toBe('resources/bomAG2R.xml');
     expect(config.logFile).toBe('target/log/data-repository.log');
     expect(config.logLevel).toBe('debug');
@@ -73,28 +87,13 @@ describe('ManageParameters', () => {
   });
 
   test('should build parameter when parameters is only given on starting', () => {
-    mock({
-      configs: {
-        'development.json':
-          '{\n' +
-          '  "port": "4000",\n' +
-          '  "bdmFile": "resources/bomAG2R.xml",\n' +
-          '  "logFile": "target/log/data-repository.log",\n' +
-          '  "logLevel": "debug"\n' +
-          '}\n',
-        'empty-dir': {
-          /** empty directory */
-        }
-      }
-    });
-
-    let config = ManageParameters.buildConfig([
+    let config = new ConfigurationManager([
       'port=4444',
       'logFile=target/log/data-repository.log',
       'logLevel=debug'
-    ]);
+    ]).getConfig();
 
-    expect(config.port).toBe('4444');
+    expect(config.port).toBe(4444);
     expect(config.bdmFile).toBe(undefined);
     expect(config.logFile).toBe('target/log/data-repository.log');
     expect(config.logLevel).toBe('debug');

@@ -1,23 +1,19 @@
-const GraphqlSchemaGenerator = require('../src/schema/GraphqlSchemaGenerator');
 const fs = require('fs');
 const xmlParser = require('xml-js');
 const { buildSchema } = require('graphql');
-const Logger = require('../src/logger/logger');
 
-Logger.init({});
+import { GraphqlSchemaGenerator } from '../src/schema/GraphqlSchemaGenerator';
+import { BdrLogger } from '../src/logger/BdrLogger';
+import { Configuration } from '../src/server/Configuration';
+
+BdrLogger.init(new Configuration());
 
 describe('GraphqlSchemaGenerator', () => {
-  test('should return an error if no bdm given at init', () => {
-    expect(() => {
-      new GraphqlSchemaGenerator();
-    }).toThrow();
-  });
-
   test('Check valid graphQL schema with various BDMs', () => {
-    let xmlFiles = fs.readdirSync('test/resources');
-    xmlFiles.forEach(xmlFile => {
+    let xmlFiles: any = fs.readdirSync('test/resources');
+    for (let xmlFile of xmlFiles) {
       buildSchema(_getSchema('test/resources/' + xmlFile));
-    });
+    }
   });
 
   test('Check expected types in graphQL schema', () => {
@@ -83,7 +79,7 @@ describe('GraphqlSchemaGenerator', () => {
     expect(schema).toContain('com_company_model_OrderInfoQuery: com_company_model_OrderInfoQuery');
   });
 
-  function _getSchema(xmlFilePath) {
+  function _getSchema(xmlFilePath: string) {
     let bdmXml = fs.readFileSync(xmlFilePath, 'utf8');
     let bdmJson = xmlParser.xml2json(bdmXml, { compact: true, spaces: 4 });
     let schemaGenerator = new GraphqlSchemaGenerator(bdmJson);
