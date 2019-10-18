@@ -66,6 +66,7 @@ export class BdrServer {
 
   public start() {
     this.expressApp.listen(this.port, this.host);
+    this.addBdrServerRootRoute();
   }
 
   public getPort() {
@@ -128,6 +129,12 @@ export class BdrServer {
       myself.logger.debug('BDM deleted.');
       myself.deleteBdm();
       res.send();
+    });
+  }
+
+  public addBdrServerRootRoute() {
+    this.expressApp.get('/', function(req: any, res: any) {
+      res.send('<h3>Bonita Data Repository server is up and running</h3>');
     });
   }
 
