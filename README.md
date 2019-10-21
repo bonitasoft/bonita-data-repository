@@ -17,6 +17,8 @@ Start the server with a BDM:
 
 ```
 $ node target/src/server/starter.js bdmFile=YOUR_PATH/bdm_simple.xml
+or 
+$ npm run start bdmFile=YOUR_PATH/bdm_simple.xml
 ```
 
 ### Options
