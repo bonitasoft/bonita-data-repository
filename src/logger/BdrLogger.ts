@@ -15,14 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-'use strict';
+
+import { Configuration } from '../server/Configuration';
 
 const winston = require('winston');
 const winstonDailyRotateFile = require('winston-daily-rotate-file');
 const path = require('path');
 
-class Logger {
-  init(config) {
+export class BdrLogger {
+  public static init(config: Configuration) {
     let label = '';
     if (process.mainModule) {
       label = path.basename(process.mainModule.filename);
@@ -32,7 +33,7 @@ class Logger {
         winston.format.label({ label: label }),
         winston.format.colorize(),
         winston.format.timestamp(),
-        winston.format.printf(info => {
+        winston.format.printf((info: any) => {
           return `${info.timestamp} ${info.level}: ${info.message}`;
         })
       ),
@@ -50,4 +51,3 @@ class Logger {
     });
   }
 }
-module.exports = new Logger();

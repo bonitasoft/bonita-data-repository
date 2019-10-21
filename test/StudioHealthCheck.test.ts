@@ -15,24 +15,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-const StudioHealthCheck = require('../src/server/StudioHealthCheck');
-const Logger = require('../src/logger/logger');
 
-Logger.init({});
+import { BdrLogger } from '../src/logger/BdrLogger';
+import { Configuration } from '../src/server/Configuration';
+import { StudioHealthCheck } from '../src/StudioHealthCheck';
+
+BdrLogger.init(new Configuration());
 
 describe('StudioHealthCheck', () => {
   test('should init when parameter is given in parameter', () => {
     let healthCheck = new StudioHealthCheck('http://myHost', '/myCustomEndPoint/status', 64027);
-    expect(healthCheck.host).toBe('http://myHost');
-    expect(healthCheck.port).toBe(64027);
-    expect(healthCheck.healthCheckUrl).toBe('/myCustomEndPoint/status');
+    expect(healthCheck.getHost()).toBe('http://myHost');
+    expect(healthCheck.getPort()).toBe(64027);
+    expect(healthCheck.getUrl()).toBe('/myCustomEndPoint/status');
   });
 
   test('should init host when no host value is given in parameter', () => {
     let healthCheck = new StudioHealthCheck('', '/myCustomEndPoint/status', 64027);
-    expect(healthCheck.host).toBe('http://localhost');
-    expect(healthCheck.port).toBe(64027);
-    expect(healthCheck.healthCheckUrl).toBe('/myCustomEndPoint/status');
+    expect(healthCheck.getHost()).toBe('http://localhost');
+    expect(healthCheck.getPort()).toBe(64027);
+    expect(healthCheck.getUrl()).toBe('/myCustomEndPoint/status');
   });
 
   test('should build a valid request url', () => {

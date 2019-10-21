@@ -69,11 +69,21 @@
                         </goals>
                     </execution>
                     <execution>
+                        <id>typescript compile</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>compile</phase>
+                        <configuration>
+                            <arguments>run typescript-compile</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>npm test</id>
                         <goals>
                             <goal>npm</goal>
                         </goals>
-                        <phase>generate-resources</phase>
+                        <phase>test</phase>
                         <configuration>
                             <arguments>run test</arguments>
                         </configuration>
@@ -83,7 +93,7 @@
                         <goals>
                             <goal>npm</goal>
                         </goals>
-                        <phase>generate-resources</phase>
+                        <phase>prepare-package</phase>
                         <configuration>
                             <arguments>run package</arguments>
                         </configuration>

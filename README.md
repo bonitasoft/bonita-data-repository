@@ -1,9 +1,9 @@
 # Bonita Data Repository server
 
-## Installation
+## Build / Installation
 
 ```
-$ npm install
+$ mvn clean install
 ```
 
 ## Start the server
@@ -16,7 +16,9 @@ Server is running on http://localhost:4000
 Start the server with a BDM:
 
 ```
-$ node src/server.js bdmFile=YOUR_PATH/bdm_simple.xml
+$ node target/src/server/starter.js bdmFile=YOUR_PATH/bdm_simple.xml
+or 
+$ npm run start bdmFile=YOUR_PATH/bdm_simple.xml
 ```
 
 ### Options

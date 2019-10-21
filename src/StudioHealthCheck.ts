@@ -18,34 +18,45 @@
 const request = require('request');
 const winston = require('winston');
 
-/**
- * @type {module.StudioHealthCheck}
- */
-class StudioHealthCheck {
-  constructor(host, healthCheckUrl, port) {
+export class StudioHealthCheck {
+  private readonly host: string;
+  private readonly port: number;
+  private readonly url: string;
+  private readonly logger: any;
+
+  constructor(host: string, url: string, port: number) {
     this.host = host || 'http://localhost';
-    this.healthCheckUrl = healthCheckUrl;
+    this.url = url;
     this.port = port;
     this.logger = winston.loggers.get('bo-logger');
-    this.logger.debug(`${this.host}:${this.port}${this.healthCheckUrl}`);
+    this.logger.debug(`${this.host}:${this.port}${this.url}`);
   }
 
-  getRequestUrl() {
-    return `${this.host}:${this.port}${this.healthCheckUrl}`;
+  getRequestUrl(): string {
+    return `${this.host}:${this.port}${this.url}`;
+  }
+
+  getHost(): string {
+    return this.host;
+  }
+
+  getPort(): number {
+    return this.port;
+  }
+
+  getUrl(): string {
+    return this.url;
   }
 
   /**
    * Request endpoint and close process if error
    */
   healthCheck() {
-    request(this.getRequestUrl(), function(error, response, body) {
+    let myself = this;
+    request(this.getRequestUrl(), function(error: any, response: any, body: any) {
       if (error || response.statusCode !== 200) {
-        try {
-          this.logger.error('Connexion with Studio lost. Shutdown incoming');
-          throw new Error('Connexion with Studio lost. Shutdown incoming');
-        } catch (ex) {
-          next(ex);
-        }
+        myself.logger.error('Connexion with Studio lost. Shutdown incoming');
+        process.exit(1);
       }
     });
   }
@@ -54,9 +65,7 @@ class StudioHealthCheck {
    * Call HealthCheck periodically
    * @param interval
    */
-  healthCheckWithInterval(interval) {
+  healthCheckWithInterval(interval: number) {
     setInterval(this.healthCheck.bind(this), interval);
   }
 }
-
-module.exports = StudioHealthCheck;

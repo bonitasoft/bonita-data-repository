@@ -15,6 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+import { Configuration } from './Configuration';
+
 const winston = require('winston');
 const fs = require('fs');
 const { buildSchema } = require('graphql');
@@ -22,22 +25,30 @@ const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const cors = require('cors');
 const xmlParser = require('xml-js');
-const GraphqlSchemaGenerator = require('../schema/GraphqlSchemaGenerator');
-const StudioHealthCheck = require('./StudioHealthCheck');
-const emptySchema = 'type Query { content: String }';
+import { GraphqlSchemaGenerator } from '../schema/GraphqlSchemaGenerator';
+import { StudioHealthCheck } from '../StudioHealthCheck';
+import { Application } from 'express';
+import { BdrLogger } from '../logger/BdrLogger';
 
-class BdrServer {
-  constructor(config) {
-    if (!config) {
-      throw 'Missing server config';
-    }
+export class BdrServer {
+  private readonly config: any;
+  private readonly port: number;
+  private readonly host: string;
+  private static readonly graphqlPath = '/bdr';
+  private readonly logger: any;
+  private static readonly emptySchema = 'type Query { content: String }';
+  private schema: string;
+  private readonly resolvers: object;
+  private readonly expressApp: Application;
+
+  constructor(config: Configuration) {
+    this.logger = winston.loggers.get('bo-logger');
+
     // Port default value
     this.config = config;
     this.port = config.port || 4000;
     this.host = config.host || '127.0.0.1';
-    this.graphqlPath = '/bdr';
-    this.logger = winston.loggers.get('bo-logger');
-    this.schema = this._buildInitialGraphqlSchema();
+    this.schema = this.buildInitialGraphqlSchema();
     this.resolvers = {
       Query: {}
     };
@@ -53,31 +64,32 @@ class BdrServer {
     this.expressApp.use(cors());
   }
 
-  start() {
+  public start() {
     this.expressApp.listen(this.port, this.host);
+    this.addBdrServerRootRoute();
   }
 
-  getPort() {
+  public getPort() {
     return this.port;
   }
 
-  getHost() {
+  public getHost() {
     return this.host;
   }
 
-  getGraphqlPath() {
+  public static getGraphqlPath() {
     return this.graphqlPath;
   }
 
-  getExpressApp() {
+  public getExpressApp(): Application {
     return this.expressApp;
   }
 
-  getSchema() {
+  public getSchema() {
     return this.schema;
   }
 
-  startHealthCheckIfNeeded() {
+  public startHealthCheckIfNeeded() {
     if (this.config.healthCheckUrl && this.config.healthCheckPort) {
       this.logger.info('Listen Studio health check connection');
       let studioHealthCheck = new StudioHealthCheck(
@@ -91,9 +103,9 @@ class BdrServer {
     }
   }
 
-  addGraphqlRoute() {
+  public addGraphqlRoute() {
     this.expressApp.use(
-      this.graphqlPath,
+      BdrServer.graphqlPath,
       graphqlHTTP({
         schema: this.schema,
         rootValue: this.resolvers,
@@ -102,45 +114,66 @@ class BdrServer {
     );
   }
 
-  addBdmPostRoute() {
+  public addBdmPostRoute() {
     let myself = this;
-    this.expressApp.post('/bdm', function(req, res) {
+    this.expressApp.post('/bdm', function(req: any, res: any) {
       myself.logger.debug('BDM pushed.');
-      myself._handleNewBdmXml(req.body.bdmXml);
+      myself.handleNewBdmXml(req.body.bdmXml);
       res.send();
     });
   }
 
-  addBdmDeleteRoute() {
+  public addBdmDeleteRoute() {
     let myself = this;
-    this.expressApp.delete('/bdm', function(req, res) {
+    this.expressApp.delete('/bdm', function(req: any, res: any) {
       myself.logger.debug('BDM deleted.');
-      myself._deleteBdm();
+      myself.deleteBdm();
       res.send();
     });
   }
 
-  _buildInitialGraphqlSchema() {
-    let schema = buildSchema(emptySchema);
+  public addBdrServerRootRoute() {
+    this.expressApp.get('/', function(req: any, res: any) {
+      res.send('<h3>Bonita Data Repository server is up and running</h3>');
+    });
+  }
+
+  // public for tests
+  public handleNewBdmXml(bdmXml: string) {
+    let newSchema = BdrServer.getSchemaFromBdmXml(bdmXml);
+    this.updateSchema(newSchema);
+  }
+
+  // public for tests
+  public deleteBdm() {
+    this.updateSchema(buildSchema(BdrServer.emptySchema));
+  }
+
+  //
+  // Private methods
+  //
+
+  private buildInitialGraphqlSchema(): string {
+    let schema = buildSchema(BdrServer.emptySchema);
     if (this.config.bdmFile) {
       let bdmXml = fs.readFileSync(this.config.bdmFile, 'utf8');
-      schema = this._getSchema(bdmXml);
+      schema = BdrServer.getSchemaFromBdmXml(bdmXml);
       this.logger.debug(`BDM added:  ${this.config.bdmFile}`);
     }
     return schema;
   }
 
-  _getSchema(bdmXml) {
+  private static getSchemaFromBdmXml(bdmXml: string): any {
     let bdmJson = xmlParser.xml2json(bdmXml, { compact: true, spaces: 4 });
     let schemaGenerator = new GraphqlSchemaGenerator(bdmJson);
     schemaGenerator.generate();
     return buildSchema(schemaGenerator.getSchema());
   }
 
-  _removeGraphqlRoute() {
+  private removeGraphqlRoute() {
     let routes = this.expressApp._router.stack;
     routes.forEach(removeMiddlewares);
-    function removeMiddlewares(route, i, routes) {
+    function removeMiddlewares(route: any, i: any, routes: any) {
       if (route.handle.name === 'graphqlMiddleware') {
         routes.splice(i, 1);
       }
@@ -150,20 +183,9 @@ class BdrServer {
     }
   }
 
-  _handleNewBdmXml(bdmXml) {
-    let newSchema = this._getSchema(bdmXml);
-    this._updateSchema(newSchema);
-  }
-
-  _deleteBdm() {
-    this._updateSchema(buildSchema(emptySchema));
-  }
-
-  _updateSchema(newSchema) {
-    this._removeGraphqlRoute();
+  private updateSchema(newSchema: string) {
+    this.removeGraphqlRoute();
     this.schema = newSchema;
     this.addGraphqlRoute();
   }
 }
-
-module.exports = BdrServer;
