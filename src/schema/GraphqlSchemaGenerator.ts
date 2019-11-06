@@ -152,6 +152,10 @@ export class GraphqlSchemaGenerator {
     // }
     queries.push('type ', bdmObjectName, 'AttributeQuery {\n');
     for (let bdmAtt of bdmAttsArray) {
+      // Do not generate query for collection attribute
+      if (bdmAtt._attributes.collection === 'true') {
+        continue;
+      }
       let attName = bdmAtt._attributes.name;
       let type = GraphqlSchemaGenerator.xmlToGraphqlType(bdmAtt._attributes.type);
       queries.push(
