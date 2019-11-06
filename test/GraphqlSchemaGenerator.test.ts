@@ -30,6 +30,7 @@ describe('GraphqlSchemaGenerator', () => {
     expect(schema).toContain('findByName(name: String!): com_company_model_Customer');
     expect(schema).toContain('findByAddress(address: String!): com_company_model_Customer');
     expect(schema).toContain('findByPhoneNumber(phoneNumber: String!): com_company_model_Customer');
+    expect(schema).not.toContain('findByComment');
     expect(schema).toContain('find: com_company_model_Customer');
 
     expect(schema).toContain('type com_company_model_OrderInfoAttributeQuery');
