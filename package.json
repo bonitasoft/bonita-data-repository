@@ -11,7 +11,8 @@
     "prettier:check": "prettier --check \"src/**/*.js\"",
     "prettier:fix": "prettier --write \"src/**/*.js\"",
     "test": "jest 2>&1",
-    "test:dev": "jest --watch"
+    "test:dev": "jest --watch",
+    "listDependencies": "license-checker --json --production > ./target/bonita-data-repository-dependencies.json"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +29,7 @@
   "devDependencies": {
     "husky": "^3.0.5",
     "jest": "^24.9.0",
+    "license-checker": "^25.0.1",
     "mock-fs": "^4.10.1",
     "pkg": "^4.4.0",
     "prettier": "^1.18.2",
