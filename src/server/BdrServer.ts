@@ -28,7 +28,7 @@ const xmlParser = require('xml-js');
 import { GraphqlSchemaGenerator } from '../schema/GraphqlSchemaGenerator';
 import { StudioHealthCheck } from '../StudioHealthCheck';
 import { Application } from 'express';
-import { BdrLogger } from '../logger/BdrLogger';
+import { GraphQLScalarType, StringValueNode } from 'graphql';
 
 export class BdrServer {
   private readonly config: any;
@@ -50,7 +50,21 @@ export class BdrServer {
     this.host = config.host || '127.0.0.1';
     this.schema = this.buildInitialGraphqlSchema();
     this.resolvers = {
-      Query: {}
+      Query: {},
+      DateTime: new GraphQLScalarType({
+        name: 'DateTime',
+        description: 'A date and time, represented as a string',
+        serialize: value => value,
+        parseValue: value => value,
+        parseLiteral: ast => (<StringValueNode>ast).value
+      }),
+      Date: new GraphQLScalarType({
+        name: 'Date',
+        description: 'A date, represented as a string',
+        serialize: value => value,
+        parseValue: value => value,
+        parseLiteral: ast => (<StringValueNode>ast).value
+      })
     };
     this.expressApp = express();
     // Tell Express to parse application/json

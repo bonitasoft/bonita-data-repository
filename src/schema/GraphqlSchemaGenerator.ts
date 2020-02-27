@@ -38,6 +38,11 @@ export class GraphqlSchemaGenerator {
     ) {
       return;
     }
+
+    // Custom types
+    this.schema.push('scalar Date\n');
+    this.schema.push('scalar DateTime\n\n');
+
     let bdmBusObjects: any[] = GraphqlSchemaGenerator.asArray(
       bdm.businessObjectModel.businessObjects.businessObject
     );
@@ -114,6 +119,7 @@ export class GraphqlSchemaGenerator {
   }
 
   public getSchema() {
+    // console.log(this.schema.join(''));
     return this.schema.join('');
   }
 
@@ -353,12 +359,14 @@ export class GraphqlSchemaGenerator {
       case 'FLOAT':
         return 'Float';
       case 'STRING':
-      case 'LOCALDATE':
-      case 'LOCALDATETIME':
-      case 'OFFSETDATETIME':
-      case 'DATE':
       case 'TEXT':
         return 'String';
+      case 'LOCALDATE':
+      case 'DATE':
+        return 'Date';
+      case 'LOCALDATETIME':
+      case 'OFFSETDATETIME':
+        return 'DateTime';
       default:
         return xmlType;
     }
