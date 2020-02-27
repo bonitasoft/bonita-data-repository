@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<businessObjectModel modelVersion="1.0" productVersion="7.10.1">
+    <businessObjects>
+        <businessObject qualifiedName="com.company.model.BusinessObject">
+            <fields>
+                <field type="STRING" length="255" name="attribute1" nullable="true" collection="false"/>
+                <field type="LOCALDATE" length="255" name="dateOnly" nullable="true" collection="false"/>
+                <field type="LOCALDATETIME" length="255" name="dateTimeNoTz" nullable="true" collection="false"/>
+                <field type="OFFSETDATETIME" length="255" name="dateTimeTz" nullable="true" collection="false"/>
+                <field type="DATE" length="255" name="dateNotRecomm" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries>
+                <query name="query1" content="SELECT b &#xA;FROM BusinessObject b &#xA;WHERE b.attribute1 = :attribute1&#xA;ORDER BY b.persistenceId ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="attribute1" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+    </businessObjects>
+</businessObjectModel>
