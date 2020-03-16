@@ -38,6 +38,7 @@ export class BdrServer {
   private readonly logger: any;
   private static readonly emptySchema = 'type Query { content: String }';
   private schema: string;
+  private static bdmJson: string = '{}';
   private readonly resolvers: object;
   private readonly expressApp: Application;
 
@@ -137,6 +138,14 @@ export class BdrServer {
     });
   }
 
+  public addBdmGetRoute() {
+    let myself = this;
+    this.expressApp.get('/bdm', function(req: any, res: any) {
+      myself.logger.debug('getting BDM...');
+      res.send(myself.getBdmJson());
+    });
+  }
+
   public addBdmDeleteRoute() {
     let myself = this;
     this.expressApp.delete('/bdm', function(req: any, res: any) {
@@ -159,6 +168,11 @@ export class BdrServer {
   }
 
   // public for tests
+  public getBdmJson(): string {
+    return BdrServer.bdmJson;
+  }
+
+  // public for tests
   public deleteBdm() {
     this.updateSchema(buildSchema(BdrServer.emptySchema));
   }
@@ -178,8 +192,8 @@ export class BdrServer {
   }
 
   private static getSchemaFromBdmXml(bdmXml: string): any {
-    let bdmJson = xmlParser.xml2json(bdmXml, { compact: true, spaces: 4 });
-    let schemaGenerator = new GraphqlSchemaGenerator(bdmJson);
+    this.bdmJson = xmlParser.xml2json(bdmXml, { compact: true, spaces: 4 });
+    let schemaGenerator = new GraphqlSchemaGenerator(this.bdmJson);
     schemaGenerator.generate();
     return buildSchema(schemaGenerator.getSchema());
   }

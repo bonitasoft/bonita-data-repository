@@ -36,6 +36,7 @@ const bdrServer = new BdrServer(config);
 
 bdrServer.addGraphqlRoute();
 bdrServer.addBdmPostRoute();
+bdrServer.addBdmGetRoute();
 bdrServer.addBdmDeleteRoute();
 
 /**
