@@ -15,12 +15,19 @@ describe('BdrServer_e2e', () => {
     '<fields> <field type="STRING" length="255" name="attribute1" nullable="true" collection="false"/> </fields>' +
     ' <uniqueConstraints/> <queries/> <indexes/> </businessObject> </businessObjects> </businessObjectModel>';
 
+  const simpleBdmJson =
+    '{"_businessObjects":[{"qualifiedName":"com.company.model.BusinessObject","name":"BusinessObject","description":"",' +
+    '"attributes":[{"name":"attribute1","type":"STRING","nullable":"true"}],"attributeQueries":[{"name":"findByAttribute1",' +
+    '"filters":[{"name":"attribute1","type":"STRING"}]},{"name":"find","filters":[]},{"name":"findByPersistenceId",' +
+    '"filters":[{"name":"persistenceId","type":"INTEGER"}]}],"constraintQueries":[],"customQueries":[]}]}';
+
   let app: Application;
   beforeAll(() => {
     let server = new BdrServer(new Configuration());
     server.addGraphqlRoute();
     server.addBdmPostRoute();
     server.addBdmDeleteRoute();
+    server.addBdmGetRoute();
     app = server.getExpressApp();
   });
 
@@ -63,6 +70,22 @@ describe('BdrServer_e2e', () => {
         },
         done
       );
+  });
+
+  test('Send bdm request', async () => {
+    // Post BDM
+    const res = await request(app)
+      .post('/bdm')
+      .set('Content-Type', 'application/json')
+      .send({ bdmXml: simpleBdmXml });
+    expect(res.statusCode).toEqual(200);
+
+    // Check json bdm
+    const res2 = await request(app)
+      .get('/bdm')
+      .set('Accept', 'application/json');
+    expect(res2.statusCode).toEqual(200);
+    expect(res2.text).toEqual(simpleBdmJson);
   });
 
   test('POST all bdms content', async () => {

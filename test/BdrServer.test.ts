@@ -59,15 +59,40 @@ describe('BdrServer', () => {
     expect(graphqlTypes.com_company_model_CustomerQuery).toBeUndefined();
   });
 
-  test('should get BDM', () => {
+  test('should get BDM with correct json model', () => {
     let server = new BdrServer(new Configuration());
     let bdmXml = _getBdmXml('test/resources/bdm_CustomerOrder.xml');
     server.handleNewBdmXml(bdmXml);
     let bdmJson = JSON.parse(server.getBdmJson());
-    let objects = bdmJson.businessObjectModel.businessObjects.businessObject;
+
+    // Objects
+    let objects = bdmJson._businessObjects;
     expect(objects.length).toBe(2);
-    expect(objects[0]._attributes.qualifiedName).toBe('com.company.model.Customer');
-    expect(objects[1]._attributes.qualifiedName).toBe('com.company.model.OrderInfo');
+    expect(objects[0].qualifiedName).toBe('com.company.model.Customer');
+    expect(objects[1].qualifiedName).toBe('com.company.model.OrderInfo');
+    let customer = objects[0];
+
+    // Attributes
+    let customerAtts = customer.attributes;
+    expect(customerAtts.length).toBe(5);
+    let orders = customerAtts[4];
+    expect(orders.name).toBe('orders');
+    expect(orders.reference).toBe('com.company.model.OrderInfo');
+    expect(orders.type).toBe('AGGREGATION');
+    expect(orders.fetchType).toBe('LAZY');
+
+    // Queries
+    let attributeQueries = customer.attributeQueries;
+    expect(attributeQueries.length).toBe(5);
+    let findByNameQuery = attributeQueries[0];
+    expect(findByNameQuery.name).toBe('findByName');
+    expect(findByNameQuery.filters.length).toBe(1);
+    expect(findByNameQuery.filters[0].name).toBe('name');
+    expect(findByNameQuery.filters[0].type).toBe('STRING');
+    let constraintQueries = customer.constraintQueries;
+    expect(constraintQueries.length).toBe(2);
+    let customQueries = customer.customQueries;
+    expect(customQueries.length).toBe(6);
   });
 
   function _getBdmXml(xmlFilePath: string) {

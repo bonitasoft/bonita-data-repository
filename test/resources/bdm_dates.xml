@@ -8,6 +8,10 @@
                 <field type="LOCALDATETIME" length="255" name="dateTimeNoTz" nullable="true" collection="false"/>
                 <field type="OFFSETDATETIME" length="255" name="dateTimeTz" nullable="true" collection="false"/>
                 <field type="DATE" length="255" name="dateNotRecomm" nullable="true" collection="false"/>
+                <field type="DOUBLE" length="255" name="doubleAtt" nullable="true" collection="false"/>
+                <field type="FLOAT" length="255" name="floatAtt" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="longAtt" nullable="true" collection="false"/>
+                <field type="INTEGER" length="255" name="intAtt" nullable="false" collection="false"/>
             </fields>
             <uniqueConstraints/>
             <queries>

@@ -29,6 +29,7 @@ import { GraphqlSchemaGenerator } from '../schema/GraphqlSchemaGenerator';
 import { StudioHealthCheck } from '../StudioHealthCheck';
 import { Application } from 'express';
 import { GraphQLScalarType, StringValueNode } from 'graphql';
+import { BdmModelGenerator } from '../schema/BdmModelGenerator';
 
 export class BdrServer {
   private readonly config: any;
@@ -39,6 +40,7 @@ export class BdrServer {
   private static readonly emptySchema = 'type Query { content: String }';
   private schema: string;
   private static bdmJson: string = '{}';
+  private jsonModel: string = '';
   private readonly resolvers: object;
   private readonly expressApp: Application;
 
@@ -165,11 +167,12 @@ export class BdrServer {
   public handleNewBdmXml(bdmXml: string) {
     let newSchema = BdrServer.getSchemaFromBdmXml(bdmXml);
     this.updateSchema(newSchema);
+    this.buildJsonSchemaFromBdmXml(bdmXml);
   }
 
   // public for tests
   public getBdmJson(): string {
-    return BdrServer.bdmJson;
+    return this.jsonModel;
   }
 
   // public for tests
@@ -186,6 +189,7 @@ export class BdrServer {
     if (this.config.bdmFile) {
       let bdmXml = fs.readFileSync(this.config.bdmFile, 'utf8');
       schema = BdrServer.getSchemaFromBdmXml(bdmXml);
+      this.buildJsonSchemaFromBdmXml(bdmXml);
       this.logger.debug(`BDM added:  ${this.config.bdmFile}`);
     }
     return schema;
@@ -196,6 +200,14 @@ export class BdrServer {
     let schemaGenerator = new GraphqlSchemaGenerator(this.bdmJson);
     schemaGenerator.generate();
     return buildSchema(schemaGenerator.getSchema());
+  }
+
+  private buildJsonSchemaFromBdmXml(bdmXml: string) {
+    BdrServer.bdmJson = xmlParser.xml2json(bdmXml, { compact: true, spaces: 4 });
+    let schemaGenerator = new BdmModelGenerator(BdrServer.bdmJson);
+    schemaGenerator.generate();
+    let bdmModel = schemaGenerator.getBdmModel();
+    this.jsonModel = JSON.stringify(bdmModel);
   }
 
   private removeGraphqlRoute() {
