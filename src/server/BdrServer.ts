@@ -35,7 +35,8 @@ export class BdrServer {
   private readonly config: any;
   private readonly port: number;
   private readonly host: string;
-  private static readonly graphqlPath = '/bdr';
+  private static readonly bdmGraphqlPath = '/bdm/graphql';
+  private static readonly bdmJsonPath = '/bdm/json';
   private readonly logger: any;
   private static readonly emptySchema = 'type Query { content: String }';
   private schema: string;
@@ -94,8 +95,12 @@ export class BdrServer {
     return this.host;
   }
 
-  public static getGraphqlPath() {
-    return this.graphqlPath;
+  public static getBdmGraphqlPath() {
+    return this.bdmGraphqlPath;
+  }
+
+  public static getBdmJsonPath() {
+    return this.bdmJsonPath;
   }
 
   public getExpressApp(): Application {
@@ -122,7 +127,7 @@ export class BdrServer {
 
   public addGraphqlRoute() {
     this.expressApp.use(
-      BdrServer.graphqlPath,
+      BdrServer.bdmGraphqlPath,
       graphqlHTTP({
         schema: this.schema,
         rootValue: this.resolvers,
@@ -140,9 +145,9 @@ export class BdrServer {
     });
   }
 
-  public addBdmGetRoute() {
+  public addBdmJsonRoute() {
     let myself = this;
-    this.expressApp.get('/bdm', function(req: any, res: any) {
+    this.expressApp.get(BdrServer.bdmJsonPath, function(req: any, res: any) {
       myself.logger.debug('getting BDM...');
       res.send(myself.getBdmJson());
     });

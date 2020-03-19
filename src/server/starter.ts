@@ -36,7 +36,7 @@ const bdrServer = new BdrServer(config);
 
 bdrServer.addGraphqlRoute();
 bdrServer.addBdmPostRoute();
-bdrServer.addBdmGetRoute();
+bdrServer.addBdmJsonRoute();
 bdrServer.addBdmDeleteRoute();
 
 /**
@@ -61,5 +61,5 @@ logger.info(
 );
 logger.debug(`Server is starting with following config ${JSON.stringify(config)}`);
 logger.info(
-  `Server is running on http://${bdrServer.getHost()}:${bdrServer.getPort()}${BdrServer.getGraphqlPath()}`
+  `Server is running on http://${bdrServer.getHost()}:${bdrServer.getPort()}${BdrServer.getBdmGraphqlPath()}`
 );

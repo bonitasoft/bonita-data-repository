@@ -27,7 +27,7 @@ describe('BdrServer_e2e', () => {
     server.addGraphqlRoute();
     server.addBdmPostRoute();
     server.addBdmDeleteRoute();
-    server.addBdmGetRoute();
+    server.addBdmJsonRoute();
     app = server.getExpressApp();
   });
 
@@ -59,7 +59,7 @@ describe('BdrServer_e2e', () => {
 
     // Check graphQL introspection
     request(app)
-      .post('/bdr')
+      .post(BdrServer.getBdmGraphqlPath())
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json')
       .send({ query: ' { __type(name: "com_company_model_BusinessObject") { name }}' })
@@ -82,7 +82,7 @@ describe('BdrServer_e2e', () => {
 
     // Check json bdm
     const res2 = await request(app)
-      .get('/bdm')
+      .get(BdrServer.getBdmJsonPath())
       .set('Accept', 'application/json');
     expect(res2.statusCode).toEqual(200);
     expect(res2.text).toEqual(simpleBdmJson);
@@ -114,7 +114,7 @@ describe('BdrServer_e2e', () => {
 
     // Check graphQL introspection : should have no type
     request(app)
-      .post('/bdr')
+      .post(BdrServer.getBdmGraphqlPath())
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json')
       .send({ query: ' { __type(name: "com_company_model_BusinessObject") { name }}' })
