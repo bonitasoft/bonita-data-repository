@@ -57,6 +57,10 @@ export class BdmModelGenerator {
     for (let bdmBusObject of bdmBusObjects) {
       let qualifiedName = bdmBusObject._attributes.qualifiedName;
       let bdmAtts = bdmBusObject.fields.field;
+      let description = '';
+      if (bdmBusObject.description) {
+        description = bdmBusObject.description._text;
+      }
 
       // Attributes
       let attributes: Array<Attribute> = [];
@@ -96,7 +100,7 @@ export class BdmModelGenerator {
       businessObjects.push(
         new BusinessObject(
           qualifiedName,
-          '',
+          description,
           attributes,
           attributeQueries,
           constraintQueries,
@@ -117,11 +121,9 @@ export class BdmModelGenerator {
   ): Array<Attribute> {
     let attributes: Array<Attribute> = [];
     for (let bdmAtt of bdmAttsArray) {
-      let nullable = bdmAtt._attributes.nullable;
-      let type = bdmAtt._attributes.type;
-      let name = bdmAtt._attributes.name;
-      attributesTypeMap.set(name, type);
-      attributes.push(new Attribute(name, type, nullable));
+      let attribute = this.getAttribute(bdmAtt);
+      attributesTypeMap.set(attribute.name, attribute.type);
+      attributes.push(attribute);
     }
     return attributes;
   }
@@ -129,12 +131,10 @@ export class BdmModelGenerator {
   private static getRelationAttributes(bdmRelAttsArray: any[]): Array<RelationAttribute> {
     let relAttributes: Array<RelationAttribute> = [];
     for (let bdmRelAtt of bdmRelAttsArray) {
-      let name = bdmRelAtt._attributes.name;
-      let nullable = bdmRelAtt._attributes.nullable;
+      let attribute = this.getAttribute(bdmRelAtt);
       let reference = bdmRelAtt._attributes.reference;
-      let type = bdmRelAtt._attributes.type;
       let fetchType = bdmRelAtt._attributes.fetchType;
-      relAttributes.push(new RelationAttribute(name, type, nullable, reference, fetchType));
+      relAttributes.push(new RelationAttribute(attribute, reference, fetchType));
     }
     return relAttributes;
   }
@@ -225,6 +225,18 @@ export class BdmModelGenerator {
       filters.push(new Filter(paramName, BdmModelGenerator.getLastItem(paramType)));
     }
     return filters;
+  }
+
+  private static getAttribute(bdmAtt: any) {
+    let name = bdmAtt._attributes.name;
+    let type = bdmAtt._attributes.type;
+    let nullable = bdmAtt._attributes.nullable;
+    let collection = bdmAtt._attributes.collection;
+    let description = '';
+    if (bdmAtt.description) {
+      description = bdmAtt.description._text;
+    }
+    return new Attribute(name, type, nullable, collection, description);
   }
 
   private static asArray(element: any): any[] {

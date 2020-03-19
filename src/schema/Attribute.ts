@@ -17,13 +17,23 @@
  */
 
 export class Attribute {
-  private name: string;
-  private type: string;
-  private nullable: boolean;
+  public name: string;
+  public type: string;
+  public nullable: boolean;
+  public collection: boolean;
+  public description: string;
 
-  constructor(name: string, type: string, nullable: boolean) {
+  constructor(
+    name: string,
+    type: string,
+    nullable: boolean,
+    collection: boolean,
+    description: string
+  ) {
     this.name = name;
     this.type = type;
     this.nullable = nullable;
+    this.collection = collection;
+    this.description = description;
   }
 }

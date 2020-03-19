@@ -34,8 +34,8 @@ describe('BdrServer_e2e', () => {
     ' <uniqueConstraints/> <queries/> <indexes/> </businessObject> </businessObjects> </businessObjectModel>';
 
   const simpleBdmJson =
-    '{"_businessObjects":[{"qualifiedName":"com.company.model.BusinessObject","name":"BusinessObject","description":"",' +
-    '"attributes":[{"name":"attribute1","type":"STRING","nullable":"true"}],"attributeQueries":[{"name":"findByAttribute1",' +
+    '{"businessObjects":[{"qualifiedName":"com.company.model.BusinessObject","name":"BusinessObject","description":"",' +
+    '"attributes":[{"name":"attribute1","type":"STRING","nullable":"true","collection":"false","description":""}],"attributeQueries":[{"name":"findByAttribute1",' +
     '"filters":[{"name":"attribute1","type":"STRING"}]},{"name":"find","filters":[]},{"name":"findByPersistenceId",' +
     '"filters":[{"name":"persistenceId","type":"INTEGER"}]}],"constraintQueries":[],"customQueries":[]}]}';
 

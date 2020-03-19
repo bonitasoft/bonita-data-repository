@@ -22,8 +22,8 @@ export class RelationAttribute extends Attribute {
   private reference: string;
   private fetchType: string;
 
-  constructor(name: string, type: string, nullable: boolean, reference: string, fetchType: string) {
-    super(name, type, nullable);
+  constructor(att: Attribute, reference: string, fetchType: string) {
+    super(att.name, att.type, att.nullable, att.collection, att.description);
     this.reference = reference;
     this.fetchType = fetchType;
   }

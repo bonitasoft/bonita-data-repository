@@ -87,7 +87,7 @@ describe('BdrServer', () => {
     let bdmJson = JSON.parse(server.getBdmJson());
 
     // Objects
-    let objects = bdmJson._businessObjects;
+    let objects = bdmJson.businessObjects;
     expect(objects.length).toBe(2);
     expect(objects[0].qualifiedName).toBe('com.company.model.Customer');
     expect(objects[1].qualifiedName).toBe('com.company.model.OrderInfo');
