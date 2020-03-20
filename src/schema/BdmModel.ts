@@ -16,13 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export class Configuration {
-  bdmFile: string | undefined;
-  host: string | undefined;
-  port: number | undefined;
-  logFile: string | undefined;
-  logLevel: string | undefined;
-  healthCheckUrl: string | undefined;
-  healthCheckHost: string | undefined;
-  healthCheckPort: number | undefined;
+import { BusinessObject } from './BusinessObject';
+
+export class BdmModel {
+  public businessObjects: Array<BusinessObject> = [];
 }

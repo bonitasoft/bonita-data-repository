@@ -51,7 +51,7 @@ Example of config file:
 ## Connect to GraphiQL
 
 ```
-http://localhost:4000/bdr
+http://localhost:4000/bdm/graphql
 ```
 
 ## Post a BDM (from string)

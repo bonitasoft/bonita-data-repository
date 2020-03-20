@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 import { Configuration } from './Configuration';
 
 const winston = require('winston');
@@ -36,6 +37,7 @@ const bdrServer = new BdrServer(config);
 
 bdrServer.addGraphqlRoute();
 bdrServer.addBdmPostRoute();
+bdrServer.addBdmJsonRoute();
 bdrServer.addBdmDeleteRoute();
 
 /**
@@ -60,5 +62,5 @@ logger.info(
 );
 logger.debug(`Server is starting with following config ${JSON.stringify(config)}`);
 logger.info(
-  `Server is running on http://${bdrServer.getHost()}:${bdrServer.getPort()}${BdrServer.getGraphqlPath()}`
+  `Server is running on http://${bdrServer.getHost()}:${bdrServer.getPort()}${BdrServer.getBdmGraphqlPath()}`
 );

@@ -16,13 +16,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export class Configuration {
-  bdmFile: string | undefined;
-  host: string | undefined;
-  port: number | undefined;
-  logFile: string | undefined;
-  logLevel: string | undefined;
-  healthCheckUrl: string | undefined;
-  healthCheckHost: string | undefined;
-  healthCheckPort: number | undefined;
+import { Filter } from './Filter';
+
+export class Query {
+  public name: string;
+  public filters: Array<Filter>;
+
+  constructor(name: string, filters: Array<Filter>) {
+    this.name = name;
+    this.filters = filters;
+  }
 }

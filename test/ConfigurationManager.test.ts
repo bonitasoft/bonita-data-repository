@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 import { BdrLogger } from '../src/logger/BdrLogger';
 import { Configuration } from '../src/server/Configuration';
 import { ConfigurationManager } from '../src/server/ConfigurationManager';
