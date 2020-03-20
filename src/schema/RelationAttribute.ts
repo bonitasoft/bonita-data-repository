@@ -19,8 +19,8 @@
 import { Attribute } from './Attribute';
 
 export class RelationAttribute extends Attribute {
-  private reference: string;
-  private fetchType: string;
+  public reference: string;
+  public fetchType: string;
 
   constructor(att: Attribute, reference: string, fetchType: string) {
     super(att.name, att.type, att.nullable, att.collection, att.description);

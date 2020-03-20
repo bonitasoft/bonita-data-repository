@@ -17,8 +17,8 @@
  */
 
 export class Filter {
-  private name: string;
-  private type: string;
+  public name: string;
+  public type: string;
 
   constructor(name: string, type: string) {
     this.name = name;

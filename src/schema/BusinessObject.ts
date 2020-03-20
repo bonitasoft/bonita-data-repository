@@ -20,13 +20,13 @@ import { Attribute } from './Attribute';
 import { Query } from './Query';
 
 export class BusinessObject {
-  private qualifiedName: string;
-  private name: string;
-  private description: string;
-  private attributes: Array<Attribute>;
-  private attributeQueries: Array<Query>;
-  private constraintQueries: Array<Query>;
-  private customQueries: Array<Query>;
+  public qualifiedName: string;
+  public name: string;
+  public description: string;
+  public attributes: Array<Attribute>;
+  public attributeQueries: Array<Query>;
+  public constraintQueries: Array<Query>;
+  public customQueries: Array<Query>;
 
   constructor(
     qualifiedName: string,

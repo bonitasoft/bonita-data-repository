@@ -222,7 +222,7 @@ export class BdmModelGenerator {
     for (let parameter of parametersArray) {
       let paramName = parameter._attributes.name;
       let paramType = parameter._attributes.className;
-      filters.push(new Filter(paramName, BdmModelGenerator.getLastItem(paramType)));
+      filters.push(new Filter(paramName, BdmModelGenerator.getLastItem(paramType).toUpperCase()));
     }
     return filters;
   }
