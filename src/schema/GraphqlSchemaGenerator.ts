@@ -114,6 +114,7 @@ export class GraphqlSchemaGenerator {
   }
 
   public getSchema() {
+    // console.log(this.schema.join(''));
     return this.schema.join('');
   }
 
@@ -125,6 +126,9 @@ export class GraphqlSchemaGenerator {
     for (let bdmAtt of bdmAttsArray) {
       let mandatoryStr = bdmAtt._attributes.nullable === 'true' ? '' : '!';
       let type = GraphqlSchemaGenerator.xmlToGraphqlType(bdmAtt._attributes.type);
+      if (bdmAtt._attributes.collection === 'true') {
+        type = '[' + type + ']';
+      }
       let name = bdmAtt._attributes.name;
       this.schema.push('\t', name, ': ', type + mandatoryStr, '\n');
       attributesTypeMap.set(name, type);
@@ -326,10 +330,13 @@ export class GraphqlSchemaGenerator {
     for (let parameter of parametersArray) {
       let paramName = parameter._attributes.name;
       let paramType = parameter._attributes.className;
-      paramsMap.set(
-        paramName,
-        GraphqlSchemaGenerator.xmlToGraphqlType(GraphqlSchemaGenerator.getLastItem(paramType))
-      );
+      let type = GraphqlSchemaGenerator.getLastItem(paramType);
+      if (type.endsWith(';')) {
+        // this is a type of xml form '[Ljava.lang.String;', so an array
+        // Here, the last item is something like 'String;' => [String] in GraphQL
+        type = '[' + type.substring(0, type.length - 1) + ']';
+      }
+      paramsMap.set(paramName, GraphqlSchemaGenerator.xmlToGraphqlType(type));
     }
     let paramsStringArray: string[] = [];
     paramsMap.forEach((value, key) => {

@@ -24,11 +24,23 @@ describe('GraphqlSchemaGenerator', () => {
     expect(schema).toContain('type com_company_model_OrderInfoQuery');
   });
 
+  test('Check expected attributes in graphQL schema', () => {
+    let schema = _getSchema('test/resources/bdm_CustomerOrder.xml');
+    expect(schema).toContain(
+      'type com_company_model_Customer {\n' +
+        '\tname: String\n' +
+        '\taddress: [String]\n' +
+        '\tphoneNumber: String\n' +
+        '\tcomment: [String]\n' +
+        '\torders: com_company_model_OrderInfo\n' +
+        '}'
+    );
+  });
+
   test('Check expected queries from attributes in graphQL schema', () => {
     let schema = _getSchema('test/resources/bdm_CustomerOrder.xml');
     expect(schema).toContain('type com_company_model_CustomerAttributeQuery');
     expect(schema).toContain('findByName(name: String!): com_company_model_Customer');
-    expect(schema).toContain('findByAddress(address: String!): com_company_model_Customer');
     expect(schema).toContain('findByPhoneNumber(phoneNumber: String!): com_company_model_Customer');
     expect(schema).not.toContain('findByComment');
     expect(schema).toContain('find: com_company_model_Customer');
@@ -46,7 +58,7 @@ describe('GraphqlSchemaGenerator', () => {
       'findByNameAndPhoneNumber(name: String!, phoneNumber: String!): com_company_model_Customer'
     );
     expect(schema).toContain(
-      'findByAddressAndPhoneNumberAndName(address: String!, phoneNumber: String!, name: String!): com_company_model_Customer'
+      'findByAddressAndPhoneNumberAndName(address: [String]!, phoneNumber: String!, name: String!): com_company_model_Customer'
     );
   });
 
@@ -54,7 +66,7 @@ describe('GraphqlSchemaGenerator', () => {
     let schema = _getSchema('test/resources/bdm_CustomerOrder.xml');
     expect(schema).toContain('type com_company_model_CustomerCustomQuery');
     expect(schema).toContain(
-      'query1(name: String!, address: String!, phoneNumber: String!): [com_company_model_Customer]'
+      'query1(name: String!, address: [String]!, phoneNumber: String!): [com_company_model_Customer]'
     );
     expect(schema).toContain('query2(name: String!, address: String!): com_company_model_Customer');
     expect(schema).toContain('query3: Int');
