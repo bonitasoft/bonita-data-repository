@@ -40,7 +40,6 @@ export class BdmModelGenerator {
     let bdm: any = JSON.parse(this.bdmJson);
 
     // Generate types
-    let attributesTypeMap = new Map<string, string>();
     if (
       !bdm ||
       !bdm.businessObjectModel ||
@@ -65,10 +64,7 @@ export class BdmModelGenerator {
       // Attributes
       let attributes: Array<Attribute> = [];
       if (bdmAtts) {
-        attributes = BdmModelGenerator.getAttributes(
-          BdmModelGenerator.asArray(bdmAtts),
-          attributesTypeMap
-        );
+        attributes = BdmModelGenerator.getAttributes(BdmModelGenerator.asArray(bdmAtts));
       }
       let bdmAttRels = bdmBusObject.fields.relationField;
       let relAttributes: Array<RelationAttribute> = [];
@@ -88,7 +84,7 @@ export class BdmModelGenerator {
       let constraints = bdmBusObject.uniqueConstraints.uniqueConstraint;
       let constraintQueries = this.getQueriesFromConstraints(
         BdmModelGenerator.asArray(constraints),
-        attributesTypeMap
+        attributes
       );
 
       // Generate custom queries
@@ -115,14 +111,10 @@ export class BdmModelGenerator {
   // Private methods
   //
 
-  private static getAttributes(
-    bdmAttsArray: any[],
-    attributesTypeMap: Map<string, string>
-  ): Array<Attribute> {
+  private static getAttributes(bdmAttsArray: any[]): Array<Attribute> {
     let attributes: Array<Attribute> = [];
     for (let bdmAtt of bdmAttsArray) {
       let attribute = this.getAttribute(bdmAtt);
-      attributesTypeMap.set(attribute.name, attribute.type);
       attributes.push(attribute);
     }
     return attributes;
@@ -153,8 +145,9 @@ export class BdmModelGenerator {
       }
       let attName = bdmAtt._attributes.name;
       let type = bdmAtt._attributes.type;
+      let collection = this.stringToBoolean(bdmAtt._attributes.collection);
       let queryName = 'findBy' + BdmModelGenerator.capitalizeFirstLetter(attName);
-      let filter = new Filter(attName, type);
+      let filter = new Filter(attName, type, collection);
       attributeQueries.push(new Query(queryName, BdmModelGenerator.asArray(filter)));
     }
 
@@ -162,7 +155,7 @@ export class BdmModelGenerator {
     attributeQueries.push(new Query('find', []));
 
     // findByPersistenceId() query
-    let filter = new Filter('persistenceId', 'INTEGER');
+    let filter = new Filter('persistenceId', 'INTEGER', false);
     attributeQueries.push(new Query('findByPersistenceId', BdmModelGenerator.asArray(filter)));
 
     return attributeQueries;
@@ -170,7 +163,7 @@ export class BdmModelGenerator {
 
   private getQueriesFromConstraints(
     bdmConstraintsArray: any[],
-    attributesTypeMap: Map<string, string>
+    attributes: Array<Attribute>
   ): Array<Query> {
     // e.g. :
     //   findByNameAndPhoneNumber(name: String!, phoneNumber: String!)
@@ -188,7 +181,8 @@ export class BdmModelGenerator {
       }
       let filters: Array<Filter> = [];
       params.forEach(param => {
-        filters.push(new Filter(param, <string>attributesTypeMap.get(param)));
+        let attribute = attributes.filter(attribute => attribute.name === param)[0];
+        filters.push(new Filter(attribute.name, attribute.type, attribute.collection));
       });
       let queryName = 'findBy' + paramsCap.join('And');
       constraintQueries.push(new Query(queryName, filters));
@@ -206,14 +200,14 @@ export class BdmModelGenerator {
       let parameters = bdmCustomQuery.queryParameters.queryParameter;
       let filters: Array<Filter> = [];
       if (parameters) {
-        filters = BdmModelGenerator.getQueryParamsString(parameters);
+        filters = BdmModelGenerator.getFilters(parameters);
       }
       customQueries.push(new Query(queryName, filters));
     }
     return customQueries;
   }
 
-  private static getQueryParamsString(parameters: any): Array<Filter> {
+  private static getFilters(parameters: any): Array<Filter> {
     // e.g. :
     // (name: String!)
 
@@ -221,8 +215,14 @@ export class BdmModelGenerator {
     let filters: Array<Filter> = [];
     for (let parameter of parametersArray) {
       let paramName = parameter._attributes.name;
-      let paramType = parameter._attributes.className;
-      filters.push(new Filter(paramName, BdmModelGenerator.getLastItem(paramType).toUpperCase()));
+      let paramType = BdmModelGenerator.getLastItem(parameter._attributes.className).toUpperCase();
+      let paramCollection = false;
+      if (paramType.endsWith(';')) {
+        // this is a type such as '[Ljava.lang.String;', so an array
+        paramType = paramType.substring(0, paramType.length - 1);
+        paramCollection = true;
+      }
+      filters.push(new Filter(paramName, paramType, paramCollection));
     }
     return filters;
   }
@@ -230,8 +230,8 @@ export class BdmModelGenerator {
   private static getAttribute(bdmAtt: any) {
     let name = bdmAtt._attributes.name;
     let type = bdmAtt._attributes.type;
-    let nullable = bdmAtt._attributes.nullable;
-    let collection = bdmAtt._attributes.collection;
+    let nullable = this.stringToBoolean(bdmAtt._attributes.nullable);
+    let collection = this.stringToBoolean(JSON.parse(bdmAtt._attributes.collection));
     let description = '';
     if (bdmAtt.description) {
       description = bdmAtt.description._text;
@@ -259,5 +259,9 @@ export class BdmModelGenerator {
 
   private static capitalizeFirstLetter(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  private static stringToBoolean(input: string): boolean {
+    return JSON.parse(input);
   }
 }

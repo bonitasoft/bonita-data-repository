@@ -74,16 +74,15 @@ describe('GraphqlSchemaGenerator', () => {
     let model: BdmModel = _getCustomerOrderModel();
     let customer = model.businessObjects[0];
     let attributeQueries = customer.attributeQueries;
-    expect(attributeQueries.length).toBe(5);
+    expect(attributeQueries.length).toBe(4);
     let findByNameQuery = attributeQueries[0];
     expect(findByNameQuery.name).toBe('findByName');
     expect(findByNameQuery.filters.length).toBe(1);
     expect(findByNameQuery.filters[0].name).toBe('name');
     expect(findByNameQuery.filters[0].type).toBe('STRING');
-    expect(attributeQueries[1].name).toBe('findByAddress');
-    expect(attributeQueries[2].name).toBe('findByPhoneNumber');
-    expect(attributeQueries[3].name).toBe('find');
-    expect(attributeQueries[4].name).toBe('findByPersistenceId');
+    expect(attributeQueries[1].name).toBe('findByPhoneNumber');
+    expect(attributeQueries[2].name).toBe('find');
+    expect(attributeQueries[3].name).toBe('findByPersistenceId');
   });
 
   test('BDM model should contain expected Constraint Queries', () => {

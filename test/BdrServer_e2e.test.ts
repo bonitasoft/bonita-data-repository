@@ -35,9 +35,9 @@ describe('BdrServer_e2e', () => {
 
   const simpleBdmJson =
     '{"businessObjects":[{"qualifiedName":"com.company.model.BusinessObject","name":"BusinessObject","description":"",' +
-    '"attributes":[{"name":"attribute1","type":"STRING","nullable":"true","collection":"false","description":""}],"attributeQueries":[{"name":"findByAttribute1",' +
-    '"filters":[{"name":"attribute1","type":"STRING"}]},{"name":"find","filters":[]},{"name":"findByPersistenceId",' +
-    '"filters":[{"name":"persistenceId","type":"INTEGER"}]}],"constraintQueries":[],"customQueries":[]}]}';
+    '"attributes":[{"name":"attribute1","type":"STRING","nullable":true,"collection":false,"description":""}],"attributeQueries":[{"name":"findByAttribute1",' +
+    '"filters":[{"name":"attribute1","type":"STRING","collection":false}]},{"name":"find","filters":[]},{"name":"findByPersistenceId",' +
+    '"filters":[{"name":"persistenceId","type":"INTEGER","collection":false}]}],"constraintQueries":[],"customQueries":[]}]}';
 
   let app: Application;
   beforeAll(() => {
