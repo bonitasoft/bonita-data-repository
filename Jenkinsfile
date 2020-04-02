@@ -6,7 +6,7 @@ properties([[$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', 
 
 node {
     def currentBranch = env.BRANCH_NAME
-    def isBaseBranch = currentBranch == 'master' || currentBranch == 'dev'
+    def isBaseBranch = currentBranch == 'master' || currentBranch == 'dev' || currentBranch?.startsWith('release-')
 
     slackStage('🌍 Setup', isBaseBranch) {
         checkout scm
