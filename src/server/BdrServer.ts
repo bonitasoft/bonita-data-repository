@@ -82,7 +82,7 @@ export class BdrServer {
     // Enable cors for all
     this.expressApp.use(cors());
 
-    this.expressApp.use('/voyager', voyagerMiddleware({ endpointUrl: '/bdr' }));
+    this.expressApp.use('/voyager', voyagerMiddleware({ endpointUrl: '/bdm/graphql' }));
   }
 
   public start() {

@@ -102,7 +102,8 @@ export class GraphqlSchemaGenerator {
         );
       }
 
-      let queries = attributeQueries.concat(constraintQueries, customQueries);
+      // Concatenate queries, without duplicates (use Set)
+      let queries = [...new Set(attributeQueries.concat(constraintQueries, customQueries))];
       if (queries.length > 0) {
         this.generateBdmObjectQuery(bdmObjectName, queries);
         bdmObjectsWithQuery.push(bdmObjectName);

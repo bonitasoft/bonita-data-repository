@@ -57,13 +57,13 @@ describe('GraphqlSchemaGenerator', () => {
 
   test('Check expected queries from attributes in graphQL schema', () => {
     let schema = _getSchema('test/resources/bdm_CustomerOrder.xml');
-    expect(schema).toContain('type com_company_model_CustomerAttributeQuery');
+    expect(schema).toContain('type com_company_model_CustomerQuery');
     expect(schema).toContain('findByName(name: String!): com_company_model_Customer');
     expect(schema).toContain('findByPhoneNumber(phoneNumber: String!): com_company_model_Customer');
     expect(schema).not.toContain('findByComment');
     expect(schema).toContain('find: com_company_model_Customer');
 
-    expect(schema).toContain('type com_company_model_OrderInfoAttributeQuery');
+    expect(schema).toContain('type com_company_model_OrderInfoQuery');
     expect(schema).toContain('findByItemName(itemName: String!): com_company_model_OrderInfo');
     expect(schema).toContain('findByNumber(number: Int!): com_company_model_OrderInfo');
     expect(schema).toContain('find: com_company_model_OrderInfo');
@@ -71,7 +71,7 @@ describe('GraphqlSchemaGenerator', () => {
 
   test('Check expected queries from constraints in graphQL schema', () => {
     let schema = _getSchema('test/resources/bdm_CustomerOrder.xml');
-    expect(schema).toContain('type com_company_model_CustomerConstraintQuery');
+    expect(schema).toContain('type com_company_model_CustomerQuery');
     expect(schema).toContain(
       'findByNameAndPhoneNumber(name: String!, phoneNumber: String!): com_company_model_Customer'
     );
@@ -82,7 +82,7 @@ describe('GraphqlSchemaGenerator', () => {
 
   test('Check expected custom queries in graphQL schema', () => {
     let schema = _getSchema('test/resources/bdm_CustomerOrder.xml');
-    expect(schema).toContain('type com_company_model_CustomerCustomQuery');
+    expect(schema).toContain('type com_company_model_CustomerQuery');
     expect(schema).toContain(
       'query1(name: String!, address: [String]!, phoneNumber: String!): [com_company_model_Customer]'
     );
@@ -91,16 +91,6 @@ describe('GraphqlSchemaGenerator', () => {
     expect(schema).toContain('query4: Float');
     expect(schema).toContain('query5: Float');
     expect(schema).toContain('query6: Int');
-  });
-
-  test('Check expected bdm object queries in graphQL schema', () => {
-    let schema = _getSchema('test/resources/bdm_CustomerOrder.xml');
-    expect(schema).toContain('type com_company_model_CustomerQuery');
-    expect(schema).toContain('attributeQuery');
-    expect(schema).toContain('constraintQuery');
-    expect(schema).toContain('customQuery');
-
-    expect(schema).toContain('type com_company_model_OrderInfoQuery');
   });
 
   test('Check expected root query in graphQL schema', () => {
