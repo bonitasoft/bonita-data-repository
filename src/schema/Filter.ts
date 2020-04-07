@@ -19,9 +19,11 @@
 export class Filter {
   public name: string;
   public type: string;
+  public collection: boolean;
 
-  constructor(name: string, type: string) {
+  constructor(name: string, type: string, collection: boolean) {
     this.name = name;
     this.type = type;
+    this.collection = collection;
   }
 }
