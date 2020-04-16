@@ -22,6 +22,7 @@ const winston = require('winston');
 const fs = require('fs');
 const { buildSchema } = require('graphql');
 const express = require('express');
+const voyagerMiddleware = require('graphql-voyager/middleware').express;
 const graphqlHTTP = require('express-graphql');
 const cors = require('cors');
 const xmlParser = require('xml-js');
@@ -80,6 +81,8 @@ export class BdrServer {
     );
     // Enable cors for all
     this.expressApp.use(cors());
+
+    this.expressApp.use('/voyager', voyagerMiddleware({ endpointUrl: '/bdm/graphql' }));
   }
 
   public start() {
