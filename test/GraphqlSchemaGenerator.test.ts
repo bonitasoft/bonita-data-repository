@@ -16,6 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { BdmModelGenerator } from '../src/schema/BdmModelGenerator';
+
 const fs = require('fs');
 const xmlParser = require('xml-js');
 const { buildSchema } = require('graphql');
@@ -50,7 +52,7 @@ describe('GraphqlSchemaGenerator', () => {
         '\taddress: [String]\n' +
         '\tphoneNumber: String\n' +
         '\tcomment: [String]\n' +
-        '\torders: com_company_model_OrderInfo\n' +
+        '\torders: [com_company_model_OrderInfo]\n' +
         '}'
     );
   });
@@ -103,7 +105,9 @@ describe('GraphqlSchemaGenerator', () => {
   function _getSchema(xmlFilePath: string) {
     let bdmXml = fs.readFileSync(xmlFilePath, 'utf8');
     let bdmJson = xmlParser.xml2json(bdmXml, { compact: true, spaces: 4 });
-    let schemaGenerator = new GraphqlSchemaGenerator(bdmJson);
+    let bdmModelGenerator = new BdmModelGenerator(bdmJson);
+    bdmModelGenerator.generate();
+    let schemaGenerator = new GraphqlSchemaGenerator(bdmModelGenerator.getBdmModel());
     schemaGenerator.generate();
     return schemaGenerator.getSchema();
   }

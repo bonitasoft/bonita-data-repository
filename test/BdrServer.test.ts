@@ -57,27 +57,50 @@ describe('BdrServer', () => {
 
   test('should handle new BDM xml', () => {
     let server = new BdrServer(new Configuration());
-    let graphqlTypes = (<any>server.getSchema())._typeMap;
+    // GraphQL
+    let graphqlTypes = (<any>server.getGraphqlSchema())._typeMap;
     expect(graphqlTypes.com_company_model_Customer).toBeUndefined();
     expect(graphqlTypes.com_company_model_CustomerQuery).toBeUndefined();
+    // Json
+    let jsonModel = server.getBdmJson();
+    let businessObjects = JSON.parse(jsonModel).businessObjects;
+    expect(businessObjects).toBeUndefined();
+
     let bdmXml = _getBdmXml('test/resources/bdm_CustomerOrder.xml');
     server.handleNewBdmXml(bdmXml);
-    graphqlTypes = (<any>server.getSchema())._typeMap;
+    // GraphQL
+    graphqlTypes = (<any>server.getGraphqlSchema())._typeMap;
     expect(graphqlTypes.com_company_model_Customer).toBeDefined();
     expect(graphqlTypes.com_company_model_CustomerQuery).toBeDefined();
+    // Json
+    jsonModel = server.getBdmJson();
+    businessObjects = JSON.parse(jsonModel).businessObjects;
+    expect(businessObjects[0].qualifiedName).toEqual('com.company.model.Customer');
+    expect(businessObjects[1].qualifiedName).toEqual('com.company.model.OrderInfo');
   });
 
   test('should remove BDM', () => {
     let server = new BdrServer(new Configuration());
     let bdmXml = _getBdmXml('test/resources/bdm_CustomerOrder.xml');
     server.handleNewBdmXml(bdmXml);
-    let graphqlTypes = (<any>server.getSchema())._typeMap;
+    // GraphQL
+    let graphqlTypes = (<any>server.getGraphqlSchema())._typeMap;
     expect(graphqlTypes.com_company_model_Customer).toBeDefined();
     expect(graphqlTypes.com_company_model_CustomerQuery).toBeDefined();
+    // Json
+    let jsonModel = server.getBdmJson();
+    let businessObjects = JSON.parse(jsonModel).businessObjects;
+    expect(businessObjects).toBeDefined();
+
     server.deleteBdm();
-    graphqlTypes = (<any>server.getSchema())._typeMap;
+    // GraphQL
+    graphqlTypes = (<any>server.getGraphqlSchema())._typeMap;
     expect(graphqlTypes.com_company_model_Customer).toBeUndefined();
     expect(graphqlTypes.com_company_model_CustomerQuery).toBeUndefined();
+    // Json
+    jsonModel = server.getBdmJson();
+    businessObjects = JSON.parse(jsonModel).businessObjects;
+    expect(businessObjects).toBeUndefined();
   });
 
   function _getBdmXml(xmlFilePath: string) {
