@@ -31,6 +31,7 @@ import { StudioHealthCheck } from '../StudioHealthCheck';
 import { Application } from 'express';
 import { GraphQLScalarType, StringValueNode } from 'graphql';
 import { BdmModelGenerator } from '../schema/BdmModelGenerator';
+import { BdmModel } from '../schema/BdmModel';
 
 export class BdrServer {
   private readonly config: any;
@@ -40,9 +41,8 @@ export class BdrServer {
   private static readonly bdmJsonPath = '/bdm/json';
   private readonly logger: any;
   private static readonly emptySchema = 'type Query { content: String }';
-  private schema: string;
-  private static bdmJson: string = '{}';
-  private jsonModel: string = '';
+  private graphqlSchema: string = buildSchema(BdrServer.emptySchema);
+  private bdmModelAsJson: string = '{}';
   private readonly resolvers: object;
   private readonly expressApp: Application;
 
@@ -53,7 +53,7 @@ export class BdrServer {
     this.config = config;
     this.port = config.port || 4000;
     this.host = config.host || '127.0.0.1';
-    this.schema = this.buildInitialGraphqlSchema();
+    this.initModel();
     this.resolvers = {
       Query: {},
       DateTime: new GraphQLScalarType({
@@ -110,8 +110,8 @@ export class BdrServer {
     return this.expressApp;
   }
 
-  public getSchema() {
-    return this.schema;
+  public getGraphqlSchema() {
+    return this.graphqlSchema;
   }
 
   public startHealthCheckIfNeeded() {
@@ -132,7 +132,7 @@ export class BdrServer {
     this.expressApp.use(
       BdrServer.bdmGraphqlPath,
       graphqlHTTP({
-        schema: this.schema,
+        schema: this.graphqlSchema,
         rootValue: this.resolvers,
         graphiql: true
       })
@@ -173,49 +173,45 @@ export class BdrServer {
 
   // public for tests
   public handleNewBdmXml(bdmXml: string) {
-    let newSchema = BdrServer.getSchemaFromBdmXml(bdmXml);
+    let bdmModel = BdrServer.getBdmModel(bdmXml);
+    let newSchema = BdrServer.getGraphqlSchemaFromBdmModel(bdmModel);
     this.updateSchema(newSchema);
-    this.buildJsonSchemaFromBdmXml(bdmXml);
+    this.bdmModelAsJson = BdrServer.getBdmModelAsJson(bdmModel);
   }
 
   // public for tests
   public getBdmJson(): string {
-    return this.jsonModel;
+    return this.bdmModelAsJson;
   }
 
   // public for tests
   public deleteBdm() {
     this.updateSchema(buildSchema(BdrServer.emptySchema));
+    this.bdmModelAsJson = '{}';
   }
 
   //
   // Private methods
   //
 
-  private buildInitialGraphqlSchema(): string {
-    let schema = buildSchema(BdrServer.emptySchema);
+  private initModel() {
     if (this.config.bdmFile) {
       let bdmXml = fs.readFileSync(this.config.bdmFile, 'utf8');
-      schema = BdrServer.getSchemaFromBdmXml(bdmXml);
-      this.buildJsonSchemaFromBdmXml(bdmXml);
+      let bdmModel = BdrServer.getBdmModel(bdmXml);
+      this.graphqlSchema = BdrServer.getGraphqlSchemaFromBdmModel(bdmModel);
+      this.bdmModelAsJson = BdrServer.getBdmModelAsJson(bdmModel);
       this.logger.debug(`BDM added:  ${this.config.bdmFile}`);
     }
-    return schema;
   }
 
-  private static getSchemaFromBdmXml(bdmXml: string): any {
-    this.bdmJson = xmlParser.xml2json(bdmXml, { compact: true, spaces: 4 });
-    let schemaGenerator = new GraphqlSchemaGenerator(this.bdmJson);
+  private static getGraphqlSchemaFromBdmModel(bdmModel: BdmModel): any {
+    let schemaGenerator = new GraphqlSchemaGenerator(bdmModel);
     schemaGenerator.generate();
     return buildSchema(schemaGenerator.getSchema());
   }
 
-  private buildJsonSchemaFromBdmXml(bdmXml: string) {
-    BdrServer.bdmJson = xmlParser.xml2json(bdmXml, { compact: true, spaces: 4 });
-    let schemaGenerator = new BdmModelGenerator(BdrServer.bdmJson);
-    schemaGenerator.generate();
-    let bdmModel = schemaGenerator.getBdmModel();
-    this.jsonModel = JSON.stringify(bdmModel);
+  private static getBdmModelAsJson(bdmModel: BdmModel) {
+    return JSON.stringify(bdmModel);
   }
 
   private removeGraphqlRoute() {
@@ -233,7 +229,14 @@ export class BdrServer {
 
   private updateSchema(newSchema: string) {
     this.removeGraphqlRoute();
-    this.schema = newSchema;
+    this.graphqlSchema = newSchema;
     this.addGraphqlRoute();
+  }
+
+  private static getBdmModel(bdmXml: string): BdmModel {
+    let bdmJson = xmlParser.xml2json(bdmXml, { compact: true, spaces: 4 });
+    let schemaGenerator = new BdmModelGenerator(bdmJson);
+    schemaGenerator.generate();
+    return schemaGenerator.getBdmModel();
   }
 }

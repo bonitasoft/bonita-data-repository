@@ -18,6 +18,7 @@
 
 import { Attribute } from './Attribute';
 import { Query } from './Query';
+import { CustomQuery } from './CustomQuery';
 
 export class BusinessObject {
   public qualifiedName: string;
@@ -26,7 +27,7 @@ export class BusinessObject {
   public attributes: Array<Attribute>;
   public attributeQueries: Array<Query>;
   public constraintQueries: Array<Query>;
-  public customQueries: Array<Query>;
+  public customQueries: Array<CustomQuery>;
 
   constructor(
     qualifiedName: string,
@@ -34,7 +35,7 @@ export class BusinessObject {
     attributes: Array<Attribute>,
     attributeQueries: Array<Query>,
     constraintQueries: Array<Query>,
-    customQueries: Array<Query>
+    customQueries: Array<CustomQuery>
   ) {
     this.qualifiedName = qualifiedName;
     this.name = <string>qualifiedName.split('.').pop();

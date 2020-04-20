@@ -16,48 +16,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { BdmModel } from './BdmModel';
+import { Attribute } from './Attribute';
+import { RelationAttribute } from './RelationAttribute';
+import { Query } from './Query';
+import { CustomQuery } from './CustomQuery';
+import { Filter } from './Filter';
+
 export class GraphqlSchemaGenerator {
-  private readonly bdmJson: string;
+  private readonly bdmModel: BdmModel;
   private schema: string[];
 
-  constructor(bdmJson: string) {
-    this.bdmJson = bdmJson;
+  constructor(bdmModel: BdmModel) {
+    this.bdmModel = bdmModel;
     this.schema = [];
   }
 
   public generate() {
-    let bdm: any = JSON.parse(this.bdmJson);
-
-    // Generate types
-    let attributesTypeMap = new Map<string, string>();
-    if (
-      !bdm ||
-      !bdm.businessObjectModel ||
-      !bdm.businessObjectModel.businessObjects ||
-      !bdm.businessObjectModel.businessObjects.businessObject
-    ) {
-      return;
-    }
-
     // Custom types
     this.schema.push('scalar Date\n');
     this.schema.push('scalar DateTime\n\n');
 
-    let bdmBusObjects: any[] = GraphqlSchemaGenerator.asArray(
-      bdm.businessObjectModel.businessObjects.businessObject
-    );
+    let bdmBusObjects = this.bdmModel.businessObjects;
     for (let bdmBusObject of bdmBusObjects) {
-      let bdmObjectName = GraphqlSchemaGenerator.getQualifiedName(
-        bdmBusObject._attributes.qualifiedName
-      );
+      let bdmObjectName = GraphqlSchemaGenerator.getQualifiedName(bdmBusObject.qualifiedName);
       this.schema.push('type ', bdmObjectName, ' {\n');
-      let bdmAtts = bdmBusObject.fields.field;
+      let bdmAtts = bdmBusObject.attributes;
       if (bdmAtts) {
-        this.generateAttributes(GraphqlSchemaGenerator.asArray(bdmAtts), attributesTypeMap);
-      }
-      let bdmAttRels = bdmBusObject.fields.relationField;
-      if (bdmAttRels) {
-        this.generateRelationAttributes(GraphqlSchemaGenerator.asArray(bdmAttRels));
+        this.generateAttributes(bdmAtts);
       }
       this.schema.push('}\n\n');
     }
@@ -69,40 +55,31 @@ export class GraphqlSchemaGenerator {
     // Generate queries
     let bdmObjectsWithQuery: string[] = [];
     for (let bdmBusObject of bdmBusObjects) {
-      let bdmObjectName = GraphqlSchemaGenerator.getQualifiedName(
-        bdmBusObject._attributes.qualifiedName
-      );
+      let bdmObjectName = GraphqlSchemaGenerator.getQualifiedName(bdmBusObject.qualifiedName);
       // We may have no attribute queries if no attribute (only relations)
-      // Generate attribute queriess
-      let bdmAtts: string = bdmBusObject.fields.field;
+      // Generate attribute queries
       let attributeQueries: string[] = [];
-      if (bdmAtts) {
+      if (bdmBusObject.attributeQueries.length > 0) {
         attributeQueries = GraphqlSchemaGenerator.getAttributeQueries(
           bdmObjectName,
-          GraphqlSchemaGenerator.asArray(bdmAtts)
+          bdmBusObject.attributeQueries
         );
       }
       // Generate default queries from unique constraints
-      let constraints = bdmBusObject.uniqueConstraints.uniqueConstraint;
       let constraintQueries: string[] = [];
-      if (constraints) {
+      if (bdmBusObject.constraintQueries.length > 0) {
         constraintQueries = this.getQueriesFromConstraints(
           bdmObjectName,
-          GraphqlSchemaGenerator.asArray(constraints),
-          attributesTypeMap
+          bdmBusObject.constraintQueries
         );
       }
       // Generate custom queries
-      let bdmCustomQueries = bdmBusObject.queries.query;
       let customQueries: string[] = [];
-      if (bdmCustomQueries) {
-        customQueries = this.getCustomQueries(
-          bdmObjectName,
-          GraphqlSchemaGenerator.asArray(bdmCustomQueries)
-        );
+      if (bdmBusObject.customQueries.length > 0) {
+        customQueries = this.getCustomQueries(bdmObjectName, bdmBusObject.customQueries);
       }
 
-      // Concatenate queries, without duplicates (use Set)
+      // // Concatenate queries, without duplicates (use Set)
       let queries = [...new Set(attributeQueries.concat(constraintQueries, customQueries))];
       if (queries.length > 0) {
         this.generateBdmObjectQuery(bdmObjectName, queries);
@@ -127,103 +104,71 @@ export class GraphqlSchemaGenerator {
   // Private methods
   //
 
-  private generateAttributes(bdmAttsArray: any[], attributesTypeMap: Map<string, string>) {
+  private generateAttributes(bdmAttsArray: Attribute[]) {
     for (let bdmAtt of bdmAttsArray) {
-      let mandatoryStr = bdmAtt._attributes.nullable === 'true' ? '' : '!';
-      let type = GraphqlSchemaGenerator.xmlToGraphqlType(bdmAtt._attributes.type);
-      if (bdmAtt._attributes.collection === 'true') {
+      let mandatoryStr = bdmAtt.nullable ? '' : '!';
+      let type = '';
+      if (bdmAtt instanceof RelationAttribute) {
+        type = GraphqlSchemaGenerator.getQualifiedName(bdmAtt.reference);
+      } else {
+        type = GraphqlSchemaGenerator.xmlToGraphqlType(bdmAtt.type);
+      }
+      if (bdmAtt.collection) {
         type = '[' + type + ']';
       }
-      let name = bdmAtt._attributes.name;
+      let name = bdmAtt.name;
       this.schema.push('\t', name, ': ', type + mandatoryStr, '\n');
-      attributesTypeMap.set(name, type);
     }
   }
 
-  private generateRelationAttributes(bdmRelAttsArray: any[]) {
-    for (let bdmRelAtt of bdmRelAttsArray) {
-      let relType = GraphqlSchemaGenerator.getQualifiedName(bdmRelAtt._attributes.reference);
-      let mandatoryStr = bdmRelAtt._attributes.nullable === 'true' ? '' : '!';
-      this.schema.push('\t', bdmRelAtt._attributes.name, ': ', relType + mandatoryStr, '\n');
-    }
-  }
-
-  private static getAttributeQueries(bdmObjectName: string, bdmAttsArray: any[]): string[] {
+  private static getAttributeQueries(bdmObjectName: string, attQueries: Query[]): string[] {
     //   findByName(name: String!): Customer
     //   ...
     //   find: Customer
     let queries: string[] = [];
-    for (let bdmAtt of bdmAttsArray) {
-      // Do not generate query for collection attribute
-      if (bdmAtt._attributes.collection === 'true') {
-        continue;
+    for (let attQuery of attQueries) {
+      if (attQuery.filters.length === 1) {
+        // If any, always a single Filter for attribute queries
+        let filter = attQuery.filters[0];
+        let name = filter.name;
+        let type = GraphqlSchemaGenerator.xmlToGraphqlType(filter.type);
+        queries.push(attQuery.name + '(' + name + ': ' + type + '!): ' + bdmObjectName);
+      } else {
+        // find() query
+        queries.push(attQuery.name + ': ' + bdmObjectName);
       }
-      let attName = bdmAtt._attributes.name;
-      let type = GraphqlSchemaGenerator.xmlToGraphqlType(bdmAtt._attributes.type);
-      queries.push(
-        'findBy' +
-          GraphqlSchemaGenerator.capitalizeFirstLetter(attName) +
-          '(' +
-          attName +
-          ': ' +
-          type +
-          '!): ' +
-          bdmObjectName
-      );
     }
-
-    // Generate find() query
-    queries.push('find: ' + bdmObjectName);
-
-    // Generate findByPersistenceId() query
-    queries.push('findByPersistenceId(persistenceId: Int!): ' + bdmObjectName);
 
     return queries;
   }
 
-  private getQueriesFromConstraints(
-    bdmObjectName: string,
-    bdmConstraintsArray: any[],
-    attributesTypeMap: Map<string, string>
-  ): string[] {
+  private getQueriesFromConstraints(bdmObjectName: string, constraintQueries: Query[]): string[] {
     // e.g. :
     //   findByNameAndPhoneNumber(name: String!, phoneNumber: String!): Customer
     //   ...
     let queries: string[] = [];
-    for (let bdmConstraint of bdmConstraintsArray) {
-      let parameters = bdmConstraint.fieldNames.fieldName;
-      let params: string[] = [];
-      let paramsCap: string[] = [];
-      let parametersArray = GraphqlSchemaGenerator.asArray(parameters);
-      for (let parameter of parametersArray) {
-        let paramName = parameter._text;
-        params.push(paramName);
-        paramsCap.push(GraphqlSchemaGenerator.capitalizeFirstLetter(paramName));
-      }
+    for (let bdmConstraint of constraintQueries) {
       let findParametersArr: string[] = [];
-      params.forEach(param => {
-        findParametersArr.push(param + ': ' + attributesTypeMap.get(param) + '!');
+      bdmConstraint.filters.forEach(filter => {
+        let type = GraphqlSchemaGenerator.xmlToGraphqlType(filter.type);
+        if (filter.collection) {
+          type = '[' + type + ']';
+        }
+        findParametersArr.push(filter.name + ': ' + type + '!');
       });
-      queries.push(
-        'findBy' +
-          paramsCap.join('And') +
-          '(' +
-          findParametersArr.join(', ') +
-          '): ' +
-          bdmObjectName
-      );
+      queries.push(bdmConstraint.name + '(' + findParametersArr.join(', ') + '): ' + bdmObjectName);
     }
     return queries;
   }
 
-  private getCustomQueries(bdmObjectName: string, customQueries: any[]): string[] {
+  private getCustomQueries(bdmObjectName: string, customQueries: CustomQuery[]): string[] {
     // e.g. :
     //   query1(name: String!): [Customer]
     //   ...
     let queries: string[] = [];
     for (let customQuery of customQueries) {
-      let queryName = customQuery._attributes.name;
-      let bdmReturnType = customQuery._attributes.returnType;
+      let queryName = customQuery.name;
+      let bdmReturnType = customQuery.returnType;
       let returnType;
       if (bdmReturnType === 'java.util.List') {
         returnType = '[' + bdmObjectName + ']';
@@ -234,10 +179,10 @@ export class GraphqlSchemaGenerator {
           GraphqlSchemaGenerator.getLastItem(bdmReturnType)
         );
       }
-      let parameters = customQuery.queryParameters.queryParameter;
+      let filters = customQuery.filters;
       let paramsStr = '';
-      if (parameters) {
-        paramsStr = this.generateQueryParamsString(parameters);
+      if (filters.length > 0) {
+        paramsStr = this.generateQueryParamsString(filters);
       }
       queries.push(queryName + paramsStr + ': ' + returnType);
     }
@@ -287,23 +232,19 @@ export class GraphqlSchemaGenerator {
   // Private static methods
   //
 
-  private generateQueryParamsString(parameters: any): string {
+  private generateQueryParamsString(filters: Array<Filter>): string {
     // e.g. :
     // (name: String!)
 
     // Map of paramName, paramType
     let paramsMap = new Map();
-    let parametersArray = GraphqlSchemaGenerator.asArray(parameters);
-    for (let parameter of parametersArray) {
-      let paramName = parameter._attributes.name;
-      let paramType = parameter._attributes.className;
-      let type = GraphqlSchemaGenerator.getLastItem(paramType);
-      if (type.endsWith(';')) {
-        // this is a type of xml form '[Ljava.lang.String;', so an array
-        // Here, the last item is something like 'String;' => [String] in GraphQL
-        type = '[' + type.substring(0, type.length - 1) + ']';
+    for (let filter of filters) {
+      let paramName = filter.name;
+      let paramType = GraphqlSchemaGenerator.xmlToGraphqlType(filter.type);
+      if (filter.collection) {
+        paramType = '[' + paramType + ']';
       }
-      paramsMap.set(paramName, GraphqlSchemaGenerator.xmlToGraphqlType(type));
+      paramsMap.set(paramName, GraphqlSchemaGenerator.xmlToGraphqlType(paramType));
     }
     let paramsStringArray: string[] = [];
     paramsMap.forEach((value, key) => {

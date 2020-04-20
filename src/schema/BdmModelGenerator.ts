@@ -22,6 +22,7 @@ import { BdmModel } from './BdmModel';
 import { Query } from './Query';
 import { Filter } from './Filter';
 import { RelationAttribute } from './RelationAttribute';
+import { CustomQuery } from './CustomQuery';
 
 export class BdmModelGenerator {
   private readonly bdmJson: string;
@@ -194,15 +195,17 @@ export class BdmModelGenerator {
     // e.g. :
     //   query1(name: String!)
     //   ...
-    let customQueries: Array<Query> = [];
+    let customQueries: Array<CustomQuery> = [];
     for (let bdmCustomQuery of bdmCustomQueries) {
       let queryName = bdmCustomQuery._attributes.name;
+      let returnType = bdmCustomQuery._attributes.returnType;
       let parameters = bdmCustomQuery.queryParameters.queryParameter;
       let filters: Array<Filter> = [];
       if (parameters) {
         filters = BdmModelGenerator.getFilters(parameters);
       }
-      customQueries.push(new Query(queryName, filters));
+      let query = new Query(queryName, filters);
+      customQueries.push(new CustomQuery(query, returnType));
     }
     return customQueries;
   }
@@ -230,8 +233,8 @@ export class BdmModelGenerator {
   private static getAttribute(bdmAtt: any) {
     let name = bdmAtt._attributes.name;
     let type = bdmAtt._attributes.type;
-    let nullable = this.stringToBoolean(bdmAtt._attributes.nullable);
-    let collection = this.stringToBoolean(JSON.parse(bdmAtt._attributes.collection));
+    let nullable = BdmModelGenerator.stringToBoolean(bdmAtt._attributes.nullable);
+    let collection = BdmModelGenerator.stringToBoolean(bdmAtt._attributes.collection);
     let description = '';
     if (bdmAtt.description) {
       description = bdmAtt.description._text;
@@ -261,7 +264,7 @@ export class BdmModelGenerator {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  private static stringToBoolean(input: string): boolean {
-    return JSON.parse(input);
+  private static stringToBoolean(str: string): boolean {
+    return str === 'true';
   }
 }
