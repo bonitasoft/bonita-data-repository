@@ -39,6 +39,7 @@ export class BdrServer {
   private readonly host: string;
   private static readonly bdmGraphqlPath = '/bdm/graphql';
   private static readonly bdmJsonPath = '/bdm/json';
+  private static readonly bdmVoyagerPath = '/bdm/graphical';
   private readonly logger: any;
   private static readonly emptySchema = 'type Query { content: String }';
   private graphqlSchema: string = buildSchema(BdrServer.emptySchema);
@@ -82,7 +83,10 @@ export class BdrServer {
     // Enable cors for all
     this.expressApp.use(cors());
 
-    this.expressApp.use('/voyager', voyagerMiddleware({ endpointUrl: '/bdm/graphql' }));
+    this.expressApp.use(
+      BdrServer.bdmVoyagerPath,
+      voyagerMiddleware({ endpointUrl: '/bdm/graphql' })
+    );
   }
 
   public start() {
