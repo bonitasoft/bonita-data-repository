@@ -47,11 +47,19 @@ describe('GraphqlSchemaGenerator', () => {
   test('Check expected attributes in graphQL schema', () => {
     let schema = _getSchema('test/resources/bdm_CustomerOrder.xml');
     expect(schema).toContain(
-      'type com_company_model_Customer {\n' +
+      '"""\n' +
+        'Description of a Customer\n' +
+        '"""\n' +
+        'type com_company_model_Customer {\n' +
+        '\n\t"Full name of the customer"\n' +
         '\tname: String\n' +
+        '\n\t"Detailed address of the customer"\n' +
         '\taddress: [String]\n' +
+        '\n\t"Mobile phone number of the customer"\n' +
         '\tphoneNumber: String\n' +
+        '\n\t"Free string"\n' +
         '\tcomment: [String]\n' +
+        '\n\t"Products ordered by the customer"\n' +
         '\torders: [com_company_model_OrderInfo]\n' +
         '}'
     );

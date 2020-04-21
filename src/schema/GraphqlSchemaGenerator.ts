@@ -40,6 +40,9 @@ export class GraphqlSchemaGenerator {
     let bdmBusObjects = this.bdmModel.businessObjects;
     for (let bdmBusObject of bdmBusObjects) {
       let bdmObjectName = GraphqlSchemaGenerator.getQualifiedName(bdmBusObject.qualifiedName);
+      if (bdmBusObject.description) {
+        this.schema.push('"""\n', bdmBusObject.description, '\n"""\n');
+      }
       this.schema.push('type ', bdmObjectName, ' {\n');
       let bdmAtts = bdmBusObject.attributes;
       if (bdmAtts) {
@@ -82,7 +85,7 @@ export class GraphqlSchemaGenerator {
       // // Concatenate queries, without duplicates (use Set)
       let queries = [...new Set(attributeQueries.concat(constraintQueries, customQueries))];
       if (queries.length > 0) {
-        this.generateBdmObjectQuery(bdmObjectName, queries);
+        this.generateBdmObjectQuery(bdmObjectName, bdmBusObject.name, queries);
         bdmObjectsWithQuery.push(bdmObjectName);
       }
     }
@@ -117,6 +120,9 @@ export class GraphqlSchemaGenerator {
         type = '[' + type + ']';
       }
       let name = bdmAtt.name;
+      if (bdmAtt.description) {
+        this.schema.push('\n\t"', bdmAtt.description, '"\n');
+      }
       this.schema.push('\t', name, ': ', type + mandatoryStr, '\n');
     }
   }
@@ -189,13 +195,18 @@ export class GraphqlSchemaGenerator {
     return queries;
   }
 
-  private generateBdmObjectQuery(bdmObjectName: string, queries: string[]) {
+  private generateBdmObjectQuery(
+    bdmObjectName: string,
+    bdmObjectSimpleName: string,
+    queries: string[]
+  ) {
     // e.g. :
     // type CustomerQuery {
     //   findByName(name: String!): Customer
     //   findByNameAndPhoneNumber(name: String!, phoneNumber: String!): Customer
     //    ...
     // }
+    this.schema.push('"""\n', bdmObjectSimpleName + ' queries', '\n"""\n');
     this.schema.push('type ', bdmObjectName, 'Query {\n');
     for (let query of queries) {
       this.schema.push('\t' + query + '\n');
@@ -209,6 +220,7 @@ export class GraphqlSchemaGenerator {
     //  customerQuery: CustomerQuery
     //  ...
     // }
+    this.schema.push('"""\n', 'The root queries', '\n"""\n');
     this.schema.push('type ', 'Query {\n');
     let myself = this;
     bdmObjectsWithQuery.forEach(bdmObjectName => {
