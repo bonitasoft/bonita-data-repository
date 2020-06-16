@@ -16,13 +16,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export class Configuration {
-  bdmFile: string | undefined;
-  host: string | undefined;
-  port: number | undefined;
-  logFile: string | undefined;
-  logLevel: string | undefined;
-  healthCheckUrl: string | undefined;
-  healthCheckHost: string | undefined;
-  healthCheckPort: number | undefined;
+export class Attribute {
+  public name: string;
+  public type: string;
+  public nullable: boolean;
+  public collection: boolean;
+  public description: string;
+
+  constructor(
+    name: string,
+    type: string,
+    nullable: boolean,
+    collection: boolean,
+    description: string
+  ) {
+    this.name = name;
+    this.type = type;
+    this.nullable = nullable;
+    this.collection = collection;
+    this.description = description;
+  }
 }

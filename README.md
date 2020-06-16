@@ -1,6 +1,6 @@
 # Bonita Data Repository server
 
-## Build / Installation
+## Build / Test / Installation
 
 ```
 $ mvn clean install
@@ -17,7 +17,7 @@ Start the server with a BDM:
 
 ```
 $ node target/src/server/starter.js bdmFile=YOUR_PATH/bdm_simple.xml
-or 
+or
 $ npm run start bdmFile=YOUR_PATH/bdm_simple.xml
 ```
 
@@ -51,7 +51,7 @@ Example of config file:
 ## Connect to GraphiQL
 
 ```
-http://localhost:4000/bdr
+http://localhost:4000/bdm/graphql
 ```
 
 ## Post a BDM (from string)

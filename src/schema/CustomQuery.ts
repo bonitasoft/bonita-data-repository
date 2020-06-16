@@ -16,13 +16,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export class Configuration {
-  bdmFile: string | undefined;
-  host: string | undefined;
-  port: number | undefined;
-  logFile: string | undefined;
-  logLevel: string | undefined;
-  healthCheckUrl: string | undefined;
-  healthCheckHost: string | undefined;
-  healthCheckPort: number | undefined;
+import { Query } from './Query';
+
+export class CustomQuery extends Query {
+  public returnType: string;
+
+  constructor(query: Query, returnType: string) {
+    super(query.name, query.filters);
+    this.returnType = returnType;
+  }
 }
