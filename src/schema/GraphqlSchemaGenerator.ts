@@ -82,7 +82,7 @@ export class GraphqlSchemaGenerator {
         customQueries = this.getCustomQueries(bdmObjectName, bdmBusObject.customQueries);
       }
 
-      // // Concatenate queries, without duplicates (use Set)
+      // Concatenate queries, without duplicates (use Set)
       let queries = [...new Set(attributeQueries.concat(constraintQueries, customQueries))];
       if (queries.length > 0) {
         this.generateBdmObjectQuery(bdmObjectName, bdmBusObject.name, queries);
@@ -92,10 +92,6 @@ export class GraphqlSchemaGenerator {
 
     // This is the (mandatory) Query root.
     this.generateRootQuery(bdmObjectsWithQuery);
-  }
-
-  public getResolvers() {
-    return GraphqlSchemaGenerator.generateInfoResolver();
   }
 
   public getSchema() {
@@ -265,10 +261,6 @@ export class GraphqlSchemaGenerator {
     return '(' + paramsStringArray.join(', ') + ')';
   }
 
-  private static generateInfoResolver(): Object {
-    return { Query: { info: () => `This is the API of BDM repository` } };
-  }
-
   private static xmlToGraphqlType(xmlType: string) {
     switch (xmlType.toUpperCase()) {
       case 'BOOLEAN':
@@ -289,28 +281,13 @@ export class GraphqlSchemaGenerator {
       case 'OFFSETDATETIME':
         return 'DateTime';
       default:
-        return xmlType;
+        // If custom type, return correct graphQL syntax
+        return GraphqlSchemaGenerator.getQualifiedName(xmlType);
     }
-  }
-
-  private static asArray(element: any): any[] {
-    // Put element in an array (if needed)
-    let arr;
-    if (!Array.isArray(element)) {
-      arr = [];
-      arr.push(element);
-    } else {
-      arr = element;
-    }
-    return arr;
   }
 
   private static getLastItem(path: string): string {
     return path.substring(path.lastIndexOf('.') + 1);
-  }
-
-  private static capitalizeFirstLetter(str: string): string {
-    return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
   private static lowercaseFirstLetter(str: string): string {

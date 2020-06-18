@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<businessObjectModel xmlns="http://documentation.bonitasoft.com/bdm-xml-schema/1.0" modelVersion="1.0" productVersion="7.11.0.beta-01">
+    <businessObjects>
+        <businessObject qualifiedName="com.company.model.Customer">
+            <fields>
+                <field type="STRING" length="255" name="name" nullable="true" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.company.model.Orders" fetchType="LAZY" name="orders" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="uniqueConstraint">
+                    <fieldNames>
+                        <fieldName>orders</fieldName>
+                        <fieldName>name</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.company.model.Orders">
+            <fields>
+                <field type="STRING" length="255" name="name" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+    </businessObjects>
+</businessObjectModel>
