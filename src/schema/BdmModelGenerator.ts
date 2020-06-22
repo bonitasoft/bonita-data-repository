@@ -183,7 +183,13 @@ export class BdmModelGenerator {
       let filters: Array<Filter> = [];
       params.forEach(param => {
         let attribute = attributes.filter(attribute => attribute.name === param)[0];
-        filters.push(new Filter(attribute.name, attribute.type, attribute.collection));
+        let type: string;
+        if (attribute instanceof RelationAttribute) {
+          type = attribute.reference;
+        } else {
+          type = attribute.type;
+        }
+        filters.push(new Filter(attribute.name, type, attribute.collection));
       });
       let queryName = 'findBy' + paramsCap.join('And');
       constraintQueries.push(new Query(queryName, filters));
