@@ -35,7 +35,9 @@ ls -lRh .
             stage('Update documentation ✏️') {
                 if (params.createPR) {
                     configGitCredentialHelper()
-                    git url: 'https://github.com/bonitasoft/bonita-data-repository.git', branch: "${params.branchOrTagName}", credentialsId: 'github', depth: 1
+                    checkout([$class: 'GitSCM', branches: [[name: "*/${params.branchOrTagName}"]],
+                              userRemoteConfigs: [[url: 'https://github.com/bonitasoft/bonita-data-repository.git',
+                                                   credentialsId: 'github', refspec:"+refs/${params.gitRefs}/${params.branchOrTagName}:refs/remotes/origin/${params.branchOrTagName}"]]])
                     unstash "bonita-data-repository-dependencies"
                     println "Start generation file"
                     sh "cd ./infrastructure/dependencies && npm install && cd ../.."
