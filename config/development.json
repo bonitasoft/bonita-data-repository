@@ -1,9 +1,6 @@
 {
   "port": "4000",
-  "bdmFile": "resources/bomBBVA.xml",
+  "bdmFile": "resources/bdm_simple.xml",
   "logLevel": "debug",
-  "logfile": "./logs",
-  "healthCheckPort": 54896,
-  "healthCheckUrl": "/api/workspace/status/",
-  "healthCheckHost": "http://localhost"
+  "logfile": "./logs"
 }
