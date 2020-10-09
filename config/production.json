@@ -1,6 +1,9 @@
 {
   "port": "4000",
-  "bdmFile": "resources/bomAG2R.xml",
+  "bdmFile": "resources/bdm_simple.xml",
   "logFile": "target/log/data-repository.log",
-  "logLevel": "debug"
+  "logLevel": "debug",
+  "healthCheckPort": 54896,
+  "healthCheckUrl": "/api/workspace/status/",
+  "healthCheckHost": "http://localhost"
 }
