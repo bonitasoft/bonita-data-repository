@@ -18,7 +18,7 @@ Start the server with a BDM:
 ```
 $ node target/src/server/starter.js bdmFile=YOUR_PATH/bdm_simple.xml
 or
-$ npm run start bdmFile=YOUR_PATH/bdm_simple.xml
+$ npm run start
 ```
 
 ### Options
@@ -37,7 +37,7 @@ $ npm run start bdmFile=YOUR_PATH/bdm_simple.xml
 
 Each option can be given on server start command. Config parameter will be always override file configuration.
 
-Example of config file:
+Example of dev config file:
 
 ```
 {
@@ -47,6 +47,8 @@ Example of config file:
   "logfile": "./logs"
 }
 ```
+
+To simulate 'production' environment, don't forget to add healthCheck information. You can see an example in config/production.json file.
 
 ## Connect to GraphiQL
 
