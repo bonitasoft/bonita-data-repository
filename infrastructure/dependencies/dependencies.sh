@@ -94,9 +94,13 @@ FOLDER=${BASEDIR}/${SOURCE_FOLDER}
 node ../${SCRIPT_DIR}/node_modules/@bonitasoft/dependency-list-to-markdown/src/generateMarkdownContent.js --folder=${FOLDER} --outputFile ${OUTPUT_FILE} --header="Bonita Data-repository dependencies ${VERSION}" --description="List all dependencies uses for Bonita Data-repository" --frontend
 
 #Commit & Push
-git add ${OUTPUT_FILE}
-git commit -m "${COMMIT_MESSAGE}"
-git push origin ${BRANCH}
+if [ -z "$(git status --porcelain)" ]; then
+  echo "No changes in dependencies, nothing to commit."
+else
+  git add ${OUTPUT_FILE}
+  git commit -m "${COMMIT_MESSAGE}"
+  git push origin ${BRANCH}
+fi
 
 popd
 
