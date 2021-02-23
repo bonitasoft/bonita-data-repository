@@ -56,6 +56,18 @@ To simulate 'production' environment, don't forget to add healthCheck informatio
 http://localhost:4000/bdm/graphql
 ```
 
+## Get the BDM json representation
+
+```
+http://localhost:4000/bdm/json
+```
+
+## Get the graphical view (Voyager)
+
+```
+http://localhost:4000/bdm/graphical
+```
+
 ## Post a BDM (from string)
 
 ```

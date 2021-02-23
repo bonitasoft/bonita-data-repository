@@ -117,7 +117,7 @@ export class GraphqlSchemaGenerator {
       }
       let name = bdmAtt.name;
       if (bdmAtt.description) {
-        this.schema.push('\n\t"', bdmAtt.description, '"\n');
+        this.schema.push('\n\t""" ', bdmAtt.description, ' """\n');
       }
       this.schema.push('\t', name, ': ', type + mandatoryStr, '\n');
     }

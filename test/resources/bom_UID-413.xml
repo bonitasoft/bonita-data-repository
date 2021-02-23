@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<businessObjectModel xmlns="http://documentation.bonitasoft.com/bdm-xml-schema/1.0" modelVersion="1.0" productVersion="7.11.4">
+    <businessObjects>
+        <businessObject qualifiedName="sinalys.ORSA.ErreurORSA">
+            <fields>
+                <field type="STRING" length="255" name="code" nullable="true" collection="false"/>
+                <field type="TEXT" length="255" name="message" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="actionLabel" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="sinalys.ORSA.FichierORSA">
+            <fields>
+                <field type="STRING" length="255" name="nom" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="type" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="url" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="sinalys.ORSA.ParamsORSA">
+            <description>Liste des paramètres contenu de le fichier de paramètres, pour lancement multiple d'un traitement Calfitec</description>
+            <fields>
+                <field type="STRING" length="255" name="calSimCodeMax" nullable="true" collection="false">
+                    <description>CAL_SIM_CODE_MAX</description>
+                </field>
+                <field type="STRING" length="255" name="calItrCodeMax" nullable="true" collection="false">
+                    <description>CAL_ITR_CODE_MAX</description>
+                </field>
+                <field type="STRING" length="255" name="calTypePas" nullable="true" collection="false">
+                    <description>CAL_TYPE_PAS</description>
+                </field>
+                <field type="STRING" length="255" name="calDateBasePas" nullable="true" collection="false">
+                    <description>CAL_DATE_BASE_PAS</description>
+                </field>
+                <field type="STRING" length="255" name="dtCalcul" nullable="true" collection="false">
+                    <description>DT_CALCUL</description>
+                </field>
+                <field type="STRING" length="255" name="ageLimRct" nullable="true" collection="false">
+                    <description>AGE_LIM_RCT</description>
+                </field>
+                <field type="STRING" length="255" name="idJeuHyp" nullable="true" collection="false">
+                    <description>ID_JEU_HYP</description>
+                </field>
+                <field type="STRING" length="255" name="idScenario" nullable="true" collection="false">
+                    <description>ID_SCENARIO</description>
+                </field>
+                <field type="STRING" length="255" name="decInvatt" nullable="true" collection="false">
+                    <description>DEC_INVATT</description>
+                </field>
+                <field type="STRING" length="255" name="trt0" nullable="true" collection="false">
+                    <description>TRT0</description>
+                </field>
+                <field type="STRING" length="255" name="paraAnnProj" nullable="true" collection="false">
+                    <description>PARA_ANN_PROJ</description>
+                </field>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="sinalys.ORSA.TraitementORSA">
+            <fields>
+                <field type="LONG" length="255" name="id" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="code" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="modele" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="etat" nullable="true" collection="false"/>
+                <field type="INTEGER" length="255" name="iteration" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="annule" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="erreur" nullable="true" collection="false"/>
+                <relationField type="COMPOSITION" reference="sinalys.ORSA.FichierORSA" fetchType="LAZY" name="fichiers" nullable="true" collection="true"/>
+                <relationField type="COMPOSITION" reference="sinalys.ORSA.ErreurORSA" fetchType="LAZY" name="erreurs" nullable="true" collection="true"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="sinalys.wf.BusTraitement">
+            <description>Elements de suivi d'un traitement Calfitec (traitement d'intégration, ou traitement d'un Modèle)</description>
+            <fields>
+                <field type="LONG" length="255" name="caseId" nullable="true" collection="false">
+                    <description>Identifiant du cas correspondant au processus principal&#13;
+                        &#13;&#13;
+                        Utilisé notamment pour récupérer les documents produits par le sous-processus"</description>
+                </field>
+                <field type="LONG" length="255" name="caseIdSP" nullable="true" collection="false">
+                    <description>Identifiant du cas correspondant au sous-processus du traitement</description>
+                </field>
+                <field type="STRING" length="255" name="etape" nullable="true" collection="false">
+                    <description>Code de l'étape concernée (pour Ifrs17 : INTEG, CONSO, AGGREG, CALBBA, CALPAA, CALVFA, PRECPT, COMPTA, RESTCPT)</description>
+                </field>
+                <field type="STRING" length="255" name="libEtape" nullable="true" collection="false">
+                    <description>LIbellé de l'étape traitée (ex : Restitutions comptables)</description>
+                </field>
+                <field type="LONG" length="255" name="id" nullable="true" collection="false">
+                    <description>Code traitement Calfitec (intégration ou exécution de Modèle), format numérique</description>
+                </field>
+                <field type="STRING" length="255" name="modele" nullable="true" collection="false">
+                    <description>Code externe du traitement calfitec (intégration ou exécution de Modèle)</description>
+                </field>
+                <field type="INTEGER" length="255" name="nbInstances" nullable="true" collection="false">
+                    <description>Nombre total d'instances pour ce traitement</description>
+                </field>
+                <field type="INTEGER" length="255" name="numInstance" nullable="true" collection="false">
+                    <description>N° d'instance, en cas de traitement multi-instances (ex : pré-compta)</description>
+                </field>
+                <field type="STRING" length="512" name="paramInstance" nullable="true" collection="false">
+                    <description>Paramètre(s) spécifique(s) de l'instance, en cas de traitement multi-instances  (ex : pré-compta)</description>
+                </field>
+                <field type="STRING" length="255" name="dateDeb" nullable="true" collection="false">
+                    <description>Date de début du traitement</description>
+                </field>
+                <field type="STRING" length="255" name="dateFin" nullable="true" collection="false">
+                    <description>date de fin du traitement</description>
+                </field>
+                <field type="STRING" length="255" name="etat" nullable="true" collection="false">
+                    <description>"Code état retourné par le traitement Calfitec (intégration ou exécution de Modèle) :&#13;
+
+                        - OK
+                        &#13;
+                        - Running&#13;
+
+                        - Warning&#13;
+
+                        - DeleteAsked, Deleting&#13;
+
+                        - FailureNotFound, FailureSyntaxError, FailureRuntimeError, FailureWrongParameter, FailureNotAllowed, FailureCoulndNotDelete, FailureCanceled, FailureBug"</description>
+                </field>
+                <field type="INTEGER" length="255" name="iteration" nullable="true" collection="false">
+                    <description>Nombre d'itérations de la boucle d'attente de fin de traitement</description>
+                </field>
+                <field type="BOOLEAN" length="255" name="annule" nullable="true" collection="false">
+                    <description>Indicateur de traitement annulé</description>
+                </field>
+                <field type="BOOLEAN" length="255" name="erreur" nullable="true" collection="false">
+                    <description>Indicateur de traitement en erreur</description>
+                </field>
+                <field type="BOOLEAN" length="255" name="avertissement" nullable="true" collection="false">
+                    <description>Indicateur de traitement en avertissement</description>
+                </field>
+                <field type="TEXT" length="255" name="listeErreurs" nullable="true" collection="false">
+                    <description>Liste des erreurs, au format Texte, pour affichage dans l'appli de suivi et inclusion dans les mails envoyés</description>
+                </field>
+                <field type="BOOLEAN" length="255" name="timeout" nullable="true" collection="false">
+                    <description>Indicateur de traitement trop long (en timeout)</description>
+                </field>
+                <field type="STRING" length="255" name="nomActeur" nullable="true" collection="false">
+                    <description>nom de l'acteur, dans le cas d'une tâche humaine : saisie des paramètres, validation</description>
+                </field>
+                <field type="TEXT" length="255" name="cmt" nullable="true" collection="false">
+                    <description>Commentaire associé à l'étape (ex : commentaire de validation)</description>
+                </field>
+                <field type="STRING" length="255" name="categorie" nullable="true" collection="false">
+                    <description>Catégorie transmise à Calfitec pour référencement du traitement</description>
+                </field>
+                <field type="TEXT" length="255" name="listeAvertissements" nullable="true" collection="false">
+                    <description>Liste des avertissements au format Texte, pour affichage dans l'appli de suivi et inclusion dans les mails envoyés</description>
+                </field>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="sinalys.wf.ErreurTrt">
+            <description>Description d'erreur générée par le traitement Calfitec (concerne uniquement les traitements de modèles)</description>
+            <fields>
+                <field type="LONG" length="255" name="caseId" nullable="true" collection="false">
+                    <description>Identifiant du cas correspondant au processus principal appelant</description>
+                </field>
+                <field type="LONG" length="255" name="caseIdSP" nullable="true" collection="false">
+                    <description>Identifiant du cas correspondant au sous-processus du traitement</description>
+                </field>
+                <field type="STRING" length="255" name="etape" nullable="true" collection="false">
+                    <description>Nom de l'étape concernée (pour Ifrs17 : INTEG, CONSO, AGGREG, CALBBA, CALPAA, CALVFA, PRECPT, COMPTA, RESTCPT)</description>
+                </field>
+                <field type="STRING" length="255" name="libEtape" nullable="true" collection="false">
+                    <description>Libellé de l'étape traitée (ex : Restitutions comptabes)</description>
+                </field>
+                <field type="LONG" length="255" name="id" nullable="true" collection="false">
+                    <description>Code traitement Calfitec (intégration ou exécution de Modèle), format numérique</description>
+                </field>
+                <field type="STRING" length="255" name="actionLabel" nullable="true" collection="false">
+                    <description>Identification de la « boîte » Calfitec où s’est produit l’erreur
+                        Exempe : « S2311-F01 : Newton-Raphson  Effective Yield »</description>
+                </field>
+                <field type="STRING" length="255" name="code" nullable="true" collection="false">
+                    <description>Code erreur (dans les faits : libellé court)&#13;
+
+                        Exemple : « Procédure non exécutée »</description>
+                </field>
+                <field type="TEXT" length="255" name="message" nullable="true" collection="false">
+                    <description>Message d’erreur
+                        &#13;
+                        Exemple : « La procédure n'a pas été appelée car les Paramètre(s) sont vides. »</description>
+                </field>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="sinalys.wf.EtapePrevue">
+            <description>Etape prévue pour un traitement donné (ex : Consolidation)</description>
+            <fields>
+                <field type="STRING" length="255" name="etape" nullable="true" collection="false">
+                    <description>Code de l'étape prévue</description>
+                </field>
+                <field type="STRING" length="255" name="nomTache" nullable="true" collection="false">
+                    <description>Nom (displayName) de la tâche dans le workflow</description>
+                </field>
+                <field type="STRING" length="255" name="libEtape" nullable="true" collection="false">
+                    <description>Libellé de l'étape prévue</description>
+                </field>
+                <field type="INTEGER" length="255" name="ordreEtape" nullable="true" collection="false">
+                    <description>Ordre d'exécution de l'étape</description>
+                </field>
+                <field type="BOOLEAN" length="255" name="indMulti" nullable="true" collection="false">
+                    <description>Indicateur de multi-instanciation de l'étape</description>
+                </field>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="sinalys.wf.FichierTrt">
+            <description>Lien vers fichier généré par le traitement Calfitec (fichier d'erreur pour l'intégration, ou fichier de résultat pour les traitements de modèles)</description>
+            <fields>
+                <field type="LONG" length="255" name="caseId" nullable="true" collection="false">
+                    <description>Identifiant du cas correspondant au processus principal appelant</description>
+                </field>
+                <field type="LONG" length="255" name="caseIdSP" nullable="true" collection="false">
+                    <description>Identifiant du cas correspondant au sous-processus du traitement</description>
+                </field>
+                <field type="STRING" length="255" name="etape" nullable="true" collection="false">
+                    <description>Nom de l'étape concernée (pour Ifrs17 : INTEG, CONSO, AGGREG, CALBBA, CALPAA, CALVFA, PRECPT, COMPTA, RESTCPT)</description>
+                </field>
+                <field type="STRING" length="255" name="libEtape" nullable="true" collection="false">
+                    <description>Libellé de l'étape traitée (ex : Restitutions comptabes)</description>
+                </field>
+                <field type="LONG" length="255" name="id" nullable="true" collection="false">
+                    <description>Code traitement Calfitec (intégration ou exécution de Modèle), format numérique</description>
+                </field>
+                <field type="STRING" length="255" name="nom" nullable="true" collection="false">
+                    <description>Nom du fichier, sans extension&#13;
+
+                        Exemple : « IFRS17_INPUT_CONSO-10239 »</description>
+                </field>
+                <field type="STRING" length="255" name="type" nullable="true" collection="false">
+                    <description>Type de fichier (extension)&#13;&#13;
+                        Exemple : « xlsx »</description>
+                </field>
+                <field type="STRING" length="255" name="url" nullable="true" collection="false">
+                    <description>Lien HTML avec le fichier stocké dans Calfitec, afin de le télécharger à la demande de l’utilisation</description>
+                </field>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="sinalys.wf.ParamsIfrs17">
+            <description>Paramètres de traitement saisis ou affichés</description>
+            <fields>
+                <field type="STRING" length="255" name="nomFichier" nullable="true" collection="false">
+                    <description>Nom d’origine du fichier à intégrer&#13;
+                        Exemple : IFRS17_9201512MMOV17_201512.zip</description>
+                </field>
+                <field type="STRING" length="255" name="commentaire" nullable="true" collection="false">
+                    <description>Commentaire associé au lancement de l’intégration</description>
+                </field>
+                <field type="STRING" length="255" name="datasetId" nullable="true" collection="false">
+                    <description>Identifiant du Dataset</description>
+                </field>
+                <field type="BOOLEAN" length="255" name="indTrtBBA" nullable="true" collection="false">
+                    <description>indicateur de traitement de données BBA</description>
+                </field>
+                <field type="BOOLEAN" length="255" name="indTrtPAA" nullable="true" collection="false">
+                    <description>indicateur de traitement de données PAA</description>
+                </field>
+                <field type="BOOLEAN" length="255" name="indTrtVFA" nullable="true" collection="false">
+                    <description>indicateur de traitement de données VFA</description>
+                </field>
+                <field type="INTEGER" length="255" name="nbrProjections" nullable="true" collection="false">
+                    <description>Nbre de périodes de projection</description>
+                </field>
+                <field type="INTEGER" length="255" name="nbrIterationsBBA" nullable="true" collection="false">
+                    <description>Nbre d'itérations pour calcul BBA (= nbre de clôtures + 1)</description>
+                </field>
+                <field type="INTEGER" length="255" name="nbrIterationsPAA" nullable="true" collection="false">
+                    <description>Nbre d'itérations pour calcul PAA (= nbre de clôtures + 1)</description>
+                </field>
+                <field type="INTEGER" length="255" name="nbrIterationsVFA" nullable="true" collection="false">
+                    <description>Nbre d'itérations pour calcul VFA (= nbre de clôtures + 1)</description>
+                </field>
+                <field type="STRING" length="255" name="typePasInv" nullable="true" collection="false">
+                    <description>Type de pas des inventaires : Année / Mois / Semestre / Trimestre</description>
+                </field>
+                <field type="LOCALDATE" length="255" name="dateDepartBBA" nullable="true" collection="false">
+                    <description>Date de départ (date de clôture la + ancienne dans fichier) pour calculs BBA</description>
+                </field>
+                <field type="LOCALDATE" length="255" name="dateDepartPAA" nullable="true" collection="false">
+                    <description>Date de départ (date de clôture la + ancienne dans fichier) pour calculs PAA</description>
+                </field>
+                <field type="LOCALDATE" length="255" name="dateDepartVFA" nullable="true" collection="false">
+                    <description>Date de départ (date de clôture la + ancienne dans fichier) pour calculs VFA</description>
+                </field>
+                <field type="STRING" length="255" name="typePasBEBBA" nullable="true" collection="false">
+                    <description>Type de pas de calcul des BE  pour BBA : Y(ear), S(emester), Q(uarter) or M(onth)</description>
+                </field>
+                <field type="STRING" length="255" name="typePasBEPAA" nullable="true" collection="false">
+                    <description>Type de pas de calcul des BE  pour PAA : Y(ear), S(emester), Q(uarter) or M(onth)</description>
+                </field>
+                <field type="STRING" length="255" name="typePasBEVFA" nullable="true" collection="false">
+                    <description>Type de pas de calcul des BE  pour VFA : Y(ear), S(emester), Q(uarter) or M(onth)</description>
+                </field>
+                <field type="BOOLEAN" length="255" name="indRecupResBBA" nullable="true" collection="false">
+                    <description>indicateur de récupération des résultats BBA pour comptabilisation</description>
+                </field>
+                <field type="BOOLEAN" length="255" name="indRecupResPAA" nullable="true" collection="false">
+                    <description>indicateur de récupération des résultats PAA pour comptabilisation</description>
+                </field>
+                <field type="BOOLEAN" length="255" name="indRecupResVFA" nullable="true" collection="false">
+                    <description>indicateur de récupération des résultats VFA pour comptabilisation</description>
+                </field>
+                <field type="LOCALDATE" length="255" name="closingDate" nullable="true" collection="false">
+                    <description>Date de clôture pour comptabilisation (date de clôture la plus récente, contenue dans le fichier de données)</description>
+                </field>
+                <field type="STRING" length="255" name="langue" nullable="true" collection="false">
+                    <description>Langue utilisée pour comptabilisation : 0-Français, 1-Anglais</description>
+                </field>
+                <field type="STRING" length="255" name="accAggLevel" nullable="true" collection="false">
+                    <description>Niveau d'agrégation de la compta : D (Global et Détaillé) ou G (Global uniquement)</description>
+                </field>
+                <field type="STRING" length="255" name="accVersionParam" nullable="true" collection="false">
+                    <description>Version du plan comptable à utiliser pour générer les écritures comptables</description>
+                </field>
+                <field type="STRING" length="255" name="indValidationBBA" nullable="true" collection="false">
+                    <description>Indicateur de validation des données BBA</description>
+                </field>
+                <field type="STRING" length="255" name="indValidationPAA" nullable="true" collection="false">
+                    <description>Indicateur de validation des données PAA</description>
+                </field>
+                <field type="STRING" length="255" name="indValidationVFA" nullable="true" collection="false">
+                    <description>Indicateur de validation des données VFA</description>
+                </field>
+                <field type="STRING" length="255" name="nomValideurBBA" nullable="true" collection="false">
+                    <description>Nom et prénom du valideur BBA</description>
+                </field>
+                <field type="STRING" length="255" name="nomValideurPAA" nullable="true" collection="false">
+                    <description>Nom et prénom du valideur PAA</description>
+                </field>
+                <field type="STRING" length="255" name="nomValideurVFA" nullable="true" collection="false">
+                    <description>Nom et prénom du valideur VFA</description>
+                </field>
+                <field type="STRING" length="512" name="cmtValidationBBA" nullable="true" collection="false">
+                    <description>Commentaire saisi par le valideur des données BBA</description>
+                </field>
+                <field type="STRING" length="512" name="cmtValidationPAA" nullable="true" collection="false">
+                    <description>Commentaire saisi par le valideur des données PAA</description>
+                </field>
+                <field type="STRING" length="512" name="cmtValidationVFA" nullable="true" collection="false">
+                    <description>Commentaire saisi par le valideur des données VFA</description>
+                </field>
+                <field type="STRING" length="255" name="destinataire" nullable="true" collection="false">
+                    <description>adresse courriel du destinataire des messages (par défaut l'adresse de l'initiateur du processus)</description>
+                </field>
+                <field type="STRING" length="255" name="nomInitiateur" nullable="true" collection="false">
+                    <description>Nom et prénom de l'initiateur du cas</description>
+                </field>
+                <field type="STRING" length="255" name="nomSaisieParams" nullable="true" collection="false">
+                    <description>Nom et prénom de l’utilisateur ayant effectué la saisie des paramètres</description>
+                </field>
+                <field type="STRING" length="255" name="retourCalfitec" nullable="true" collection="false">
+                    <description>Définit les retours acceptés des traitements Calfitec :&#13;
+                        - O = Ok uniquement (les averstissements sont rejetés)&#13;
+                        - W = Avertissements (warnings) acceptés</description>
+                </field>
+                <field type="STRING" length="255" name="modeExecution" nullable="true" collection="false">
+                    <description>Mode d'exécution du processus :&#13;
+                        - N = Normal&#13;
+                        - X = Express, sans mails ni validation</description>
+                </field>
+                <field type="BOOLEAN" length="255" name="indEnvoiMailValidation" nullable="true" collection="false">
+                    <description>indicateur d'envoi d'un courriel aux valideurs potentiels</description>
+                </field>
+                <field type="LOCALDATE" length="255" name="dateClotDeb" nullable="true" collection="false">
+                    <description>Date de début pour itérations des traitements comptables (pré-compta, compta, restits compta)</description>
+                </field>
+                <field type="LOCALDATE" length="255" name="dateClotFin" nullable="true" collection="false">
+                    <description>Date de fin pour itérations des traitements comptables (pré-compta, compta, restits compta)</description>
+                </field>
+                <field type="STRING" length="255" name="groupId1" nullable="true" collection="false">
+                    <description>Identifiant de Groupe n°1, pour restitution comptable</description>
+                </field>
+                <field type="STRING" length="255" name="groupId2" nullable="true" collection="false">
+                    <description>Identifiant de Groupe n°2, pour restitution comptable</description>
+                </field>
+                <field type="STRING" length="255" name="groupId3" nullable="true" collection="false">
+                    <description>Identifiant de Groupe n°3, pour restitution comptable</description>
+                </field>
+                <field type="STRING" length="255" name="groupId4" nullable="true" collection="false">
+                    <description>Identifiant de Groupe n°4, pour restitution comptable</description>
+                </field>
+                <field type="STRING" length="255" name="groupId5" nullable="true" collection="false">
+                    <description>Identifiant de Groupe n°5, pour restitution comptable</description>
+                </field>
+                <field type="STRING" length="255" name="categorie" nullable="true" collection="false">
+                    <description>Catégorie transmise à Calfitec pour référencement des traitements</description>
+                </field>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="sinalys.wf.ParamsRAALM">
+            <fields>
+                <field type="STRING" length="255" name="nomFichier" nullable="true" collection="false">
+                    <description>nom du fichier de données&#13;
+                    </description>
+                </field>
+                <field type="STRING" length="255" name="commentaire" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="nomInitiateur" nullable="true" collection="false">
+                    <description>nom et prénom de l'initiateur du cas&#13;
+                    </description>
+                </field>
+                <field type="INTEGER" length="255" name="param1" nullable="true" collection="false">
+                    <description>paramètre 1 passé à la procédure Python&#13;
+                    </description>
+                </field>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="sinalys.wf.UtilValid">
+            <description>Utilisateur concerné par la validation des données BBA, PAA et/ou VFA</description>
+            <fields>
+                <field type="LONG" length="255" name="userId" nullable="true" collection="false">
+                    <description>user id</description>
+                </field>
+                <field type="STRING" length="255" name="nom" nullable="true" collection="false">
+                    <description>nom</description>
+                </field>
+                <field type="STRING" length="255" name="prenom" nullable="true" collection="false">
+                    <description>prénom</description>
+                </field>
+                <field type="STRING" length="255" name="mail" nullable="true" collection="false">
+                    <description>adresse courriel</description>
+                </field>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+    </businessObjects>
+</businessObjectModel>
