@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<businessObjectModel xmlns="http://documentation.bonitasoft.com/bdm-xml-schema/1.0" modelVersion="1.0" productVersion="7.11.2">
+    <businessObjects>
+        <businessObject qualifiedName="com.bonita.download.ProductRelease">
+            <fields>
+                <field type="STRING" length="255" name="product" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="objectKey" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="active" nullable="true" collection="false">
+                    <description>if true, release is active. If not,
+                        release is considered "archived"</description>
+                </field>
+                <field type="STRING" length="255" name="subProduct" nullable="true" collection="false">
+                    <description>"Code état retourné par le traitement :&#13;
+
+                        - OK
+                        &#13;
+                        - Running&#13;
+
+                        - Warning&#13;
+
+                        - DeleteAsked, Deleting&#13;
+
+                        - FailureNotFound, FailureSyntaxError, FailureRuntimeError, FailureWrongParameter, FailureNotAllowed, FailureCoulndNotDelete, FailureCanceled, FailureBug"</description>
+                </field>
+            </fields>
+            <uniqueConstraints/>
+            <queries>
+                <query name="findByProductVersionAndSubProduct" content="SELECT p &#13;&#10;FROM ProductRelease p &#13;&#10;JOIN p.version v&#13;&#10;WHERE p.product = :product&#13;&#10;AND v.label = :version&#13;&#10;AND p.subProduct = :subProduct&#13;&#10;ORDER BY p.persistenceId ASC" returnType="com.bonita.download.ProductRelease">
+                    <queryParameters>
+                        <queryParameter name="product" className="java.lang.String"/>
+                        <queryParameter name="version" className="java.lang.String"/>
+                        <queryParameter name="subProduct" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+    </businessObjects>
+</businessObjectModel>
