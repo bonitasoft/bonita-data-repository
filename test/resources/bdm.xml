@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<businessObjectModel modelVersion="1.0" productVersion="7.10.4">
+    <businessObjects>
+        <businessObject qualifiedName="com.company.model.BusinessObject">
+            <fields>
+                <field type="STRING" length="255" name="attribute1" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+    </businessObjects>
+</businessObjectModel>
