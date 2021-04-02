@@ -46,12 +46,14 @@ ls -lRh .
 
                     println "Start pull request creation"
                     withCredentials([
-                            string(
-                                    credentialsId: 'github-api',
-                                    variable: 'GITHUB_API_TOKEN')
+                            usernamePassword(
+                                    credentialsId: 'github',
+                                    usernameVariable: 'GITHUB_USERNAME',
+                                    passwordVariable: 'GITHUB_API_TOKEN')
                     ]) {
                         sh "./infrastructure/utils/create_pull_request.sh \\" +
                                 "--repository='bonita-doc' \\" +
+                                "--github-username=${GITHUB_USERNAME} \\" +
                                 "--github-api-token=${GITHUB_API_TOKEN} \\" +
                                 "--pr-title='doc(uid) List dependencies for version ${minorVersion}'  \\" +
                                 "--pr-base-branch-name=${minorVersion} \\" +
