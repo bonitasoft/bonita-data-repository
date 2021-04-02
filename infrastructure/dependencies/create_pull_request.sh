@@ -43,6 +43,8 @@ pull_request() {
     header_content='Content-type:application/json'
     header_accept='Accept:application/vnd.github.shadow-cat-preview+json'
 
+    echo "User:token = ${2}:${3}"
+
     curl --silent --request POST --user "${2}:${3}"  --url ${url} --header ${header_content} --header ${header_accept} --data "${data}" \
         | jq ".number"
 }
