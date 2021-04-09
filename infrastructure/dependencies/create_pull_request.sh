@@ -7,7 +7,7 @@ usage() {
     echo "This script create a pull request based on <pr-base-branch-name>"
     echo ""
     echo "USAGE"
-    echo "- ${launch_command} --repository=<repository> --github-api-token=<token> \\"
+    echo "- ${launch_command} --repository=<repository> --github-username=<username> --github-api-token=<token> \\"
     echo "    --pr-title=<title> --pr-base-branch-name=<branch_name> --pr-head-branch-name=<branch_name> [--pr-labels=<labels>]"
     echo "- ${launch_command} --help"
     echo ""
@@ -40,7 +40,7 @@ pull_request() {
         --arg base "${5}" \
         --arg head "${6}" \
         '{ head: $head, base: $base, title: $title, draft: true }' )
-    header_content='Content-type:application/json'
+    header_content='Content-type:application/vnd.github.v3+json'
     header_accept='Accept:application/vnd.github.shadow-cat-preview+json'
 
     echo "User:token = ${2}:${3}"
@@ -118,6 +118,7 @@ if [ -z "${PR_HEAD_BRANCH_NAME}" ]; then echo "ERROR pr's head branch name is ne
 
 echo "Create new pull request from ${PR_BASE_BRANCH_NAME} to ${PR_HEAD_BRANCH_NAME}"
 prId=$(pull_request "${REPOSITORY}" "${GITHUB_USERNAME}" "${GITHUB_API_TOKEN}" "${PR_TITLE}" "${PR_BASE_BRANCH_NAME}" "${PR_HEAD_BRANCH_NAME}")
+echo "prId: ${prId}"
 
 if [[ -n "${PR_LABELS}" ]]
 then

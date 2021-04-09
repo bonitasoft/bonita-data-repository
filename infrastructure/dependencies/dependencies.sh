@@ -65,9 +65,9 @@ for i in "$@"; do
 done
 
 BRANCH=${BRANCH:=doc/add-bonita-data-repositories-dependencies}
-OUTPUT_PATH=${OUTPUT_PATH:=./md}
+OUTPUT_PATH=${OUTPUT_PATH:=./modules/ROOT/pages}
 COMMIT_MESSAGE=${COMMIT_MESSAGE:=chore(dependencies): Adding Bonita data-repo dependencies ${VERSION}}
-FILENAME=${FILENAME:=bonita-data-repositories-dependencies.md}
+FILENAME=${FILENAME:=bonita-data-repositories-dependencies.adoc}
 SCRIPT_DIR=$(dirname "$0")
 BASEDIR=$(dirname $(readlink -f "$0"))/../..
 
@@ -103,6 +103,3 @@ else
 fi
 
 popd
-
-
-
