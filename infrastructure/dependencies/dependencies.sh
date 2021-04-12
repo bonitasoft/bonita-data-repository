@@ -70,6 +70,8 @@ COMMIT_MESSAGE=${COMMIT_MESSAGE:=chore(dependencies): Adding Bonita data-repo de
 SCRIPT_DIR=$(dirname "$0")
 BASEDIR=$(dirname $(readlink -f "$0"))/../..
 
+if [ -z "${GITHUB_USERNAME}" ]; then echo "ERROR GITHUB_USERNAME is needed"; usage; fi
+if [ -z "${GITHUB_API_TOKEN}" ]; then echo "ERROR GITHUB_API_TOKEN is needed"; usage; fi
 
 if [ -z "${VERSION}" ]; then echo "ERROR version is needed"; usage; fi
 if [ -z "${SOURCE_FOLDER}" ]; then echo "ERROR source-folder is needed"; usage; fi
@@ -93,7 +95,7 @@ else
   git add "${OUTPUT_FILE}"
   git commit -m "${COMMIT_MESSAGE}"
   echo "Push branch to bonita-doc."
-  git push origin ${BRANCH}
+  git push "https://${GITHUB_USERNAME}:${GITHUB_API_TOKEN}@github.com/bonitasoft/bonita-doc.git" ${BRANCH}
 fi
 
 popd
