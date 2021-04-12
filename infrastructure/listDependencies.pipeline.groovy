@@ -6,6 +6,7 @@ timestamps {
     ansiColor('xterm') {
         node {
             stage('Checkout 🌍') {
+                configGitCredentialHelper()
                 checkout scm
             }
 
@@ -14,12 +15,8 @@ timestamps {
                 stash name: 'bonita-data-repository-dependencies', includes: 'target/bonita-data-repository-dependencies.adoc'
             }
 
-            stage('Update documentation ✏️') {
-                if (params.createPR) {
-                    configGitCredentialHelper()
-                    checkout([$class: 'GitSCM', branches: [[name: "*/${params.branchOrTagName}"]],
-                          userRemoteConfigs: [[url: 'https://github.com/bonitasoft/bonita-data-repository.git',
-                          credentialsId: 'github', refspec:"+refs/${params.gitRefs}/${params.branchOrTagName}:refs/remotes/origin/${params.branchOrTagName}"]]])
+            if (params.createPR) {
+                stage('Update documentation ✏️') {
                     unstash "bonita-data-repository-dependencies"
                     println "Start generation file"
                     sh "./infrastructure/dependencies/dependencies.sh --version=${minorVersion} --source-folder=target --file-name=bonita-data-repository-dependencies.adoc --branch=${branchDocName}"
