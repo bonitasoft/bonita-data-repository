@@ -24,7 +24,7 @@ timestamps {
                           credentialsId: 'github', refspec:"+refs/${params.gitRefs}/${params.branchOrTagName}:refs/remotes/origin/${params.branchOrTagName}"]]])
                     unstash "bonita-data-repository-dependencies"
                     println "Start generation file"
-                    sh "./infrastructure/dependencies/dependencies.sh --version=${minorVersion} --source-folder=bonita-data-repository-dependencies --branch=${branchDocName}"
+                    sh "./infrastructure/dependencies/dependencies.sh --version=${minorVersion} --source-folder=target --file-name=bonita-data-repository-dependencies.adoc --branch=${branchDocName}"
                     println "File generated"
 
                     println "Start pull request creation"
