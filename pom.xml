@@ -162,33 +162,33 @@
 			<id>dependencies</id>
 			<build>
 				<plugins>
-<!--					<plugin>-->
-<!--						<groupId>com.github.eirslett</groupId>-->
-<!--						<artifactId>frontend-maven-plugin</artifactId>-->
-<!--						<executions>-->
-<!--							<execution>-->
-<!--								<id>npm install</id>-->
-<!--								<goals>-->
-<!--									<goal>npm</goal>-->
-<!--								</goals>-->
-<!--								<phase>initialize</phase>-->
-<!--								<configuration>-->
-<!--									<workingDirectory>target</workingDirectory>-->
-<!--								</configuration>-->
-<!--							</execution>-->
-<!--							<execution>-->
-<!--								<id>npm run listDependencies</id>-->
-<!--								<goals>-->
-<!--									<goal>npm</goal>-->
-<!--								</goals>-->
-<!--								<phase>initialize</phase>-->
-<!--								<configuration>-->
-<!--									<arguments>run listDependencies</arguments>-->
-<!--									<workingDirectory>target</workingDirectory>-->
-<!--								</configuration>-->
-<!--							</execution>-->
-<!--						</executions>-->
-<!--					</plugin>-->
+					<plugin>
+						<groupId>com.github.eirslett</groupId>
+						<artifactId>frontend-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>npm install</id>
+								<goals>
+									<goal>npm</goal>
+								</goals>
+								<phase>initialize</phase>
+								<configuration>
+									<workingDirectory>target</workingDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>npm run listDependencies</id>
+								<goals>
+									<goal>npm</goal>
+								</goals>
+								<phase>initialize</phase>
+								<configuration>
+									<arguments>run listDependencies</arguments>
+									<workingDirectory>target</workingDirectory>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
 					<plugin>
 						<groupId>org.codehaus.gmaven</groupId>
 						<artifactId>groovy-maven-plugin</artifactId>
@@ -202,11 +202,11 @@
 								</goals>
 								<configuration>
 									<properties>
-										<templateDir>${project.basedir}/infrastructure/dependencies/templates</templateDir>
-										<nodeJsDepFile>${project.basedir}/bonita-data-repository-dependencies/bonita-data-repository-dependencies.json</nodeJsDepFile>
-										<outputFileName>${project.basedir}/bonita-data-repository-dependencies/bonita-data-repository-dependencies.adoc</outputFileName>
+										<templateDir>${project.basedir}/src/main/groovy/templates</templateDir>
+										<nodeJsDepFile>${project.build.directory}/bonita-data-repository-dependencies.json</nodeJsDepFile>
+										<outputFileName>${project.build.directory}/bonita-data-repository-dependencies.adoc</outputFileName>
 									</properties>
-									<source>${project.basedir}/infrastructure/dependencies/generate-deps-adoc.groovy</source>
+									<source>${project.basedir}/src/main/groovy/generate-deps-adoc.groovy</source>
 								</configuration>
 							</execution>
 						</executions>

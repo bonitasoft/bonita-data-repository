@@ -11,23 +11,7 @@ timestamps {
 
             stage('Generate ⚙️') {
                 sh './mvnw initialize -Pdependencies'
-            }
-
-            stage('Archive report 📰') {
-                sh '''#!/bin/bash +x
-set -euo pipefail
-mkdir -p bonita-data-repository-dependencies
-cd bonita-data-repository-dependencies
-
-echo "Copy dependency reports into 'zipArchives'"
-
-cp ../target/bonita-data-repository-dependencies.json .
-
-echo "Copy done"
-ls -lRh .
-'''
-                zip zipFile: 'bonita-data-repository.zip', dir: 'bonita-data-repository-dependencies', archive: true
-                stash name: 'bonita-data-repository-dependencies', includes: 'bonita-data-repository-dependencies/*'
+                stash name: 'bonita-data-repository-dependencies', includes: 'target/bonita-data-repository-dependencies.adoc'
             }
         }
 
@@ -40,7 +24,6 @@ ls -lRh .
                           credentialsId: 'github', refspec:"+refs/${params.gitRefs}/${params.branchOrTagName}:refs/remotes/origin/${params.branchOrTagName}"]]])
                     unstash "bonita-data-repository-dependencies"
                     println "Start generation file"
-                    sh "cd ./infrastructure/dependencies && npm install && cd ../.."
                     sh "./infrastructure/dependencies/dependencies.sh --version=${minorVersion} --source-folder=bonita-data-repository-dependencies --branch=${branchDocName}"
                     println "File generated"
 
