@@ -26,11 +26,16 @@ timestamps {
 					]) {
 
 						println "Start generation file"
-						sh "./infrastructure/dependencies/dependencies.sh --version=${minorVersion} --source-folder=target --file-name=bonita-data-repository-dependencies.adoc --branch=${branchDocName}"
+						sh "./infrastructure/dependencies/dependencies.sh \\" +
+								"--github-username=${GITHUB_USERNAME} \\" +
+								"--github-api-token=${GITHUB_API_TOKEN} \\" +
+								"--version=${minorVersion} --source-folder=target \\" +
+								"--file-name=bonita-data-repository-dependencies.adoc \\" +
+								"--branch=${branchDocName}"
 						println "File generated"
 
 						println "Start pull request creation"
-						sh "./infrastructure/utils/create_pull_request.sh \\" +
+						sh "./infrastructure/dependencies/create_pull_request.sh \\" +
 								"--repository='bonita-doc' \\" +
 								"--github-username=${GITHUB_USERNAME} \\" +
 								"--github-api-token=${GITHUB_API_TOKEN} \\" +

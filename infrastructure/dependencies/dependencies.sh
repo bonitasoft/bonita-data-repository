@@ -15,6 +15,8 @@ usage() {
     echo "- ${launch_command} --help"
     echo ""
     echo "MANDATORY ARGUMENTS"
+    echo "    --github-username         The Github username"
+    echo "    --github-api-token        The Github authorization token to be able to push the branch"
     echo "    --version                 The version where generate the dependencies report"
     echo "    --source-folder           The folder with dependencies files to parse"
     echo "    --file-name               The name of generated file"
@@ -25,7 +27,7 @@ usage() {
     echo "    --commit-message          The message of the commit"
     echo "    --help                    Display this help"
     echo "EXAMPLE"
-    echo "./dependencies.sh --version=7.12 --source-folder=./target --file-name=bonita-data-repositories-dependencies.adoc"
+    echo "./dependencies.sh --github-username=xxx --github-api-token=xxxxxxxx --version=7.12 --source-folder=./target --file-name=bonita-data-repositories-dependencies.adoc"
     echo "==========================================================================================================="
     exit 1
 }
@@ -33,6 +35,14 @@ usage() {
 ############################################ main code #####################################"""
 for i in "$@"; do
     case $i in
+       --github-username=*)
+            GITHUB_USERNAME="${i#*=}"
+        shift
+        ;;
+        --github-api-token=*)
+            GITHUB_API_TOKEN="${i#*=}"
+        shift
+        ;;
         --branch=*)
             BRANCH="${i#*=}"
         shift
@@ -64,18 +74,17 @@ for i in "$@"; do
     esac
 done
 
+if [[ -z "${GITHUB_USERNAME}" ]]; then echo "ERROR GITHUB_USERNAME is needed"; usage; fi
+if [[ -z "${GITHUB_API_TOKEN}" ]]; then echo "ERROR GITHUB_API_TOKEN is needed"; usage; fi
+if [[ -z "${VERSION}" ]]; then echo "ERROR version is needed"; usage; fi
+if [[ -z "${SOURCE_FOLDER}" ]]; then echo "ERROR source-folder is needed"; usage; fi
+if [[ -z "${FILENAME}" ]]; then echo "ERROR file-name is needed"; usage; fi
+
 BRANCH=${BRANCH:=doc/add-bonita-data-repositories-dependencies}
 OUTPUT_PATH=${OUTPUT_PATH:=./modules/ROOT/pages}
 COMMIT_MESSAGE=${COMMIT_MESSAGE:=chore(dependencies): Adding Bonita data-repo dependencies ${VERSION}}
 SCRIPT_DIR=$(dirname "$0")
 BASEDIR=$(dirname $(readlink -f "$0"))/../..
-
-if [[ -z "${GITHUB_USERNAME}" ]]; then echo "ERROR GITHUB_USERNAME is needed"; usage; fi
-if [[ -z "${GITHUB_API_TOKEN}" ]]; then echo "ERROR GITHUB_API_TOKEN is needed"; usage; fi
-
-if [[ -z "${VERSION}" ]]; then echo "ERROR version is needed"; usage; fi
-if [[ -z "${SOURCE_FOLDER}" ]]; then echo "ERROR source-folder is needed"; usage; fi
-if [[ -z "${FILENAME}" ]]; then echo "ERROR file-name is needed"; usage; fi
 
 prepare_directory "bonita-doc"
 git_clone_single_branch "bonita-doc" "${VERSION}"
@@ -95,6 +104,7 @@ else
   git add "${OUTPUT_FILE}"
   git commit -m "${COMMIT_MESSAGE}"
   echo "Push branch to bonita-doc."
+  # Use this form of origin to force pass authentication in CI context
   git push "https://${GITHUB_USERNAME}:${GITHUB_API_TOKEN}@github.com/bonitasoft/bonita-doc.git" ${BRANCH}
 fi
 
