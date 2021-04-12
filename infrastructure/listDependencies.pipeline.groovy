@@ -17,6 +17,9 @@ timestamps {
 
             if (params.createPR) {
                 stage('Update documentation ✏️') {
+                    checkout([$class: 'GitSCM', branches: [[name: "*/${params.branchOrTagName}"]],
+                              userRemoteConfigs: [[url: 'https://github.com/bonitasoft/bonita-data-repository.git',
+                                                   credentialsId: 'github', refspec:"+refs/${params.gitRefs}/${params.branchOrTagName}:refs/remotes/origin/${params.branchOrTagName}"]]])
                     unstash "bonita-data-repository-dependencies"
                     println "Start generation file"
                     sh "./infrastructure/dependencies/dependencies.sh --version=${minorVersion} --source-folder=target --file-name=bonita-data-repository-dependencies.adoc --branch=${branchDocName}"

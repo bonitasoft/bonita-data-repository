@@ -93,7 +93,7 @@ else
   git add "${OUTPUT_FILE}"
   git commit -m "${COMMIT_MESSAGE}"
   echo "Push branch to bonita-doc."
-  git push origin ${BRANCH}
+  git push origin "${BRANCH}"
 fi
 
 popd
