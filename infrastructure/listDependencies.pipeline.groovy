@@ -13,9 +13,7 @@ timestamps {
                 sh './mvnw initialize -Pdependencies'
                 stash name: 'bonita-data-repository-dependencies', includes: 'target/bonita-data-repository-dependencies.adoc'
             }
-        }
 
-        node('node-js-12') {
             stage('Update documentation ✏️') {
                 if (params.createPR) {
                     configGitCredentialHelper()
@@ -40,7 +38,7 @@ timestamps {
                                 "--github-api-token=${GITHUB_API_TOKEN} \\" +
                                 "--pr-title='doc(uid) List dependencies for version ${minorVersion}'  \\" +
                                 "--pr-base-branch-name=${minorVersion} \\" +
-                                "--pr-head-branch-name=${branchDocName} \\"
+                                "--pr-head-branch-name=${branchDocName}"
                         println "Pull request created"
                     }
                 }
