@@ -70,12 +70,12 @@ COMMIT_MESSAGE=${COMMIT_MESSAGE:=chore(dependencies): Adding Bonita data-repo de
 SCRIPT_DIR=$(dirname "$0")
 BASEDIR=$(dirname $(readlink -f "$0"))/../..
 
-if [ -z "${GITHUB_USERNAME}" ]; then echo "ERROR GITHUB_USERNAME is needed"; usage; fi
-if [ -z "${GITHUB_API_TOKEN}" ]; then echo "ERROR GITHUB_API_TOKEN is needed"; usage; fi
+if [[ -z "${GITHUB_USERNAME}" ]]; then echo "ERROR GITHUB_USERNAME is needed"; usage; fi
+if [[ -z "${GITHUB_API_TOKEN}" ]]; then echo "ERROR GITHUB_API_TOKEN is needed"; usage; fi
 
-if [ -z "${VERSION}" ]; then echo "ERROR version is needed"; usage; fi
-if [ -z "${SOURCE_FOLDER}" ]; then echo "ERROR source-folder is needed"; usage; fi
-if [ -z "${FILENAME}" ]; then echo "ERROR file-name is needed"; usage; fi
+if [[ -z "${VERSION}" ]]; then echo "ERROR version is needed"; usage; fi
+if [[ -z "${SOURCE_FOLDER}" ]]; then echo "ERROR source-folder is needed"; usage; fi
+if [[ -z "${FILENAME}" ]]; then echo "ERROR file-name is needed"; usage; fi
 
 prepare_directory "bonita-doc"
 git_clone_single_branch "bonita-doc" "${VERSION}"
