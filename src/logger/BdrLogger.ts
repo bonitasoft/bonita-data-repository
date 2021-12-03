@@ -42,10 +42,12 @@ export class BdrLogger {
           filename: `${config.logFile || './logs/'}/data-repository%DATE%.log`,
           datePattern: 'YYYY-MM-DD',
           level: config.logLevel || 'info',
-          maxFiles: '14'
+          maxFiles: '14',
+          handleExceptions: true
         }),
         new winston.transports.Console({
-          level: config.logLevel || 'info'
+          level: config.logLevel || 'info',
+          handleExceptions: true
         })
       ]
     });
