@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<businessObjectModel xmlns="http://documentation.bonitasoft.com/bdm-xml-schema/1.0" modelVersion="1.0" productVersion="7.12.2">
+    <businessObjects>
+        <businessObject qualifiedName="com.company.model.Sample">
+            <description>Sample BDM with all available types</description>
+            <fields>
+                <field type="DATE" length="255" name="sampleDateOld" nullable="true" collection="false"/>
+                <field type="LOCALDATE" length="255" name="sampleDateOnly" nullable="true" collection="false"/>
+                <field type="OFFSETDATETIME" length="255" name="sampleDateTime" nullable="true" collection="false"/>
+                <field type="LOCALDATETIME" length="255" name="sampleDateTimeNoTimeZone" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="sampleLong" nullable="true" collection="false"/>
+                <field type="INTEGER" length="255" name="sampleInteger" nullable="true" collection="false"/>
+                <field type="DOUBLE" length="255" name="sampleDouble" nullable="true" collection="false"/>
+                <field type="FLOAT" length="255" name="sampleFloat" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="sampleString" nullable="true" collection="false"/>
+                <field type="TEXT" length="255" name="sampleText" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="org.snsm.model.benevole.Benevole">
+            <fields>
+                <field type="STRING" length="255" name="nom" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="prenom" nullable="false" collection="false"/>
+                <field type="LOCALDATE" length="255" name="dateNaissance" nullable="false" collection="false"/>
+                <field type="TEXT" length="255" name="description" nullable="true" collection="false">
+                    <description>motivations (html)</description>
+                </field>
+                <field type="STRING" length="255" name="station" nullable="false" collection="false">
+                    <description>nom de la station, à prendre dans l'organisation</description>
+                </field>
+                <relationField type="COMPOSITION" reference="org.snsm.model.benevole.Permis" fetchType="EAGER" name="permis" nullable="true" collection="true">
+                    <description>permis relatifs au sauvetage</description>
+                </relationField>
+                <relationField type="COMPOSITION" reference="org.snsm.model.benevole.Formation" fetchType="EAGER" name="formation" nullable="true" collection="true">
+                    <description>Liste des formations relativesau sauvetage</description>
+                </relationField>
+                <field type="BOOLEAN" length="255" name="validationChefDeCentre" nullable="true" collection="false"/>
+                <field type="LOCALDATE" length="255" name="dateSignatureCharte" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="statut" nullable="true" collection="false">
+                    <description>candidat, actif, inactif</description>
+                </field>
+                <field type="STRING" length="255" name="email" nullable="false" collection="false"/>
+                <field type="LONG" length="255" name="candidatureCaseId" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="docCertifMedicalId" nullable="true" collection="false"/>
+                <field type="LONG" length="255" name="userId" nullable="true" collection="false">
+                    <description>id d'utilisateur Bonita
+
+
+                    </description>
+                </field>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="uniqueConstraint">
+                    <fieldNames>
+                        <fieldName>userId</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="org.snsm.model.benevole.Formation">
+            <fields>
+                <relationField type="AGGREGATION" reference="org.snsm.model.referentiel.Diplome" fetchType="EAGER" name="diplome" nullable="false" collection="false"/>
+                <field type="LOCALDATE" length="255" name="dateObtention" nullable="false" collection="false"/>
+                <field type="STRING" length="512" name="cfi" nullable="true" collection="false">
+                    <description>Centre de Formation et Intervention qui a delivré la formation
+                        bases sur l'organisation
+                        /SNSM/CFI/xxx</description>
+                </field>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="org.snsm.model.benevole.Permis">
+            <fields>
+                <field type="STRING" length="255" name="libelle" nullable="true" collection="false"/>
+                <field type="LOCALDATE" length="255" name="dateObtention" nullable="true" collection="false"/>
+                <field type="LOCALDATE" length="255" name="dateValidite" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="org.snsm.model.intervention.Intervention">
+            <fields>
+                <field type="STRING" length="255" name="station" nullable="false" collection="false">
+                    <description>station ayant effectué le secours</description>
+                </field>
+                <field type="OFFSETDATETIME" length="255" name="dateIntervention" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="typeIntervention" nullable="false" collection="false"/>
+                <field type="INTEGER" length="255" name="dureeIntervention" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="typeVedette" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="bateau" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="nomContact" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="mailContact" nullable="false" collection="false"/>
+                <field type="INTEGER" length="255" name="montant" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="statutReglement" nullable="false" collection="false">
+                    <description>sur place, différé,etc.</description>
+                </field>
+                <field type="TEXT" length="255" name="rapport" nullable="true" collection="false">
+                    <description>rapport d'intervention</description>
+                </field>
+                <relationField type="AGGREGATION" reference="org.snsm.model.benevole.Benevole" fetchType="LAZY" name="participants" nullable="true" collection="true"/>
+                <field type="LONG" length="255" name="patronStationId" nullable="true" collection="false">
+                    <description>id du directeur de la station de secours qui réalise le rapport (user id dans l'organisation) </description>
+                </field>
+                <field type="BOOLEAN" length="255" name="validationPresident" nullable="true" collection="false"/>
+                <field type="BOOLEAN" length="255" name="validationInspecteur" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="org.snsm.model.referentiel.Diplome">
+            <description>liste des formations disponibles</description>
+            <fields>
+                <field type="STRING" length="255" name="nom" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="categorie" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="description" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries>
+                <query name="diplomes" content="SELECT d &#10;FROM Diplome d &#10;ORDER BY d.categorie ASC, d.nom" returnType="java.util.List">
+                    <queryParameters/>
+                </query>
+                <query name="countForDiplomes" content="SELECT count(d)  &#10;FROM Diplome d &#10;" returnType="java.lang.Long">
+                    <queryParameters/>
+                </query>
+            </queries>
+            <indexes/>
+        </businessObject>
+    </businessObjects>
+</businessObjectModel>
