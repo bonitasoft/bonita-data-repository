@@ -35,7 +35,7 @@ describe('GraphqlSchemaGenerator', () => {
       try {
         buildSchema(_getSchema('test/resources/' + xmlFile));
       } catch (e) {
-        if (!(xmlFile === 'bdm_simple_non_ascii.xml')) {
+        if (xmlFile !== 'bdm_simple_non_ascii.xml') {
           throw e;
         }
       }
