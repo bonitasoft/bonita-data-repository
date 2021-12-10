@@ -81,3 +81,16 @@ Reset the repository in its initial state (with no BDM)
 ```
 curl -X DELETE localhost:4000/bdm
 ```
+
+## Get the server status
+
+```
+http://localhost:4000/bdm/status
+```
+
+Provides the server status, for json requests and GraphQL requests.  
+For instance:
+
+```
+{"jsonRequest":true,"graphqlRequest":true}
+```
