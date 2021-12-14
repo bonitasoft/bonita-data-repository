@@ -23,7 +23,7 @@ const fs = require('fs');
 const { buildSchema } = require('graphql');
 const express = require('express');
 const voyagerMiddleware = require('graphql-voyager/middleware').express;
-const graphqlHTTP = require('express-graphql');
+const graphqlHTTP = require('express-graphql').graphqlHTTP;
 const cors = require('cors');
 const xmlParser = require('xml-js');
 import { GraphqlSchemaGenerator } from '../schema/GraphqlSchemaGenerator';

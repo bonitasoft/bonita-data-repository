@@ -67,7 +67,7 @@ describe('BdrServer_e2e', () => {
     expect(res.statusCode).toEqual(500);
   });
 
-  test('Send graphQL introspection request', async done => {
+  test('Send graphQL introspection request', async () => {
     // Post BDM
     const res = await request(app)
       .post('/bdm')
@@ -76,7 +76,7 @@ describe('BdrServer_e2e', () => {
     expect(res.statusCode).toEqual(200);
 
     // Check graphQL introspection
-    request(app)
+    return request(app)
       .post(BdrServer.getBdmGraphqlPath())
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json')
@@ -85,8 +85,7 @@ describe('BdrServer_e2e', () => {
         200,
         {
           data: { __type: { name: 'com_company_model_BusinessObject' } }
-        },
-        done
+        }
       );
   });
 
@@ -119,19 +118,19 @@ describe('BdrServer_e2e', () => {
     }
   });
 
-  test('DELETE bdm', async done => {
+  test('DELETE bdm',  async () => {
     // Post BDM
-    const resPost = await request(app)
+    const resPost =  await request(app)
       .post('/bdm')
       .set('Content-Type', 'application/json')
       .send({ bdmXml: simpleBdmXml });
     expect(resPost.statusCode).toEqual(200);
 
-    const resDelete = await request(app).delete('/bdm');
+    const resDelete =  await request(app).delete('/bdm');
     expect(resDelete.statusCode).toEqual(200);
 
     // Check graphQL introspection : should have no type
-    request(app)
+    return request(app)
       .post(BdrServer.getBdmGraphqlPath())
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json')
@@ -140,8 +139,7 @@ describe('BdrServer_e2e', () => {
         200,
         {
           data: { __type: null }
-        },
-        done
+        }
       );
   });
 });
