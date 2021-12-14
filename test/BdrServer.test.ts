@@ -79,6 +79,20 @@ describe('BdrServer', () => {
     expect(businessObjects[1].qualifiedName).toEqual('com.company.model.OrderInfo');
   });
 
+  test('should handle BDM xml with non-ascii characters', () => {
+    let server = new BdrServer(new Configuration());
+
+    let bdmXml = _getBdmXml('test/resources/bdm_simple_non_ascii.xml');
+    server.handleNewBdmXml(bdmXml);
+    // GraphQL should be KO
+    expect(server.getGraphqlSchema()).toBeUndefined();
+    // Json should be OK
+    let jsonModel = server.getBdmJson();
+    let businessObjects = JSON.parse(jsonModel).businessObjects;
+    expect(businessObjects[0].qualifiedName).toEqual('com.company.model.Customer');
+    expect(businessObjects[1].qualifiedName).toEqual('com.company.model.OrderInfo');
+  });
+
   test('should remove BDM', () => {
     let server = new BdrServer(new Configuration());
     let bdmXml = _getBdmXml('test/resources/bdm_CustomerOrder.xml');

@@ -24,7 +24,7 @@ import { ConfigurationManager } from './ConfigurationManager';
 import { BdrLogger } from '../logger/BdrLogger';
 
 // Configure no proxy setting
-process.env["NO_PROXY"]="127.0.0.1,localhost";
+process.env['NO_PROXY'] = '127.0.0.1,localhost';
 
 // Handle server parameters
 let config: Configuration = new ConfigurationManager(process.argv).getConfig();
@@ -42,6 +42,7 @@ bdrServer.addGraphqlRoute();
 bdrServer.addBdmPostRoute();
 bdrServer.addBdmJsonRoute();
 bdrServer.addBdmDeleteRoute();
+bdrServer.addBdmGetStatusRoute();
 
 /**
  * Start Server

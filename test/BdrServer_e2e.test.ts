@@ -46,6 +46,7 @@ describe('BdrServer_e2e', () => {
     server.addBdmPostRoute();
     server.addBdmDeleteRoute();
     server.addBdmJsonRoute();
+    server.addBdmGetStatusRoute();
     app = server.getExpressApp();
   });
 
@@ -109,13 +110,38 @@ describe('BdrServer_e2e', () => {
   test('POST all bdms content', async () => {
     let xmlFiles = fs.readdirSync('test/resources');
     for (const xmlFile of xmlFiles) {
+      // Check POST BDM request
       let bdmXmlContent = fs.readFileSync('test/resources/' + xmlFile, 'utf8');
       const res = await request(app)
         .post('/bdm')
         .set('Content-Type', 'application/json')
         .send({ bdmXml: bdmXmlContent });
-
       expect(res.statusCode).toEqual(200);
+
+      // Check status
+      const res2 = await request(app)
+        .get(BdrServer.getBdmStatusPath())
+        .set('Accept', 'application/json');
+      expect(res2.statusCode).toEqual(200);
+      const status = JSON.parse(res2.text);
+      if (xmlFile === 'bdm_simple_non_ascii.xml') {
+        expect(status.jsonRequest).toBeTruthy();
+        expect(status.graphqlRequest).toBeFalsy();
+      } else {
+        expect(status.jsonRequest).toBeTruthy();
+        expect(status.graphqlRequest).toBeTruthy();
+      }
+
+      // Check Voyager
+      const res3 = await request(app)
+        .get(BdrServer.getBdmVoyagerPath())
+        .set('Accept', 'application/json');
+      expect(res3.statusCode).toEqual(200);
+      if (xmlFile === 'bdm_simple_non_ascii.xml') {
+        expect(res3.text.includes('Data Model visualization is not available')).toBeTruthy();
+      } else {
+        expect(res3.text.includes('GraphQL Voyager')).toBeTruthy();
+      }
     }
   });
 

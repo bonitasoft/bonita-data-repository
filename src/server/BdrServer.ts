@@ -32,6 +32,9 @@ import { Application } from 'express';
 import { GraphQLScalarType, StringValueNode } from 'graphql';
 import { BdmModelGenerator } from '../schema/BdmModelGenerator';
 import { BdmModel } from '../schema/BdmModel';
+import { ServerStatus } from './ServerStatus';
+import { GraphQLSchema } from 'graphql/type/schema';
+import { Logger } from 'winston';
 
 export class BdrServer {
   private readonly config: any;
@@ -40,9 +43,10 @@ export class BdrServer {
   private static readonly bdmGraphqlPath = '/bdm/graphql';
   private static readonly bdmJsonPath = '/bdm/json';
   private static readonly bdmVoyagerPath = '/bdm/graphical';
-  private readonly logger: any;
+  private static readonly bdmStatusPath = '/bdm/status';
+  private readonly logger: Logger;
   private static readonly emptySchema = 'type Query { content: String }';
-  private graphqlSchema: string = buildSchema(BdrServer.emptySchema);
+  private graphqlSchema: GraphQLSchema | undefined = buildSchema(BdrServer.emptySchema);
   private bdmModelAsJson: string = '{}';
   private readonly resolvers: object;
   private readonly expressApp: Application;
@@ -85,7 +89,7 @@ export class BdrServer {
 
     this.expressApp.use(
       BdrServer.bdmVoyagerPath,
-      voyagerMiddleware({ endpointUrl: '/bdm/graphql' })
+      this.maybeBdmVisualization(voyagerMiddleware({ endpointUrl: '/bdm/graphql' }))
     );
   }
 
@@ -108,6 +112,14 @@ export class BdrServer {
 
   public static getBdmJsonPath() {
     return this.bdmJsonPath;
+  }
+
+  public static getBdmStatusPath() {
+    return this.bdmStatusPath;
+  }
+
+  public static getBdmVoyagerPath() {
+    return this.bdmVoyagerPath;
   }
 
   public getExpressApp(): Application {
@@ -152,6 +164,15 @@ export class BdrServer {
     });
   }
 
+  public addBdmGetStatusRoute() {
+    let myself = this;
+    this.expressApp.get(BdrServer.bdmStatusPath, function(req: any, res: any) {
+      let status = new ServerStatus(true, !!myself.graphqlSchema);
+      myself.logger.debug('getting status...');
+      res.send(status);
+    });
+  }
+
   public addBdmJsonRoute() {
     let myself = this;
     this.expressApp.get(BdrServer.bdmJsonPath, function(req: any, res: any) {
@@ -178,7 +199,7 @@ export class BdrServer {
   // public for tests
   public handleNewBdmXml(bdmXml: string) {
     let bdmModel = BdrServer.getBdmModel(bdmXml);
-    let newSchema = BdrServer.getGraphqlSchemaFromBdmModel(bdmModel);
+    let newSchema = BdrServer.getGraphqlSchemaFromBdmModel(bdmModel, this.logger);
     this.updateSchema(newSchema);
     this.bdmModelAsJson = BdrServer.getBdmModelAsJson(bdmModel);
   }
@@ -202,16 +223,24 @@ export class BdrServer {
     if (this.config.bdmFile) {
       let bdmXml = fs.readFileSync(this.config.bdmFile, 'utf8');
       let bdmModel = BdrServer.getBdmModel(bdmXml);
-      this.graphqlSchema = BdrServer.getGraphqlSchemaFromBdmModel(bdmModel);
+      this.graphqlSchema = BdrServer.getGraphqlSchemaFromBdmModel(bdmModel, this.logger);
       this.bdmModelAsJson = BdrServer.getBdmModelAsJson(bdmModel);
       this.logger.debug(`BDM added:  ${this.config.bdmFile}`);
     }
   }
 
-  private static getGraphqlSchemaFromBdmModel(bdmModel: BdmModel): any {
+  private static getGraphqlSchemaFromBdmModel(
+    bdmModel: BdmModel,
+    logger: Logger
+  ): GraphQLSchema | undefined {
     let schemaGenerator = new GraphqlSchemaGenerator(bdmModel);
     schemaGenerator.generate();
-    return buildSchema(schemaGenerator.getSchema());
+    try {
+      return buildSchema(schemaGenerator.getSchema());
+    } catch (e) {
+      logger.warn(`GraphQL schema parsing error: ${e}`);
+      return undefined;
+    }
   }
 
   private static getBdmModelAsJson(bdmModel: BdmModel) {
@@ -231,10 +260,26 @@ export class BdrServer {
     }
   }
 
-  private updateSchema(newSchema: string) {
+  private updateSchema(newSchema: GraphQLSchema | undefined) {
     this.removeGraphqlRoute();
     this.graphqlSchema = newSchema;
-    this.addGraphqlRoute();
+    if (this.graphqlSchema) {
+      this.addGraphqlRoute();
+    }
+  }
+
+  private maybeBdmVisualization(fn: any) {
+    let myself = this;
+    return function(req: any, res: any, next: any) {
+      if (!myself.graphqlSchema) {
+        res.send(
+          '<h3>⚠️ Data Model visualization is not available ⚠️</h3> Check the Bonita Data Repository log file for more details'
+        );
+        next();
+      } else {
+        fn(req, res, next);
+      }
+    };
   }
 
   private static getBdmModel(bdmXml: string): BdmModel {
