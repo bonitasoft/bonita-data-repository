@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<businessObjectModel modelVersion="1.0" productVersion="7.10.0-SNAPSHOT">
+    <businessObjects>
+        <businessObject qualifiedName="com.company.model.Customer">
+            <fields>
+                <field type="STRING" length="255" name="name" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="adressée" nullable="true" collection="false"/>
+                <field type="STRING" length="255" name="phoneNumber" nullable="true" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.company.model.OrderInfo" fetchType="LAZY" name="orders" nullable="true" collection="true"/>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="UNIQUE_CONSTRAINT_1">
+                    <fieldNames>
+                        <fieldName>name</fieldName>
+                        <fieldName>phoneNumber</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+                <uniqueConstraint name="UNIQUE_CONSTRAINT_2">
+                    <fieldNames>
+                        <fieldName>adressée</fieldName>
+                        <fieldName>phoneNumber</fieldName>
+                        <fieldName>name</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries>
+                <query name="query_avec_accent_é" content="SELECT c &#xA;FROM Customer c &#xA;WHERE c.name = :name&#xA;AND c.address = :address&#xA;AND c.phoneNumber = :phoneNumber&#xA;ORDER BY c.persistenceId ASC" returnType="java.util.List">
+                    <queryParameters>
+                        <queryParameter name="name" className="java.lang.String"/>
+                        <queryParameter name="adressée" className="java.lang.String"/>
+                        <queryParameter name="phoneNumber" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+                <query name="query2" content="SELECT c &#xA;FROM Customer c &#xA;WHERE c.name = :name&#xA;AND c.address = :address&#xA;ORDER BY c.persistenceId ASC" returnType="com.company.model.Customer">
+                    <queryParameters>
+                        <queryParameter name="name" className="java.lang.String"/>
+                        <queryParameter name="adressée" className="java.lang.String"/>
+                    </queryParameters>
+                </query>
+            </queries>
+            <indexes>
+                <index name="INDEX_2">
+                    <fieldNames>
+                        <fieldName>name</fieldName>
+                    </fieldNames>
+                </index>
+            </indexes>
+        </businessObject>
+        <businessObject qualifiedName="com.company.model.OrderInfo">
+            <fields>
+                <field type="STRING" length="255" name="itemName" nullable="true" collection="false"/>
+                <field type="INTEGER" length="255" name="number" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+    </businessObjects>
+</businessObjectModel>
