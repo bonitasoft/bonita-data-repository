@@ -174,12 +174,12 @@ export class GraphqlSchemaGenerator {
       let returnType;
       if (bdmReturnType === 'java.util.List') {
         returnType = '[' + bdmObjectName + ']';
-      } else if (GraphqlSchemaGenerator.getQualifiedName(bdmReturnType) === bdmObjectName) {
-        returnType = bdmObjectName;
-      } else {
+      } else if (bdmReturnType.startsWith("java.")) {
         returnType = GraphqlSchemaGenerator.xmlToGraphqlType(
           GraphqlSchemaGenerator.getLastItem(bdmReturnType)
         );
+      } else {
+        returnType = GraphqlSchemaGenerator.xmlToGraphqlType(bdmReturnType);
       }
       let filters = customQuery.filters;
       let paramsStr = '';
