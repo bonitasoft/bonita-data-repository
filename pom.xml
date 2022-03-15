@@ -188,6 +188,40 @@
                             </execution>
                         </executions>
                     </plugin>
+					<plugin>
+						<groupId>org.codehaus.gmaven</groupId>
+						<artifactId>groovy-maven-plugin</artifactId>
+						<version>2.1.1</version>
+						<executions>
+							<execution>
+								<id>generate-adoc</id>
+								<phase>initialize</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<properties>
+										<templateDir>${project.basedir}/src/main/groovy/templates</templateDir>
+										<nodeJsDepFile>${project.build.directory}/bonita-data-repository-dependencies.json</nodeJsDepFile>
+										<outputFileName>${project.build.directory}/bonita-data-repository-dependencies.adoc</outputFileName>
+									</properties>
+									<source>${project.basedir}/src/main/groovy/generate-deps-adoc.groovy</source>
+								</configuration>
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>org.codehaus.groovy</groupId>
+								<artifactId>groovy-all</artifactId>
+								<version>2.4.20</version>
+							</dependency>
+							<dependency>
+								<groupId>com.github.jknack</groupId>
+								<artifactId>handlebars</artifactId>
+								<version>4.1.2</version>
+							</dependency>
+						</dependencies>
+					</plugin>
                 </plugins>
             </build>
         </profile>
