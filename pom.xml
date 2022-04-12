@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.bonitasoft.web</groupId>
     <artifactId>bonita-data-repository</artifactId>
-    <version>7.11.8-SNAPSHOT</version>
+    <version>7.11.8.test-07</version>
     <name>bonita-data-repository</name>
     <inceptionYear>2019</inceptionYear>
 
