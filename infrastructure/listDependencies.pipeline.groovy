@@ -11,7 +11,9 @@ timestamps {
 			}
 
 			stage('Generate ⚙️') {
-				sh './mvnw initialize -Pdependencies'
+				configFileProvider([configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')]) {
+					sh("./mvnw -s ${MAVEN_SETTINGS} --no-transfer-progress -B initialize -Pdependencies")
+				}
 				stash name: 'bonita-data-repository-dependencies', includes: 'target/bonita-data-repository-dependencies.adoc'
 			}
 

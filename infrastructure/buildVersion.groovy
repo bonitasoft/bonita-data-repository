@@ -5,8 +5,8 @@ pipeline {
     }
     stages {
         stage('Build and deploy') {
-            steps {
-                sh("./mvnw deploy -DskipTests -DaltDeploymentRepository=${env.ALT_DEPLOYMENT_REPOSITORY_TAG}")
+            configFileProvider([configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')]) {
+                sh("./mvnw -s ${MAVEN_SETTINGS} --no-transfer-progress -B deploy -DskipTests -DaltDeploymentRepository=${env.ALT_DEPLOYMENT_REPOSITORY_TAG}")
             }
         }
     }
