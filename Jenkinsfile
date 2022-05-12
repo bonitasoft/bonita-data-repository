@@ -30,7 +30,9 @@ node {
 
 
 def mvn(args) {
-    sh "./mvnw  --no-transfer-progress  ${args}"
+    configFileProvider([configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')]) {
+        sh("./mvnw -s ${MAVEN_SETTINGS} --no-transfer-progress -B ${args}")
+    }
 }
 
 def slackStage(def name, boolean isBaseBranch, Closure body) {
