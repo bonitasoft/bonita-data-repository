@@ -15,7 +15,7 @@ node {
     slackStage('🔧 Build', isBaseBranch) {
         def mvnArgs = 'verify'
         if (isBaseBranch) {
-            mvnArgs = "deploy -DaltDeploymentRepository=${env.ALT_DEPLOYMENT_REPOSITORY_SNAPSHOTS}"
+            mvnArgs = "deploy -Psign -DaltDeploymentRepository=${env.ALT_DEPLOYMENT_REPOSITORY_SNAPSHOTS}"
         }
         mvn "${mvnArgs}"
 

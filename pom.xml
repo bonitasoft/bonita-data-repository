@@ -237,5 +237,35 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+			<id>sign</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+                        <version>3.1.0</version>
+						<executions>
+							<execution>
+								<id>sign-macos-binary</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<configuration>
+									<executable>./sign.sh</executable>
+									<arguments>
+										<argument>${project.artifactId}-macos-arm64</argument>
+										<argument>${macSignServiceURL}</argument>
+										<argument>${project.build.directory}/binaries/</argument>
+									</arguments>
+								</configuration>
+							</execution>
+							
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
     </profiles>
 </project>
