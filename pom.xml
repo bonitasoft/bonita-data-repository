@@ -118,14 +118,26 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>generated-macos-zip</id>
+                        <id>generated-macos-x64-zip</id>
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
                         </goals>
                         <configuration>
                             <descriptors>
-                                <descriptor>assembly_macos.xml</descriptor>
+                                <descriptor>assembly_macos_x64.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generated-macos-arm64-zip</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>assembly_macos_arm64.xml</descriptor>
                             </descriptors>
                         </configuration>
                     </execution>
@@ -212,9 +224,8 @@
 						<dependencies>
 							<dependency>
 								<groupId>org.codehaus.groovy</groupId>
-								<artifactId>groovy-all</artifactId>
-								<version>3.0.8</version>
-                                <type>pom</type>
+								<artifactId>groovy-json</artifactId>
+								<version>3.0.14</version>
 							</dependency>
 							<dependency>
 								<groupId>com.github.jknack</groupId>

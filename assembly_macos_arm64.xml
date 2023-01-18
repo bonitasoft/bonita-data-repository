@@ -11,7 +11,7 @@
             <outputDirectory>/</outputDirectory>
             <directory>target/binaries</directory>
             <includes>
-                <include>${project.name}-macos</include>
+                <include>${project.name}-macos-arm64</include>
             </includes>
         </fileSet>
     </fileSets>
