@@ -15,7 +15,7 @@ node {
     slackStage('🔧 Build', isBaseBranch) {
         def mvnArgs = 'verify'
         if (isBaseBranch) {
-            mvnArgs = "deploy -Psign -DaltDeploymentRepository=${env.ALT_DEPLOYMENT_REPOSITORY_SNAPSHOTS}"
+            mvnArgs = "deploy -Psign -DmacSignServiceURL=${env.MAC_SIGN_SERVICE_URL} -DaltDeploymentRepository=${env.ALT_DEPLOYMENT_REPOSITORY_SNAPSHOTS}"
         }
         mvn "${mvnArgs}"
 
