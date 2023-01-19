@@ -4,7 +4,7 @@ import static groovy.json.JsonOutput.toJson
 properties([[$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '3']]])
 
 
-node('studio-7.15') {
+node {
     def currentBranch = env.BRANCH_NAME
     def isBaseBranch = currentBranch == 'master' || currentBranch == 'dev' || currentBranch?.startsWith('release-') || currentBranch?.matches('7\\..+\\.x')
 
