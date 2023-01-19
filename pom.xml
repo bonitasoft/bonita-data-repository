@@ -246,8 +246,8 @@
 						<artifactId>exec-maven-plugin</artifactId>
                         <version>3.1.0</version>
 						<executions>
-							<execution>
-								<id>sign-macos-binary</id>
+                            <execution>
+								<id>sign-win-x64-binary</id>
 								<phase>prepare-package</phase>
 								<goals>
 									<goal>exec</goal>
@@ -255,13 +255,43 @@
 								<configuration>
 									<executable>./sign.sh</executable>
 									<arguments>
+										<argument>${project.artifactId}-win-x64.exe</argument>
+										<argument>${signServiceURL}</argument>
+                                        <argument>${project.artifactId}-win-x64.exe</argument>
+										<argument>${project.build.directory}/binaries/</argument>
+									</arguments>
+								</configuration>
+							</execution>
+                            <execution>
+								<id>sign-macos-x64-binary</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<configuration>
+									<executable>./sign-macos.sh</executable>
+									<arguments>
+										<argument>${project.artifactId}-macos-x64</argument>
+										<argument>${macSignServiceURL}</argument>
+										<argument>${project.build.directory}/binaries/</argument>
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>sign-macos-arm64-binary</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<configuration>
+									<executable>./sign-macos.sh</executable>
+									<arguments>
 										<argument>${project.artifactId}-macos-arm64</argument>
 										<argument>${macSignServiceURL}</argument>
 										<argument>${project.build.directory}/binaries/</argument>
 									</arguments>
 								</configuration>
 							</execution>
-							
 						</executions>
 					</plugin>
 				</plugins>
