@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node .",
     "typescript-compile": "tsc --build tsconfig.json",
-    "package": "pkg --out-path ./target/binaries -t node12-linux,node12-macos,node12-win .",
+    "package": "pkg --out-path ./target/binaries -t node16-linux-x64,node16-macos-x64,node16-macos-arm64,node16-win-x64 .",
     "prettier:check": "prettier --check \"src/**/*.js\"",
     "prettier:fix": "prettier --write \"src/**/*.js\"",
     "test": "jest 2>&1",
@@ -37,10 +37,10 @@
     "jest": "^27.4.4",
     "license-checker": "^25.0.1",
     "mock-fs": "^5.1.2",
-    "pkg": "^5.5.1",
+    "pkg": "^5.8.0",
     "prettier": "^2.5.1",
     "pretty-quick": "^3.1.2",
-    "supertest": "^6.1.6",
+    "supertest": "^6.3.3",
     "ts-jest": "^27.1.1",
     "typescript": "^4.5.3"
   },
