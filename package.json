@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node .",
     "typescript-compile": "tsc --build tsconfig.json",
-    "package": "pkg --out-path ./target/binaries -t node16-linux-x64,node16-macos-x64,node16-macos-arm64,node16-win-x64 .",
+    "package": "pkg --no-bytecode --public-packages \"*\" --public --out-path ./target/binaries -t node16-linux-x64,node16-macos-x64,node16-macos-arm64,node16-win-x64 .",
     "prettier:check": "prettier --check \"src/**/*.js\"",
     "prettier:fix": "prettier --write \"src/**/*.js\"",
     "test": "jest 2>&1",
