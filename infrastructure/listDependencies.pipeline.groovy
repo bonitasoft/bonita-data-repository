@@ -41,7 +41,7 @@ timestamps {
 								"--repository='bonita-doc' \\" +
 								"--github-username=${GITHUB_USERNAME} \\" +
 								"--github-api-token=${GITHUB_API_TOKEN} \\" +
-								"--pr-title='doc(bdr): List dependencies for version ${minorVersion}'  \\" +
+								"--pr-title='docs(bdr): List dependencies for version ${minorVersion}'  \\" +
 								"--pr-base-branch-name=${minorVersion} \\" +
 								"--pr-head-branch-name=${branchDocName}"
 						println "Pull request created"
