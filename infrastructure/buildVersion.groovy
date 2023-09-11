@@ -1,4 +1,4 @@
-def mavenProfiles = ''
+def mavenProfiles = '-Pmacos-codesign'
 pipeline {
     agent any
     options {
@@ -15,7 +15,7 @@ pipeline {
                 configFileProvider([configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')]) {
                     script {
                         if(params.sign) {
-                            mavenProfiles << '-Pwindows-codesign,macos-codesign'
+                            mavenProfiles << ',windows-codesign'
                         }
                     }
                     sh("./mvnw -s ${MAVEN_SETTINGS} --no-transfer-progress -B deploy ${mavenProfiles} -DmacSignServiceURL=${env.MAC_SIGN_SERVICE_URL}  -DskipTests -DaltDeploymentRepository=${env.ALT_DEPLOYMENT_REPOSITORY_STAGING}")
