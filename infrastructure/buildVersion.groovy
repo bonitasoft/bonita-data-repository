@@ -3,6 +3,7 @@ pipeline {
     agent any
     options {
         timestamps()
+        ansiColor('xterm')
     }
     environment {
         JAVA_HOME = "${env.JAVA_HOME_11}"
