@@ -272,7 +272,7 @@
                                 </goals>
                                 <configuration>
                                     <executable>CodeSignTool</executable>
-                                    <commandlineArgs>sign -username=$ESIGNER_CREDS_USR -password=$ESIGNER_CREDS_PSW -totp_secret=$ESIGNER_TOTP -override -input_file_path=${project.build.directory}/binaries/${project.artifactId}-win-x64.exe</commandlineArgs>
+                                    <commandlineArgs>sign -username=$ESIGNER_CREDS_USR -password=$ESIGNER_CREDS_PSW -credential_id=$ESIGNER_CREDENTIAL_ID -totp_secret=$ESIGNER_TOTP -override -input_file_path=${project.build.directory}/binaries/${project.artifactId}-win-x64.exe</commandlineArgs>
                                 </configuration>
                             </execution>
                         </executions>
