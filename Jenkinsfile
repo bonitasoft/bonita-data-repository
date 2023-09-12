@@ -15,7 +15,7 @@ node {
     slackStage('🔧 Build', isBaseBranch) {
         def mvnArgs = 'verify'
         if (isBaseBranch) {
-            mvnArgs = "deploy -Psign -DsignServiceURL=${env.SIGN_SERVICE_URL} -DmacSignServiceURL=${env.MAC_SIGN_SERVICE_URL} -DaltDeploymentRepository=${env.ALT_DEPLOYMENT_REPOSITORY_SNAPSHOTS}"
+            mvnArgs = "deploy -Pmacos-codesign -DmacSignServiceURL=${env.MAC_SIGN_SERVICE_URL} -DaltDeploymentRepository=${env.ALT_DEPLOYMENT_REPOSITORY_SNAPSHOTS}"
         }
         mvn "${mvnArgs}"
 
@@ -30,8 +30,12 @@ node {
 
 
 def mvn(args) {
-    configFileProvider([configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')]) {
-        sh("./mvnw -s ${MAVEN_SETTINGS} --no-transfer-progress -B ${args}")
+     ansiColor('xterm'){
+         withEnv(["JAVA_HOME=${env.JAVA_HOME_11}"]){
+            configFileProvider([configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')]) {
+                sh("./mvnw -s ${MAVEN_SETTINGS} --no-transfer-progress -B ${args}")
+            }
+        }
     }
 }
 
