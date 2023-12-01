@@ -6,7 +6,7 @@ pipeline {
         ansiColor('xterm')
     }
     environment {
-        JAVA_HOME = "${env.JAVA_HOME_11}"
+        JAVA_HOME = "${env.JAVA_HOME_17}"
         ESIGNER_CREDS = credentials('eSigner')
         ESIGNER_CREDENTIAL_ID = credentials('eSignerCredentialId')
         ESIGNER_TOTP = credentials('eSignerTOTP')

@@ -31,7 +31,7 @@ node {
 
 def mvn(args) {
      ansiColor('xterm'){
-         withEnv(["JAVA_HOME=${env.JAVA_HOME_11}"]){
+         withEnv(["JAVA_HOME=${env.JAVA_HOME_17}"]){
             configFileProvider([configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')]) {
                 sh("./mvnw -s ${MAVEN_SETTINGS} --no-transfer-progress -B ${args}")
             }
