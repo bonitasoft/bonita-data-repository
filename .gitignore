@@ -5,3 +5,6 @@ node_modules
 resources/*
 logs/*
 bonita-doc
+.classpath
+.settings/
+.project

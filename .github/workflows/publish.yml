@@ -1,0 +1,128 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to publish'
+        type: string
+        required: true
+        default: 'x.y.z'
+
+jobs:
+  build:
+    name: Publication pipeline
+    runs-on: ubuntu-22.04
+    steps:
+    
+      - name: Retrieve secrets from Keeper
+        id: ksecrets
+        uses: Keeper-Security/ksm-action@master
+        with:
+          keeper-secret-config: ${{ secrets.KSM_CONFIG }}
+          secrets: |
+            YPOU0laqe0V0mq_qwQ_3wg/field/login > env:JFROG_USER
+            YPOU0laqe0V0mq_qwQ_3wg/field/password > env:JFROG_TOKEN
+            
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag }}
+        
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+          
+      - name: Setup Maven configuration
+        uses: whelk-io/maven-settings-xml-action@v21
+        with:
+          repositories: >
+            [
+              {
+                "id": "releases",
+                "name": "releases",
+                "url": "https://bonitasoft.jfrog.io/artifactory/releases",
+                "releases": {
+                  "enabled": "true"
+                },
+                "snapshots": {
+                  "enabled": "false"
+                }
+              },
+              {
+                "id": "snapshots",
+                "name": "snapshots",
+                "url": "https://bonitasoft.jfrog.io/artifactory/snapshots",
+                "releases": {
+                  "enabled": "false"
+                },
+                "snapshots": {
+                  "enabled": "true"
+                }
+              },
+              {
+                 "id": "ossrh-snapshots",
+                 "name": "ossrh-snapshots",
+                 "url" : "https://oss.sonatype.org/content/repositories/snapshots",
+                 "releases": {
+                  "enabled": "false"
+                },
+                "snapshots": {
+                  "enabled": "true"
+                }
+              }
+            ]
+          plugin_repositories: >
+            [
+              {
+                "id": "releases",
+                "name": "releases",
+                "url": "https://bonitasoft.jfrog.io/artifactory/releases",
+                "releases": {
+                  "enabled": "true"
+                },
+                "snapshots": {
+                  "enabled": "false"
+                }
+              },
+              {
+                "id": "snapshots",
+                "name": "snapshots",
+                "url": "https://bonitasoft.jfrog.io/artifactory/snapshots",
+                "releases": {
+                  "enabled": "false"
+                },
+                "snapshots": {
+                  "enabled": "true"
+                }
+              },
+              {
+                 "id": "ossrh-snapshots",
+                 "name": "ossrh-snapshots",
+                 "url" : "https://oss.sonatype.org/content/repositories/snapshots",
+                 "releases": {
+                  "enabled": "false"
+                 },
+                 "snapshots": {
+                  "enabled": "true"
+                }
+              }
+            ]
+          servers: >
+            [
+              {
+                "id": "releases",
+                "username": "${{ env.JFROG_USER }}",
+                "password": "${{ env.JFROG_TOKEN }}"
+              },
+              {
+                "id": "snapshots",
+                "username": "${{ env.JFROG_USER }}",
+                "password": "${{ env.JFROG_TOKEN }}"
+              }
+            ]
+          
+      - name: Publish tag 
+        run: ./mvnw -ntp --batch-mode deploy -DaltDeploymentRepository=releases::https://bonitasoft.jfrog.io/artifactory/libs-release-local/

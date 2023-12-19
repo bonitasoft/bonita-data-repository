@@ -1,0 +1,143 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - develop
+      - release/*
+      - support/*
+  pull_request:
+    branches:
+      - develop
+      - release/*
+      - support/*
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Retrieve secrets from Keeper
+        id: ksecrets
+        uses: Keeper-Security/ksm-action@master
+        with:
+          keeper-secret-config: ${{ secrets.KSM_CONFIG }}
+          secrets: |
+            YPOU0laqe0V0mq_qwQ_3wg/field/login > env:JFROG_USER
+            YPOU0laqe0V0mq_qwQ_3wg/field/password > env:JFROG_TOKEN
+            
+      - uses: actions/checkout@v4
+      
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+          cache: 'maven'
+          
+      - name: Setup Maven configuration
+        uses: whelk-io/maven-settings-xml-action@v21
+        with:
+          repositories: >
+            [
+              {
+                "id": "releases",
+                "name": "releases",
+                "url": "https://bonitasoft.jfrog.io/artifactory/releases",
+                "releases": {
+                  "enabled": "true"
+                },
+                "snapshots": {
+                  "enabled": "false"
+                }
+              },
+              {
+                "id": "snapshots",
+                "name": "snapshots",
+                "url": "https://bonitasoft.jfrog.io/artifactory/snapshots",
+                "releases": {
+                  "enabled": "false"
+                },
+                "snapshots": {
+                  "enabled": "true"
+                }
+              },
+              {
+                 "id": "ossrh-snapshots",
+                 "name": "ossrh-snapshots",
+                 "url" : "https://oss.sonatype.org/content/repositories/snapshots",
+                 "releases": {
+                  "enabled": "false"
+                },
+                "snapshots": {
+                  "enabled": "true"
+                }
+              }
+            ]
+          plugin_repositories: >
+            [
+              {
+                "id": "releases",
+                "name": "releases",
+                "url": "https://bonitasoft.jfrog.io/artifactory/releases",
+                "releases": {
+                  "enabled": "true"
+                },
+                "snapshots": {
+                  "enabled": "false"
+                }
+              },
+              {
+                "id": "snapshots",
+                "name": "snapshots",
+                "url": "https://bonitasoft.jfrog.io/artifactory/snapshots",
+                "releases": {
+                  "enabled": "false"
+                },
+                "snapshots": {
+                  "enabled": "true"
+                }
+              },
+              {
+                 "id": "ossrh-snapshots",
+                 "name": "ossrh-snapshots",
+                 "url" : "https://oss.sonatype.org/content/repositories/snapshots",
+                 "releases": {
+                  "enabled": "false"
+                 },
+                 "snapshots": {
+                  "enabled": "true"
+                }
+              }
+            ]
+          servers: >
+            [
+              {
+                "id": "releases",
+                "username": "${{ env.JFROG_USER }}",
+                "password": "${{ env.JFROG_TOKEN }}"
+              },
+              {
+                "id": "snapshots",
+                "username": "${{ env.JFROG_USER }}",
+                "password": "${{ env.JFROG_TOKEN }}"
+              }
+            ]
+
+      - name: Build
+        run: ./mvnw -ntp clean verify -Dstyle.color=always
+        
+      - name: Deploy
+        if:  ${{ github.event.pull_request == null }}
+        run: ./mvnw -ntp deploy -Dstyle.color=always -DskipTests -DaltDeploymentRepository=snapshots::https://bonitasoft.jfrog.io/artifactory/libs-snapshot-local/
+        
+      - name: Publish Test Report
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: |
+            target/reports/*.xml
+        
+        
