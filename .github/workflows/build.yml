@@ -19,6 +19,85 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+          cache: 'maven'
+          
+      - name: Build
+        run: ./mvnw -ntp clean verify -Dstyle.color=always
+        
+      - name: Publish Test Report
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: |
+            target/reports/*.xml
+            
+      - name: Upload macos-x64 binary
+        if:  ${{ github.event.pull_request == null }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-x64-unsigned
+          path: target/binaries/bonita-data-repository-macos-x64
+          retention-days: 1
+            
+      - name: Upload macos-arm64 binary
+        if:  ${{ github.event.pull_request == null }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-arm64-unsigned
+          path: target/binaries/bonita-data-repository-macos-arm64
+          retention-days: 1
+            
+      - name: Upload linux-x64 binary
+        if:  ${{ github.event.pull_request == null }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-x64
+          path: target/binaries/bonita-data-repository-linux-x64
+          retention-days: 1
+            
+      - name: Upload win-x64 binary
+        if:  ${{ github.event.pull_request == null }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: win-x64
+          path: target/binaries/bonita-data-repository-win-x64.exe
+          retention-days: 1
+        
+  macOs-codesign:
+    if:  ${{ github.event.pull_request == null }}
+    needs: build
+    strategy:
+      matrix:
+        arch: [macos-x64, macos-arm64]
+    uses: ./.github/workflows/_reusable_macOs_codesign.yml
+    secrets:
+      certificateData: ${{ secrets.APPLE_CERT_DATA }}
+      certificatePassword: ${{ secrets.APPLE_CERT_PASSWORD }}
+      notorizationUser: ${{ secrets.APPLE_NOTARY_USER }}
+      notorizationPassword:  ${{ secrets.APPLE_NOTARY_PASSWORD }}
+      teamId: ${{ secrets.APPLE_TEAM_ID }}
+      entitlements: ${{ secrets.APPLE_ENTITLEMENTS_XML }}
+    with:
+      input-artifact: ${{ matrix.arch}}-unsigned
+      output-artifact: ${{ matrix.arch}}
+      filename: bonita-data-repository-${{ matrix.arch}}
+
+        
+  deploy:
+    if:  ${{ github.event.pull_request == null }}
+    needs: macOs-codesign
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        arch: [ win-x64, linux-x64, macos-x64, macos-arm64 ]
+    steps:
       - name: Retrieve secrets from Keeper
         id: ksecrets
         uses: Keeper-Security/ksm-action@master
@@ -40,104 +119,38 @@ jobs:
       - name: Setup Maven configuration
         uses: whelk-io/maven-settings-xml-action@v21
         with:
-          repositories: >
-            [
-              {
-                "id": "releases",
-                "name": "releases",
-                "url": "https://bonitasoft.jfrog.io/artifactory/releases",
-                "releases": {
-                  "enabled": "true"
-                },
-                "snapshots": {
-                  "enabled": "false"
-                }
-              },
-              {
-                "id": "snapshots",
-                "name": "snapshots",
-                "url": "https://bonitasoft.jfrog.io/artifactory/snapshots",
-                "releases": {
-                  "enabled": "false"
-                },
-                "snapshots": {
-                  "enabled": "true"
-                }
-              },
-              {
-                 "id": "ossrh-snapshots",
-                 "name": "ossrh-snapshots",
-                 "url" : "https://oss.sonatype.org/content/repositories/snapshots",
-                 "releases": {
-                  "enabled": "false"
-                },
-                "snapshots": {
-                  "enabled": "true"
-                }
-              }
-            ]
-          plugin_repositories: >
-            [
-              {
-                "id": "releases",
-                "name": "releases",
-                "url": "https://bonitasoft.jfrog.io/artifactory/releases",
-                "releases": {
-                  "enabled": "true"
-                },
-                "snapshots": {
-                  "enabled": "false"
-                }
-              },
-              {
-                "id": "snapshots",
-                "name": "snapshots",
-                "url": "https://bonitasoft.jfrog.io/artifactory/snapshots",
-                "releases": {
-                  "enabled": "false"
-                },
-                "snapshots": {
-                  "enabled": "true"
-                }
-              },
-              {
-                 "id": "ossrh-snapshots",
-                 "name": "ossrh-snapshots",
-                 "url" : "https://oss.sonatype.org/content/repositories/snapshots",
-                 "releases": {
-                  "enabled": "false"
-                 },
-                 "snapshots": {
-                  "enabled": "true"
-                }
-              }
-            ]
           servers: >
             [
               {
-                "id": "releases",
-                "username": "${{ env.JFROG_USER }}",
-                "password": "${{ env.JFROG_TOKEN }}"
-              },
-              {
                 "id": "snapshots",
                 "username": "${{ env.JFROG_USER }}",
                 "password": "${{ env.JFROG_TOKEN }}"
               }
             ]
-
-      - name: Build
-        run: ./mvnw -ntp clean verify -Dstyle.color=always
         
-      - name: Deploy
-        if:  ${{ github.event.pull_request == null }}
-        run: ./mvnw -ntp deploy -Dstyle.color=always -DskipTests -DaltDeploymentRepository=snapshots::https://bonitasoft.jfrog.io/artifactory/libs-snapshot-local/
-        
-      - name: Publish Test Report
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
+      - name: Download binaries 
+        uses: actions/download-artifact@v4
         with:
-          files: |
-            target/reports/*.xml
+          name: ${{ matrix.arch }}
+          path: target/binaries
+      
+      - name: Read version
+        id: read-version
+        run: echo "version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_OUTPUT
+   
+      - name: Deploy 
+        env:
+          SNAPSHOT_REPOSITORY_URL: https://bonitasoft.jfrog.io/artifactory/libs-snapshot-local/
+        run: |
+          ./mvnw assembly:single@archive-${{ matrix.arch }}
+          ./mvnw -ntp deploy:deploy-file -Dstyle.color=always -DrepositoryId=snapshots -Durl=${{ env.SNAPSHOT_REPOSITORY_URL }} \
+           -Dfile=target/bonita-data-repository-${{ steps.read-version.outputs.version }}-${{ matrix.arch }}.zip \
+           -DgroupId=org.bonitasoft.web \
+           -DartifactId=bonita-data-repository \
+           -Dversion=${{ steps.read-version.outputs.version }} \
+           -Dclassifier=${{ matrix.arch }} \
+           -Dpackaging=zip
+        
+    
         
         
