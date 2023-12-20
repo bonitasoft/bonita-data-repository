@@ -40,7 +40,6 @@ jobs:
         id: create-pr
         with:
           path: bonita-doc
-          add-paths: bonita-doc/modules/ROOT/pages/bonita-data-repository-dependencies.adoc
           branch: feat/update_bdr_dependencies_list
           commit-message: "docs(bdr): List dependencies for version ${{ github.event.gitRef }}"
           title: "docs(bdr): List dependencies for version ${minorVersion}"
