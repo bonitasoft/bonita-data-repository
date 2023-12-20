@@ -119,7 +119,6 @@ jobs:
     needs: [macOs-codesign, windows-codesign]
     runs-on: ubuntu-22.04
     strategy:
-      max-parallel: 1
       matrix:
         arch: [ win-x64, linux-x64, macos-x64, macos-arm64 ]
     steps:
@@ -177,3 +176,4 @@ jobs:
            -Dversion=${{ steps.read-version.outputs.version }} \
            -Dclassifier=${{ matrix.arch }} \
            -Dpackaging=zip
+           -DgeneratePom=false
