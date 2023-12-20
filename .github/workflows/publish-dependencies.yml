@@ -43,7 +43,7 @@ jobs:
           path: bonita-doc
           branch: feat/update_bdr_dependencies_list
           commit-message: "docs(bdr): List dependencies for version ${{ github.event.gitRef }}"
-          title: "docs(bdr): List dependencies for version ${minorVersion}"
+          title: "docs(bdr): List dependencies for version ${{ github.event.gitRef }"
           body: |
             Update dependencies list of [Bonita Data Repository](https://github.com/bonitasoft/bonita-data-repository)
       
