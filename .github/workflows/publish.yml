@@ -186,6 +186,6 @@ jobs:
      - uses: geekyeggo/delete-artifact@v2
        with:
          name: |
-          win-*
-          linux-*
-          macos-*
+           win-*
+           linux-*
+           macos-*
