@@ -151,6 +151,17 @@ jobs:
            -Dclassifier=${{ matrix.arch }} \
            -Dpackaging=zip
         
-    
+  clean-artifacts:
+    if: ${{ github.event.pull_request == null }}
+    needs: deploy
+    runs-on: ubuntu-22.04
+    steps:
+   
+     - uses: geekyeggo/delete-artifact@v2
+       with:
+         name: |
+          win-*
+          linux-*
+          macos-*
         
         
