@@ -175,5 +175,5 @@ jobs:
            -DartifactId=bonita-data-repository \
            -Dversion=${{ steps.read-version.outputs.version }} \
            -Dclassifier=${{ matrix.arch }} \
-           -Dpackaging=zip
+           -Dpackaging=zip \
            -DgeneratePom=false
