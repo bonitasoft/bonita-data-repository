@@ -282,29 +282,5 @@
                 </plugins>
             </build>
         </profile>
-        <profile>
-            <id>windows-codesign</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <executions>
-                              <execution>
-                                <id>sign-exe-x64-binary</id>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>CodeSignTool</executable>
-                                    <commandlineArgs>sign -username="${env.ESIGNER_CREDS_USR}" -password="${env.ESIGNER_CREDS_PSW}" -credential_id="${env.ESIGNER_CREDENTIAL_ID}" -totp_secret="${env.ESIGNER_TOTP}" -override -input_file_path=${project.build.directory}/binaries/${project.artifactId}-win-x64.exe</commandlineArgs>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
     </profiles>
 </project>
