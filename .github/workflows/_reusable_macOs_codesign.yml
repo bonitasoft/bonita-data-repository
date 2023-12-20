@@ -1,0 +1,97 @@
+name: macOs Codesign
+
+on:
+  workflow_call:
+    inputs:
+      input-artifact:
+        required: true
+        type: string
+      output-artifact:
+        required: true
+        type: string
+      filename:
+        required: true
+        type: string 
+      attachStaple:
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      certificateData:
+        required: true
+      certificatePassword:
+        required: true
+      notorizationUser:
+        required: true
+      notorizationPassword:
+        required: true
+      teamId:
+        required: true
+      entitlements:
+        required: true
+
+jobs:
+  codesign:
+    runs-on: macOs-13
+    steps:
+      - name: Download binary 
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.input-artifact }}
+         
+      - name: Sign binary 
+        env: 
+          MACOS_CERTIFICATE: ${{ secrets.certificateData }}
+          MACOS_CERTIFICATE_PWD: ${{ secrets.certificatePassword }}
+          TEAM_ID: ${{ secrets.teamId }}
+          APPLE_ENTITLEMENTS_XML: ${{ secrets.entitlements }}
+        run: |
+          echo $APPLE_ENTITLEMENTS_XML | base64 --decode > entitlements.xml
+          echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12
+          security create-keychain -p actions build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p actions build.keychain
+          security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k actions build.keychain
+          /usr/bin/codesign --deep --force --options runtime --entitlements entitlements.xml -s $TEAM_ID ${{ inputs.filename}} -v
+          
+      - name: Notorize binary 
+        env:
+          MACOS_NOTARIZATION_APPLE_ID: ${{ secrets.notorizationUser }}
+          MACOS_NOTARIZATION_TEAM_ID: ${{ secrets.teamId }}
+          MACOS_NOTARIZATION_PWD: ${{ secrets.notorizationPassword }}
+        run: |
+          # Store the notarization credentials so that we can prevent a UI password dialog
+          # from blocking the CI
+          echo "Create keychain profile"
+          xcrun notarytool store-credentials "notarytool-profile" --apple-id "$MACOS_NOTARIZATION_APPLE_ID" --team-id "$MACOS_NOTARIZATION_TEAM_ID" --password "$MACOS_NOTARIZATION_PWD"
+      
+          # We can't notarize an app bundle directly, but we need to compress it as an archive.
+          # Therefore, we create a zip file containing our app bundle, so that we can send it to the
+          # notarization service
+      
+          echo "Creating temp notarization archives"
+          ditto -c -k --keepParent "${{ inputs.filename }}" "notarization.zip"
+      
+          # Here we send the notarization request to the Apple's Notarization service, waiting for the result.
+          # This typically takes a few seconds inside a CI environment, but it might take more depending on the App
+          # characteristics. Visit the Notarization docs for more information and strategies on how to optimize it if
+          # you're curious
+      
+          echo "Notarize binary"
+          xcrun notarytool submit "notarization.zip" --keychain-profile "notarytool-profile" --wait
+          
+      - name: Spatle binary
+        if: ${{ inputs.attachStaple }}
+        run: |
+          # Finally, we need to "attach the staple" to our executable, which will allow our app to be
+          # validated by macOS even when an internet connection is not available.
+          echo "Attach staple"
+          xcrun stapler staple "${{ inputs.filename }}"
+        
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.output-artifact}}
+          path: ${{ inputs.filename }}
+          retention-days: 1

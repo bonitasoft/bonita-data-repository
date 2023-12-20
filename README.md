@@ -94,3 +94,15 @@ For instance:
 ```
 {"jsonRequest":true,"graphqlRequest":true}
 ```
+
+## Branching strategy
+
+This repository follows the [GitFlow branching strategy](https://gitversion.net/docs/learn/branching-strategies/gitflow/examples).
+
+## Release
+
+To release a new version, maintainers may use the Release and Publication GitHub actions.
+
+1. [Release action](https://github.com/bonitasoft/bonita-asciidoc-templating/actions/workflows/release.yml) will invoke the `gitflow-maven-plugin` to perform all required merges, version updates and tag creation.
+2. [Publication action](https://github.com/bonitasoft/bonita-asciidoc-templatingl/actions/workflows/publish.yml) will build and deploy a given tag to bonitasoft.jfrog.io/artifactory.
+3. A GitHub release should be created and associated to the tag.

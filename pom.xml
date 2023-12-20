@@ -147,7 +147,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>generated-linux-zip</id>
+                        <id>archive-linux-x64</id>
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
@@ -159,7 +159,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>generated-macos-x64-zip</id>
+                        <id>archive-macos-x64</id>
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
@@ -171,7 +171,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>generated-macos-arm64-zip</id>
+                        <id>archive-macos-arm64</id>
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
@@ -183,7 +183,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>generated-win-zip</id>
+                        <id>archive-win-x64</id>
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
@@ -299,49 +299,6 @@
                                 <configuration>
                                     <executable>CodeSignTool</executable>
                                     <commandlineArgs>sign -username="${env.ESIGNER_CREDS_USR}" -password="${env.ESIGNER_CREDS_PSW}" -credential_id="${env.ESIGNER_CREDENTIAL_ID}" -totp_secret="${env.ESIGNER_TOTP}" -override -input_file_path=${project.build.directory}/binaries/${project.artifactId}-win-x64.exe</commandlineArgs>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>macos-codesign</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>sign-macos-x64-binary</id>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>./sign-macos.sh</executable>
-                                    <arguments>
-                                        <argument>${project.artifactId}-macos-x64</argument>
-                                        <argument>${macSignServiceURL}</argument>
-                                        <argument>${project.build.directory}/binaries/</argument>
-                                    </arguments>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>sign-macos-arm64-binary</id>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>./sign-macos.sh</executable>
-                                    <arguments>
-                                        <argument>${project.artifactId}-macos-arm64</argument>
-                                        <argument>${macSignServiceURL}</argument>
-                                        <argument>${project.build.directory}/binaries/</argument>
-                                    </arguments>
                                 </configuration>
                             </execution>
                         </executions>
