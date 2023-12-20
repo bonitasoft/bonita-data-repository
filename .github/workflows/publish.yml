@@ -93,12 +93,15 @@ jobs:
       
       - name: Sign binary 
         uses: sslcom/actions-codesigner@develop
+        env:
+          ESIGNER_CREDS_PSW: ${{secrets.ESIGNER_CREDS_PSW}}
+          ESIGNER_TOTP: ${{secrets.ESIGNER_TOTP}}
         with:
           command: sign
           username: ${{secrets.ESIGNER_CREDS_USR}}
-          password: ${{secrets.ESIGNER_CREDS_PSW}}
+          password: $ESIGNER_CREDS_PSW
           credential_id: ${{secrets.ESIGNER_CREDENTIAL_ID}}
-          totp_secret: ${{secrets.ESIGNER_TOTP}}
+          totp_secret: $ESIGNER_TOTP
           file_path: bonita-data-repository-win-x64.exe
           output_path: artifacts
           
