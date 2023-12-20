@@ -132,6 +132,8 @@ jobs:
             YPOU0laqe0V0mq_qwQ_3wg/field/password > env:JFROG_TOKEN
             
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag }}
       
       - name: Setup Java
         uses: actions/setup-java@v4
