@@ -161,8 +161,8 @@ jobs:
           artifacts="$(gh api \
            -H "Accept: application/vnd.github+json" \
            -H "X-GitHub-Api-Version: 2022-11-28" \
-           /repos/$OWNER/$REPO/actions/runs/${{ github.run_id }}/artifacts
-          ' --jq '.artifacts.id')"
+           /repos/$OWNER/$REPO/actions/runs/${{ github.run_id }}/artifacts \
+           --jq '[.artifacts[] | .id] | @csv')"
 
           echo 'ARTIFACTS='$artifacts >> $GITHUB_ENV
           echo $artifacts
