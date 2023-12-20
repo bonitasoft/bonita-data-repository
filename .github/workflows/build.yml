@@ -160,7 +160,10 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
    
-     - run: |
+     - name: Delete intermediate artifact
+       env:
+         GH_TOKEN: ${{ github.token }}
+       run: |
          gh api \
            --method DELETE \
            -H "Accept: application/vnd.github+json" \
