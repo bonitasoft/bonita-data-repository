@@ -91,6 +91,9 @@ jobs:
         with:
           name: win-x64-unsigned
       
+      - name: Create output folder
+        run: mkdir $GITHUB_WORKSPACE/artifacts
+        
       - name: Sign binary 
         uses: sslcom/actions-codesigner@develop
         env:
