@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    name: Publication pipeline
+    name: Build
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
@@ -100,13 +100,13 @@ jobs:
           credential_id: ${{secrets.ESIGNER_CREDENTIAL_ID}}
           totp_secret: ${{secrets.ESIGNER_TOTP}}
           file_path: bonita-data-repository-win-x64.exe
-          output_path: ${GITHUB_WORKSPACE}/artifacts
+          output_path: artifacts
           
       - name: Upload win-x64 binary
         uses: actions/upload-artifact@v4
         with:
           name: win-x64
-          path: ${GITHUB_WORKSPACE}/artifacts/bonita-data-repository-win-x64.exe
+          path: artifacts/bonita-data-repository-win-x64.exe
           retention-days: 1
         
   deploy:
