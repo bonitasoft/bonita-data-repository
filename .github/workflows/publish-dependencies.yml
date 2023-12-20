@@ -1,0 +1,49 @@
+name: Publish Dependencies List
+
+on:
+  workflow_dispatch:
+    inputs:
+      gitRef:
+        type: string
+        required: true
+
+jobs:
+  publish:
+    name: Publish dependencies
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.gitRef }}
+        
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+          
+      - name: Build dependencies list 
+        run: ./mvnw -ntp -B initialize -Pdependencies
+      
+      - name: Clone bonita-doc repository
+        uses: actions/checkout@v4
+        with:
+          repository: bonitasoft/bonita-doc
+          path: bonita-doc
+          
+      - name: Prepare Pull Request
+        run: cp target/bonita-data-repository-dependencies.adoc bonita-doc/modules/ROOT/pages/
+      
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        id: create-pr
+        with:
+          path: bonita-doc
+          add-paths: bonita-doc/modules/ROOT/pages/bonita-data-repository-dependencies.adoc
+          branch: feat/update_bdr_dependencies_list
+          commit-message: "docs(bdr): List dependencies for version ${{ github.event.gitRef }}"
+          title: "docs(bdr): List dependencies for version ${minorVersion}"
+          body: |
+            Update dependencies list of [Bonita Data Repository](https://github.com/bonitasoft/bonita-data-repository)
+      
