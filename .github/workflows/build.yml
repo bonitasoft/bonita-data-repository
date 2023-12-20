@@ -149,30 +149,24 @@ jobs:
            -DartifactId=bonita-data-repository \
            -Dversion=${{ steps.read-version.outputs.version }} \
            -Dclassifier=${{ matrix.arch }} \
-           -Dpackaging=zip
+           -Dpackaging=zip \
+           -DgeneratePom=false
         
   clean-artifacts:
     if: ${{ github.event.pull_request == null }}
     needs: deploy
     runs-on: ubuntu-22.04
     steps:
-    
       - run: |
-          artifacts="$(gh api \
+         # List workflow artifacts and retrieve their ids
+         artifacts="$(gh api \
            -H "Accept: application/vnd.github+json" \
            -H "X-GitHub-Api-Version: 2022-11-28" \
            /repos/$OWNER/$REPO/actions/runs/${{ github.run_id }}/artifacts \
            --jq '[.artifacts[] | .id] | @csv')"
-
-          echo 'ARTIFACTS='$artifacts >> $GITHUB_ENV
-          echo $artifacts
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OWNER: ${{ github.repository_owner }}
-          REPO: ${{ github.event.repository.name }}
-   
-      - run: |
-         artifactIds=( ${${{ env.ARTIFACTS }}//,/ } )
+        
+         # Delete all workflow artifacts
+         artifactIds=( ${artifacts//,/ } )
          for artifactId in $artifactIds
          do
             gh api \
