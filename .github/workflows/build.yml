@@ -154,21 +154,36 @@ jobs:
   clean-artifacts:
     if: ${{ github.event.pull_request == null }}
     needs: deploy
-    strategy:
-      matrix:
-        artifacts: [ win-x64, linux-x64, macos-x64, macos-arm64, macos-x64-unsigned, macos-arm64-unsigned ]
     runs-on: ubuntu-22.04
     steps:
+    
+      - run: |
+          artifacts="gh api \
+           -H "Accept: application/vnd.github+json" \
+           -H "X-GitHub-Api-Version: 2022-11-28" \
+           /repos/$OWNER/$REPO/actions/runs/${{ github.run_id }}/artifacts
+          ' --jq '.artifacts.id')"
+
+          echo 'ARTIFACTS='$artifacts >> $GITHUB_ENV
+          echo $artifacts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
    
-     - name: Delete intermediate artifact
-       env:
-         GH_TOKEN: ${{ github.token }}
-       run: |
-         gh api \
+      - run: |
+         for artifactId in ${{ env.ARTIFACTS }}
+         do
+            gh api \
            --method DELETE \
            -H "Accept: application/vnd.github+json" \
            -H "X-GitHub-Api-Version: 2022-11-28" \
-           /repos/${{ github.repository }}/actions/artifacts/${{ matrix.artifacts }}
+           /repos/$OWNER/$REPO/actions/artifacts/$artifactId
+         done
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
 
         
         
