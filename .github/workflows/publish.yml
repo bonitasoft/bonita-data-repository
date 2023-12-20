@@ -103,13 +103,13 @@ jobs:
           credential_id: ${{secrets.ESIGNER_CREDENTIAL_ID}}
           totp_secret: $ESIGNER_TOTP
           file_path: bonita-data-repository-win-x64.exe
-          output_path: artifacts
+          output_path: $GITHUB_WORKSPACE/artifacts
           
       - name: Upload win-x64 binary
         uses: actions/upload-artifact@v4
         with:
           name: win-x64
-          path: artifacts/bonita-data-repository-win-x64.exe
+          path: $GITHUB_WORKSPACE/artifacts/bonita-data-repository-win-x64.exe
           retention-days: 1
         
   deploy:
