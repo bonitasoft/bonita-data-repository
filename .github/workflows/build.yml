@@ -172,7 +172,8 @@ jobs:
           REPO: ${{ github.event.repository.name }}
    
       - run: |
-         for artifactId in ${{ env.ARTIFACTS }}
+         artifactIds=( ${${{ env.ARTIFACTS }}//,/ } )
+         for artifactId in $artifactIds
          do
             gh api \
            --method DELETE \
