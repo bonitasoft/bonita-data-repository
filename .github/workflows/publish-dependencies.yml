@@ -39,6 +39,7 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         id: create-pr
         with:
+          token: ${{ secrets.BONITA_CI_PAT }}
           path: bonita-doc
           branch: feat/update_bdr_dependencies_list
           commit-message: "docs(bdr): List dependencies for version ${{ github.event.gitRef }}"
