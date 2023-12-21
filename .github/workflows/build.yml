@@ -72,7 +72,6 @@ jobs:
  
   event_file:
      name: "Event File"
-     if:  ${{ github.event.pull_request != null }}
      runs-on: ubuntu-latest
      steps:
      - name: Upload
