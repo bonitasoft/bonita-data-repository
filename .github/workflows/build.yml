@@ -152,39 +152,9 @@ jobs:
            -Dpackaging=zip \
            -DgeneratePom=false
         
-  clean-artifacts:
+  delete-workfow-artifacts:
     if: ${{ github.event.pull_request == null }}
     needs: deploy
-    runs-on: ubuntu-22.04
-    steps:
-    
-      - run: |
-          artifacts="$(gh api \
-           -H "Accept: application/vnd.github+json" \
-           -H "X-GitHub-Api-Version: 2022-11-28" \
-           /repos/$OWNER/$REPO/actions/runs/${{ github.run_id }}/artifacts \
-           --jq '[.artifacts[] | .id] | @csv')"
-
-          echo 'ARTIFACTS='$artifacts >> $GITHUB_ENV
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OWNER: ${{ github.repository_owner }}
-          REPO: ${{ github.event.repository.name }}
-   
-      - run: |
-         artifactIds=( ${${{ env.ARTIFACTS }}//,/ } )
-         for artifactId in $artifactIds
-         do
-            gh api \
-           --method DELETE \
-           -H "Accept: application/vnd.github+json" \
-           -H "X-GitHub-Api-Version: 2022-11-28" \
-           /repos/$OWNER/$REPO/actions/artifacts/$artifactId
-         done
-        env:
-          GH_TOKEN: ${{ github.token }}
-          OWNER: ${{ github.repository_owner }}
-          REPO: ${{ github.event.repository.name }}
-
+    uses: ./.github/workflows/_reusable_delete-workflow-artifacts.yml
         
         
