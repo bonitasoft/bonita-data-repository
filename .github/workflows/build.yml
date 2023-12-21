@@ -31,15 +31,7 @@ jobs:
       - name: Build
         run: ./mvnw -ntp clean verify -Dstyle.color=always
        
-      - name: Publish Test Report
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        if:  ${{ github.event.pull_request == null }}
-        with:
-          files: |
-            target/reports/*.xml
-            
       - name: Upload Test Results
-        if:  ${{ github.event.pull_request != null }}
         uses: actions/upload-artifact@v4
         with:
           name: Test Results
@@ -175,5 +167,9 @@ jobs:
     if: ${{ github.event.pull_request == null }}
     needs: deploy
     uses: ./.github/workflows/_reusable_delete-workflow-artifacts.yml
+    with:
+      excludes: |
+        Test Results
+        Event File
         
         

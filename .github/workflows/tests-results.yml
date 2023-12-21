@@ -11,7 +11,7 @@ jobs:
   test-results:
     name: Test Results
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion != 'skipped' && github.event.pull_request != null 
+    if: github.event.workflow_run.conclusion != 'skipped'
 
     permissions:
       checks: write
