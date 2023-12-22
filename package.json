@@ -34,7 +34,7 @@
     "@types/jest": "^27.0.3",
     "@types/supertest": "^2.0.16",
     "@types/winston": "^2.4.4",
-    "husky": "^7.0.4",
+    "husky": "^8.0.3",
     "jest": "^27.4.4",
     "license-checker": "^25.0.1",
     "mock-fs": "^5.1.2",
