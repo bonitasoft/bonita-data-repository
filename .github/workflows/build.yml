@@ -150,7 +150,7 @@ jobs:
    
       - name: Deploy 
         env:
-          SNAPSHOT_REPOSITORY_URL: https://bonitasoft.jfrog.io/artifactory/libs-snapshot-local/
+          SNAPSHOT_REPOSITORY_URL: ${{ vars.SNAPSHOTS_REPOSITORY_URL }}
         run: |
           ./mvnw assembly:single@archive-${{ matrix.arch }}
           ./mvnw -ntp deploy:deploy-file -Dstyle.color=always -DrepositoryId=snapshots -Durl=${{ env.SNAPSHOT_REPOSITORY_URL }} \

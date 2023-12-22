@@ -166,7 +166,7 @@ jobs:
    
       - name: Deploy 
         env:
-          RELEASES_REPOSITORY_URL: https://bonitasoft.jfrog.io/artifactory/libs-release-local/
+          RELEASES_REPOSITORY_URL: ${{ vars.RELEASES_REPOSITORY_URL}}
         run: |
           ./mvnw assembly:single@archive-${{ matrix.arch }}
           ./mvnw -ntp deploy:deploy-file -Dstyle.color=always -DrepositoryId=releases -Durl=${{ env.RELEASES_REPOSITORY_URL }} \
