@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    name: Publication pipeline
+    name: Build
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
@@ -91,22 +91,28 @@ jobs:
         with:
           name: win-x64-unsigned
       
+      - name: Create output folder
+        run: mkdir $GITHUB_WORKSPACE/artifacts
+        
       - name: Sign binary 
         uses: sslcom/actions-codesigner@develop
+        env:
+          ESIGNER_CREDS_PSW: ${{secrets.ESIGNER_CREDS_PSW}}
+          ESIGNER_TOTP: ${{secrets.ESIGNER_TOTP}}
         with:
           command: sign
           username: ${{secrets.ESIGNER_CREDS_USR}}
-          password: ${{secrets.ESIGNER_CREDS_PSW}}
+          password: $ESIGNER_CREDS_PSW
           credential_id: ${{secrets.ESIGNER_CREDENTIAL_ID}}
-          totp_secret: ${{secrets.ESIGNER_TOTP}}
+          totp_secret: $ESIGNER_TOTP
           file_path: bonita-data-repository-win-x64.exe
-          output_path: ${GITHUB_WORKSPACE}/artifacts
+          output_path: $GITHUB_WORKSPACE/artifacts
           
       - name: Upload win-x64 binary
         uses: actions/upload-artifact@v4
         with:
           name: win-x64
-          path: ${GITHUB_WORKSPACE}/artifacts/bonita-data-repository-win-x64.exe
+          path: artifacts/bonita-data-repository-win-x64.exe
           retention-days: 1
         
   deploy:
@@ -126,6 +132,8 @@ jobs:
             YPOU0laqe0V0mq_qwQ_3wg/field/password > env:JFROG_TOKEN
             
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag }}
       
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -158,7 +166,7 @@ jobs:
    
       - name: Deploy 
         env:
-          RELEASES_REPOSITORY_URL: https://bonitasoft.jfrog.io/artifactory/libs-release-local/
+          RELEASES_REPOSITORY_URL: ${{ vars.RELEASES_REPOSITORY_URL}}
         run: |
           ./mvnw assembly:single@archive-${{ matrix.arch }}
           ./mvnw -ntp deploy:deploy-file -Dstyle.color=always -DrepositoryId=releases -Durl=${{ env.RELEASES_REPOSITORY_URL }} \
@@ -167,4 +175,10 @@ jobs:
            -DartifactId=bonita-data-repository \
            -Dversion=${{ steps.read-version.outputs.version }} \
            -Dclassifier=${{ matrix.arch }} \
-           -Dpackaging=zip
+           -Dpackaging=zip \
+           -DgeneratePom=false
+           
+  delete-workfow-artifacts:
+    if: ${{ github.event.pull_request == null }}
+    needs: deploy
+    uses: ./.github/workflows/_reusable_delete-workflow-artifacts.yml

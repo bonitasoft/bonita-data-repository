@@ -30,12 +30,12 @@ jobs:
           
       - name: Build
         run: ./mvnw -ntp clean verify -Dstyle.color=always
-        
-      - name: Publish Test Report
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
+       
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
         with:
-          files: |
+          name: testResults
+          path: |
             target/reports/*.xml
             
       - name: Upload macos-x64 binary
@@ -69,7 +69,17 @@ jobs:
           name: win-x64
           path: target/binaries/bonita-data-repository-win-x64.exe
           retention-days: 1
-        
+ 
+  event_file:
+     name: "Event File"
+     runs-on: ubuntu-latest
+     steps:
+     - name: Upload
+       uses: actions/upload-artifact@v4
+       with:
+         name: eventFile
+         path: ${{ github.event_path }}    
+         
   macOs-codesign:
     if:  ${{ github.event.pull_request == null }}
     needs: build
@@ -140,7 +150,7 @@ jobs:
    
       - name: Deploy 
         env:
-          SNAPSHOT_REPOSITORY_URL: https://bonitasoft.jfrog.io/artifactory/libs-snapshot-local/
+          SNAPSHOT_REPOSITORY_URL: ${{ vars.SNAPSHOTS_REPOSITORY_URL }}
         run: |
           ./mvnw assembly:single@archive-${{ matrix.arch }}
           ./mvnw -ntp deploy:deploy-file -Dstyle.color=always -DrepositoryId=snapshots -Durl=${{ env.SNAPSHOT_REPOSITORY_URL }} \
@@ -149,8 +159,15 @@ jobs:
            -DartifactId=bonita-data-repository \
            -Dversion=${{ steps.read-version.outputs.version }} \
            -Dclassifier=${{ matrix.arch }} \
-           -Dpackaging=zip
+           -Dpackaging=zip \
+           -DgeneratePom=false
         
-    
-        
+  delete-workfow-artifacts:
+    if: ${{ github.event.pull_request == null }}
+    needs: deploy
+    uses: ./.github/workflows/_reusable_delete-workflow-artifacts.yml
+    with:
+      excludes: |
+        testResults
+        eventFile
         

@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.bonitasoft.web</groupId>
     <artifactId>bonita-data-repository</artifactId>
-    <version>1.0.0-alpha-01</version>
+    <version>1.0.0</version>
     <name>bonita-data-repository</name>
     <inceptionYear>2019</inceptionYear>
     <packaging>pom</packaging>
@@ -32,7 +32,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>3.1.1</version>
                     <configuration>
                         <inheritIo>true</inheritIo>
                         <useMavenLogger>true</useMavenLogger>
@@ -275,7 +275,7 @@
                             <dependency>
                                 <groupId>com.github.jknack</groupId>
                                 <artifactId>handlebars</artifactId>
-                                <version>4.1.2</version>
+                                <version>4.3.1</version>
                             </dependency>
                         </dependencies>
                     </plugin>
