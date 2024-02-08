@@ -22,10 +22,10 @@
     "express": "^4.18.2",
     "express-graphql": "^0.12.0",
     "graphql": "^16.8.1",
-    "graphql-voyager": "^1.0.0-rc.31",
+    "graphql-voyager": "^2.0.0",
     "request": "^2.88.2",
     "winston": "^3.11.0",
-    "winston-daily-rotate-file": "^4.5.5",
+    "winston-daily-rotate-file": "^4.7.1",
     "xml-js": "^1.6.11"
   },
   "devDependencies": {
@@ -37,7 +37,7 @@
     "husky": "^8.0.3",
     "jest": "^27.4.4",
     "license-checker": "^25.0.1",
-    "mock-fs": "^5.1.2",
+    "mock-fs": "^5.2.0",
     "pkg": "^5.8.1",
     "prettier": "^3.1.1",
     "pretty-quick": "^3.1.2",
