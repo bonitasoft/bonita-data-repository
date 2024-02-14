@@ -143,7 +143,7 @@ jobs:
           cache: 'maven'
           
       - name: Setup Maven configuration
-        uses: whelk-io/maven-settings-xml-action@v21
+        uses: whelk-io/maven-settings-xml-action@v22
         with:
           servers: >
             [
