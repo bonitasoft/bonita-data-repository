@@ -13,7 +13,12 @@ updates:
       interval: "daily"
     commit-message:
       prefix: "chore"
+      prefix-development: "github-actions"
       include: "scope"
+     groups:
+      development-dependencies:
+        patterns:
+          - "*"
 
   # Maintain dependencies for maven
   - package-ecosystem: "maven" 
@@ -24,6 +29,11 @@ updates:
     commit-message:
       prefix: "chore"
       include: "scope"
+    groups:
+      development-dependencies:
+        dependency-type: "development"
+        patterns:
+        - "*"
     
   # Maintain dependencies for node
   - package-ecosystem: "npm" 
@@ -34,3 +44,9 @@ updates:
     commit-message:
       prefix: "chore"
       include: "scope"
+    groups:
+      development-dependencies:
+        dependency-type: "development"
+      production-dependenies:
+        dependency-type: "production"
+      
