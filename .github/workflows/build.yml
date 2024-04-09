@@ -127,16 +127,9 @@ jobs:
           cache: 'maven'
           
       - name: Setup Maven configuration
-        uses: whelk-io/maven-settings-xml-action@v21
+        uses: bonitasoft/maven-settings-action@v1
         with:
-          servers: >
-            [
-              {
-                "id": "snapshots",
-                "username": "${{ env.JFROG_USER }}",
-                "password": "${{ env.JFROG_TOKEN }}"
-              }
-            ]
+          keeper-secret-config: ${{ secrets.KSM_CONFIG }}
         
       - name: Download binaries 
         uses: actions/download-artifact@v4
