@@ -122,15 +122,6 @@ jobs:
       matrix:
         arch: [ win-x64, linux-x64, macos-x64, macos-arm64 ]
     steps:
-      - name: Retrieve secrets from Keeper
-        id: ksecrets
-        uses: Keeper-Security/ksm-action@master
-        with:
-          keeper-secret-config: ${{ secrets.KSM_CONFIG }}
-          secrets: |
-            YPOU0laqe0V0mq_qwQ_3wg/field/login > env:JFROG_USER
-            YPOU0laqe0V0mq_qwQ_3wg/field/password > env:JFROG_TOKEN
-            
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.tag }}
