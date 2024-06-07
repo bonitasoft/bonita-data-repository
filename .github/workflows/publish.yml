@@ -85,7 +85,17 @@ jobs:
     needs: build
     runs-on: ubuntu-22.04
     steps:
-    
+      - name: Retrieve secrets from Keeper
+        id: ksecrets
+        uses: Keeper-Security/ksm-action@v1
+        with:
+          keeper-secret-config: ${{ secrets.KSM_CONFIG }}
+          secrets: |
+            ${{ vars.KEEPER_ESIGNER_RECORD_ID }}/field/login > env:ESIGNER_CREDS_USR
+            ${{ vars.KEEPER_ESIGNER_RECORD_ID }}/field/password > env:ESIGNER_CREDS_PSW
+            ${{ vars.KEEPER_ESIGNER_RECORD_ID }}/custom_field/otp-secret-code > env:ESIGNER_TOTP
+            ${{ vars.KEEPER_ESIGNER_RECORD_ID }}/custom_field/credential-id > env:ESIGNER_CREDENTIAL_ID
+
       - name: Download binary 
         uses: actions/download-artifact@v4
         with:
@@ -96,14 +106,11 @@ jobs:
         
       - name: Sign binary 
         uses: sslcom/actions-codesigner@develop
-        env:
-          ESIGNER_CREDS_PSW: ${{secrets.ESIGNER_CREDS_PSW}}
-          ESIGNER_TOTP: ${{secrets.ESIGNER_TOTP}}
         with:
           command: sign
-          username: ${{secrets.ESIGNER_CREDS_USR}}
+          username: ${{env.ESIGNER_CREDS_USR}}
           password: $ESIGNER_CREDS_PSW
-          credential_id: ${{secrets.ESIGNER_CREDENTIAL_ID}}
+          credential_id: ${{env.ESIGNER_CREDENTIAL_ID}}
           totp_secret: $ESIGNER_TOTP
           file_path: bonita-data-repository-win-x64.exe
           output_path: $GITHUB_WORKSPACE/artifacts

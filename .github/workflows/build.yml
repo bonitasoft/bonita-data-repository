@@ -108,15 +108,6 @@ jobs:
       matrix:
         arch: [ win-x64, linux-x64, macos-x64, macos-arm64 ]
     steps:
-      - name: Retrieve secrets from Keeper
-        id: ksecrets
-        uses: Keeper-Security/ksm-action@master
-        with:
-          keeper-secret-config: ${{ secrets.KSM_CONFIG }}
-          secrets: |
-            ${{ vars.KEEPER_JFROG_RECORD_ID }}/field/login > env:JFROG_USER
-            ${{ vars.KEEPER_JFROG_RECORD_ID }}/field/password > env:JFROG_TOKEN
-            
       - uses: actions/checkout@v4
       
       - name: Setup Java
