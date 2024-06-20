@@ -39,7 +39,7 @@ jobs:
             target/reports/*.xml
             
       - name: Upload macos-x64 binary
-        if:  ${{ github.event.pull_request == null }}
+        if: ${{ github.event.pull_request == null }}
         uses: actions/upload-artifact@v4
         with:
           name: macos-x64-unsigned
@@ -87,19 +87,12 @@ jobs:
       matrix:
         arch: [macos-x64, macos-arm64]
     uses: ./.github/workflows/_reusable_macOs_codesign.yml
-    secrets:
-      certificateData: ${{ secrets.APPLE_CERT_DATA }}
-      certificatePassword: ${{ secrets.APPLE_CERT_PASSWORD }}
-      notorizationUser: ${{ secrets.APPLE_NOTARY_USER }}
-      notorizationPassword:  ${{ secrets.APPLE_NOTARY_PASSWORD }}
-      teamId: ${{ secrets.APPLE_TEAM_ID }}
-      entitlements: ${{ secrets.APPLE_ENTITLEMENTS_XML }}
+    secrets: inherit
     with:
       input-artifact: ${{ matrix.arch}}-unsigned
       output-artifact: ${{ matrix.arch}}
       filename: bonita-data-repository-${{ matrix.arch}}
 
-        
   deploy:
     if:  ${{ github.event.pull_request == null }}
     needs: macOs-codesign
