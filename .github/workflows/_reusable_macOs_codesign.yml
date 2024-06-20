@@ -17,17 +17,7 @@ on:
         type: boolean
         default: false
     secrets:
-      certificateData:
-        required: true
-      certificatePassword:
-        required: true
-      notorizationUser:
-        required: true
-      notorizationPassword:
-        required: true
-      teamId:
-        required: true
-      entitlements:
+      KSM_CONFIG:
         required: true
 
 jobs:
@@ -38,13 +28,19 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.input-artifact }}
-         
+
+      - uses: Keeper-Security/ksm-action@v1
+        with:
+          keeper-secret-config: ${{ secrets.KSM_CONFIG }}
+          secrets: |
+            ${{ vars.KEEPER_APPLE_CERTIFICATE_RECORD_ID }}/field/password > env:MACOS_CERTIFICATE_PWD
+            ${{ vars.KEEPER_APPLE_CERTIFICATE_RECORD_ID }}/custom_field/certificate-base64 > env:MACOS_CERTIFICATE
+            ${{ vars.KEEPER_APPLE_CERTIFICATE_RECORD_ID }}/custom_field/entitlements-base64 > env:APPLE_ENTITLEMENTS_XML
+            ${{ vars.KEEPER_APPLE_NOTORIZATION_RECORD_ID}}/field/login > env:MACOS_NOTARIZATION_APPLE_ID
+            ${{ vars.KEEPER_APPLE_NOTORIZATION_RECORD_ID}}/field/password > env:MACOS_NOTARIZATION_PWD
+            ${{ vars.KEEPER_APPLE_NOTORIZATION_RECORD_ID }}/custom_field/team-id > env:MACOS_NOTARIZATION_TEAM_ID
+
       - name: Sign binary 
-        env: 
-          MACOS_CERTIFICATE: ${{ secrets.certificateData }}
-          MACOS_CERTIFICATE_PWD: ${{ secrets.certificatePassword }}
-          TEAM_ID: ${{ secrets.teamId }}
-          APPLE_ENTITLEMENTS_XML: ${{ secrets.entitlements }}
         run: |
           echo $APPLE_ENTITLEMENTS_XML | base64 --decode > entitlements.xml
           echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12
@@ -53,13 +49,9 @@ jobs:
           security unlock-keychain -p actions build.keychain
           security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k actions build.keychain
-          /usr/bin/codesign --deep --force --options runtime --entitlements entitlements.xml -s $TEAM_ID ${{ inputs.filename}} -v
+          /usr/bin/codesign --deep --force --options runtime --entitlements entitlements.xml -s $MACOS_NOTARIZATION_TEAM_ID ${{ inputs.filename}} -v
           
       - name: Notorize binary 
-        env:
-          MACOS_NOTARIZATION_APPLE_ID: ${{ secrets.notorizationUser }}
-          MACOS_NOTARIZATION_TEAM_ID: ${{ secrets.teamId }}
-          MACOS_NOTARIZATION_PWD: ${{ secrets.notorizationPassword }}
         run: |
           # Store the notarization credentials so that we can prevent a UI password dialog
           # from blocking the CI

@@ -69,13 +69,7 @@ jobs:
       matrix:
         arch: [macos-x64, macos-arm64]
     uses: ./.github/workflows/_reusable_macOs_codesign.yml
-    secrets:
-      certificateData: ${{ secrets.APPLE_CERT_DATA }}
-      certificatePassword: ${{ secrets.APPLE_CERT_PASSWORD }}
-      notorizationUser: ${{ secrets.APPLE_NOTARY_USER }}
-      notorizationPassword:  ${{ secrets.APPLE_NOTARY_PASSWORD }}
-      teamId: ${{ secrets.APPLE_TEAM_ID }}
-      entitlements: ${{ secrets.APPLE_ENTITLEMENTS_XML }}
+    secrets: inherit
     with:
       input-artifact: ${{ matrix.arch}}-unsigned
       output-artifact: ${{ matrix.arch}}
