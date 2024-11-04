@@ -162,6 +162,41 @@ jobs:
            -Dclassifier=${{ matrix.arch }} \
            -Dpackaging=zip \
            -DgeneratePom=false
+        
+  deploy-main-pom:
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag }}
+      
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+          cache: 'maven'
+        
+      - name: Setup Maven configuration
+        uses: bonitasoft/maven-settings-action@v1
+        with:
+          keeper-secret-config: ${{ secrets.KSM_CONFIG }}
+      
+      - name: Read version
+        id: read-version
+        run: echo "version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_OUTPUT
+   
+      - name: Deploy 
+        env:
+          RELEASES_REPOSITORY_URL: ${{ vars.RELEASES_REPOSITORY_URL}}
+        run: |
+          ./mvnw -ntp deploy:deploy-file -Dstyle.color=always -DrepositoryId=releases -Durl=${{ env.RELEASES_REPOSITORY_URL }} \
+           -Dfile=pom.xml \
+           -DgroupId=org.bonitasoft.web \
+           -DartifactId=bonita-data-repository \
+           -Dversion=${{ steps.read-version.outputs.version }} \
+           -Dpackaging=pom
            
   delete-workfow-artifacts:
     needs: deploy
