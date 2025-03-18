@@ -12,7 +12,7 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -77,7 +77,7 @@ jobs:
     
   windows-codesign:
     needs: build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Retrieve secrets from Keeper
         id: ksecrets
@@ -118,7 +118,7 @@ jobs:
         
   deploy:
     needs: [macOs-codesign, windows-codesign]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         arch: [ win-x64, linux-x64, macos-x64, macos-arm64 ]
@@ -165,7 +165,7 @@ jobs:
         
   deploy-main-pom:
     needs: build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
