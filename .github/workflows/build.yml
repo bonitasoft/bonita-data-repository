@@ -17,7 +17,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       
@@ -72,7 +72,7 @@ jobs:
  
   event_file:
      name: "Event File"
-     runs-on: ubuntu-latest
+     runs-on: ubuntu-24.04
      steps:
      - name: Upload
        uses: actions/upload-artifact@v4
@@ -96,7 +96,7 @@ jobs:
   deploy:
     if:  ${{ github.event.pull_request == null }}
     needs: macOs-codesign
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         arch: [ win-x64, linux-x64, macos-x64, macos-arm64 ]
